@@ -84,5 +84,34 @@ class RAMLTests: XCTestCase {
         }
     }
     
+    func testParseBasicDocumentation() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: ZEncoder API
+        baseUri: https://app.zencoder.com/api
+        documentation:
+         - title: Home
+           content: |
+             Welcome to the _Zencoder API_ Documentation. The _Zencoder API_
+             allows you to connect your application to our encoding service
+             and encode videos without going through the web  interface. You
+             may also benefit from one of our
+             [integration libraries](https://app.zencoder.com/docs/faq/basics/libraries)
+             for different languages.
+         - title: Legal
+           content: !include docs/legal.markdown
+        """
+        
+        do {
+            let raml = try RAML(ramlString)
+            XCTAssertEqual(raml.documentation?.count, 2)
+            
+        } catch {
+            print("error: \(error)")
+            XCTFail("Should not fail")
+        }
+    }
+    
     
 }

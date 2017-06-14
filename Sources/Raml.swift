@@ -14,21 +14,35 @@ public class RAML {
     public var title: String = ""
     public var version: String?
     public var baseURI: String?
+    public var documentation: [DocumentationEntry]?
     
     static let keyWithEmptyValueFix = "RAMLEMPTYVALUEFIX"
     
     public init(_ string: String) throws {
-        let cleanedYamlSring = cleanedYamlString(from: string)
+        let yamlString = cleanedYamlString(from: string)
         
         // validate version
-        let ramlVersion = try validateRamlVersion(string: cleanedYamlSring)
+        let ramlVersion = try validateRamlVersion(string: yamlString)
         self.ramlVersion = ramlVersion
         
         // parse string to yaml
-        let yaml = try parsedYAMLFromString(cleanedYamlSring)
+        let dirtyYaml = try parsedYAMLFromString(yamlString)
+        
+        // clean yaml from "key without values"-fix
+        let yaml = cleanedYaml(dirtyYaml)
         
         // parse root raml
         try parseRoot(yaml)
+    }
+    
+    public class DocumentationEntry {
+        public var title: String
+        public var content: String
+        
+        init(title: String, content: String) {
+            self.title = title
+            self.content = content
+        }
     }
 }
 
@@ -54,11 +68,28 @@ extension RAML {
     }
     
     fileprivate func parseRoot(_ yaml: Yaml) throws {
-        guard let yamlTitle = yaml["title"].string?.cleanedValue() else { throw RAMLError.yamlParsingError(message: "title is required") }
+        guard let yamlTitle = yaml["title"].string else { throw RAMLError.ramlParsingError(message: "title is required") }
         
         self.title = yamlTitle
-        self.version = yaml["version"].string?.cleanedValue()
-        self.baseURI = yaml["baseUri"].string?.cleanedValue()
+        self.version = yaml["version"].string
+        self.baseURI = yaml["baseUri"].string
+        
+        if let yamlDocumentationEntries = yaml["documentation"].array {
+            var documentation: [DocumentationEntry] = []
+            
+            for (index, yamlDocumentationEntry) in yamlDocumentationEntries.enumerated() {
+                guard let title = yamlDocumentationEntry["title"].string else {
+                    throw RAMLError.ramlParsingError(message: "`title` not set in documentation entry \(index)")
+                }
+                guard let content = yamlDocumentationEntry["content"].string else {
+                    throw RAMLError.ramlParsingError(message: "`content` not set in documentation entry \(index)")
+                }
+                let documentationEntry = DocumentationEntry(title: title, content: content)
+                documentation.append(documentationEntry)
+            }
+            
+            self.documentation = documentation
+        }
     }
 }
 
@@ -122,14 +153,46 @@ extension RAML {
         guard let match = expr.matches(in: line, range: NSMakeRange(0, line.count)).first else { return 0 }
         return match.rangeAt(1).length
     }
+    
+    fileprivate func cleanedYaml(_ yaml: Yaml) -> Yaml {
+        return cleanYamlFromKeysWithoutValuesFix(yaml)
+    }
+    
+    private func cleanYamlFromKeysWithoutValuesFix(_ yaml: Yaml) -> Yaml {
+        if let string = yaml.string {
+            if string.contains(RAML.keyWithEmptyValueFix) {
+                return Yaml(nilLiteral: ())
+            } else {
+                return Yaml(stringLiteral: string)
+            }
+        } else if let array = yaml.array {
+            var newArray: [Yaml] = []
+            for entry in array {
+                let cleaned = cleanYamlFromKeysWithoutValuesFix(entry)
+                newArray.append(cleaned)
+            }
+            return Yaml(array: newArray)
+        } else if let dictionary = yaml.dictionary {
+            var newDictionary: [Yaml: Yaml] = [:]
+            for (key, value) in dictionary {
+                newDictionary[key] = cleanYamlFromKeysWithoutValuesFix(value)
+            }
+            return Yaml(dictionary: newDictionary)
+        } else {
+            return yaml
+        }
+    }
 }
 
-extension String {
-    public func cleanedValue() -> String? {
-        if self.contains(RAML.keyWithEmptyValueFix) {
-            return nil
-        } else {
-            return self
+extension Yaml {
+    public init(array elements: [Yaml]) {
+        self = .array(elements)
+    }
+    public init(dictionary elements: [Yaml: Yaml]) {
+        var dictionary = [Yaml: Yaml]()
+        for (k, v) in elements {
+            dictionary[k] = v
         }
+        self = .dictionary(dictionary)
     }
 }
