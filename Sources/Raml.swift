@@ -28,6 +28,10 @@ public class RAML {
 //    securedBy
 //    uses
     
+    // we need this static constant because our yaml parser doesnt work well
+    // the value from `keyWithEmptyValueFix` will be inserted in the yaml string
+    // where no value is given and the node has no children
+    // after the parsing the value will be removed recursively
     static let keyWithEmptyValueFix = "RAMLEMPTYVALUEFIX"
     
     public init(_ string: String) throws {
