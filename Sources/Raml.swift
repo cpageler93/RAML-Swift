@@ -9,17 +9,20 @@ enum RAMLError: Error {
 
 public class RAML {
     
-    public var version: String = ""
-    public var title: String = ""
+    public var ramlVersion: String = ""
     
-    let keyWithEmptyValueFix = "RAMLEMPTYVALUEFIX"
+    public var title: String = ""
+    public var version: String?
+    public var baseURI: String?
+    
+    static let keyWithEmptyValueFix = "RAMLEMPTYVALUEFIX"
     
     public init(_ string: String) throws {
         let cleanedYamlSring = cleanedYamlString(from: string)
         
         // validate version
         let ramlVersion = try validateRamlVersion(string: cleanedYamlSring)
-        self.version = ramlVersion
+        self.ramlVersion = ramlVersion
         
         // parse string to yaml
         let yaml = try parsedYAMLFromString(cleanedYamlSring)
@@ -51,9 +54,11 @@ extension RAML {
     }
     
     fileprivate func parseRoot(_ yaml: Yaml) throws {
-        guard let yamlTitle = yaml["title"].string else { throw RAMLError.yamlParsingError(message: "title is required") }
+        guard let yamlTitle = yaml["title"].string?.cleanedValue() else { throw RAMLError.yamlParsingError(message: "title is required") }
         
         self.title = yamlTitle
+        self.version = yaml["version"].string?.cleanedValue()
+        self.baseURI = yaml["baseUri"].string?.cleanedValue()
     }
 }
 
@@ -91,7 +96,7 @@ extension RAML {
                     }
                     
                     if addLineWithEmptyValueFix {
-                        newLines.append("\(line) \(keyWithEmptyValueFix)")
+                        newLines.append("\(line) \(RAML.keyWithEmptyValueFix)")
                     } else {
                         newLines.append(line)
                     }
@@ -116,5 +121,15 @@ extension RAML {
         let expr = try NSRegularExpression(pattern: "( *)(.*)")
         guard let match = expr.matches(in: line, range: NSMakeRange(0, line.count)).first else { return 0 }
         return match.rangeAt(1).length
+    }
+}
+
+extension String {
+    public func cleanedValue() -> String? {
+        if self.contains(RAML.keyWithEmptyValueFix) {
+            return nil
+        } else {
+            return self
+        }
     }
 }

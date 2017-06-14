@@ -33,6 +33,22 @@ class RAMLTests: XCTestCase {
         }
     }
     
+    func testParseVersionShouldBeEmpty() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: Foo Bar
+        version:
+        """
+        
+        do {
+            let raml = try RAML(ramlString)
+            XCTAssertNil(raml.version)
+        } catch {
+            
+        }
+    }
+    
     func testParseRamlBasicRoot() {
         
         let ramlString =
@@ -60,6 +76,8 @@ class RAMLTests: XCTestCase {
         do {
             let raml = try RAML(ramlString)
             XCTAssertEqual(raml.title, "GitHub API")
+            XCTAssertEqual(raml.version, "v3")
+            XCTAssertEqual(raml.baseURI, "https://api.github.com")
         } catch {
             print("error: \(error)")
             XCTFail("Should not fail")
