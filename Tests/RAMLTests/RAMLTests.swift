@@ -3,7 +3,7 @@ import XCTest
 
 class RAMLTests: XCTestCase {
     
-    func testParseRamlWithoutTitle() {
+    func testParseRamlMissingAttributesInBasicRoot() {
         let ramlString =
         """
         #%RAML 1.0
@@ -33,19 +33,38 @@ class RAMLTests: XCTestCase {
         }
     }
     
-    func testParseRaml10Title() {
+    func testParseRamlBasicRoot() {
         
         let ramlString =
         """
         #%RAML 1.0
-        title: My API
+        title: GitHub API
+        version: v3
+        baseUri: https://api.github.com
+        mediaType:  application/json
+        securitySchemes:
+          oauth_2_0: !include securitySchemes/oauth_2_0.raml
+        types:
+          Gist:  !include types/gist.raml
+          Gists: !include types/gists.raml
+        resourceTypes:
+          collection: !include types/collection.raml
+        traits:
+        securedBy: [ oauth_2_0 ]
+        /search:
+          /code:
+            type: collection
+            get:
         """
         
         do {
             let raml = try RAML(ramlString)
-            XCTAssertEqual(raml.title, "My API")
+            XCTAssertEqual(raml.title, "GitHub API")
         } catch {
+            print("error: \(error)")
             XCTFail("Should not fail")
         }
     }
+    
+    
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		59E893211EF1765D00D2FC24 /* CollectionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59E893201EF1765D00D2FC24 /* CollectionExtensions.swift */; };
 		OBJ_30 /* Yaml.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_15 /* Yaml.swift */; };
 		OBJ_31 /* YAMLOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* YAMLOperators.swift */; };
 		OBJ_32 /* YAMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* YAMLParser.swift */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		59E893201EF1765D00D2FC24 /* CollectionExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionExtensions.swift; sourceTree = "<group>"; };
 		OBJ_11 /* RAMLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAMLTests.swift; sourceTree = "<group>"; };
 		OBJ_15 /* Yaml.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Yaml.swift; sourceTree = "<group>"; };
 		OBJ_16 /* YAMLOperators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YAMLOperators.swift; sourceTree = "<group>"; };
@@ -136,7 +138,7 @@
 			name = Products;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -145,13 +147,13 @@
 				OBJ_12 /* Dependencies */,
 				OBJ_21 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				OBJ_8 /* Raml.swift */,
+				59E893201EF1765D00D2FC24 /* CollectionExtensions.swift */,
 			);
 			path = Sources;
 			sourceTree = SOURCE_ROOT;
@@ -233,7 +235,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_21 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -264,6 +266,7 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_42 /* Raml.swift in Sources */,
+				59E893211EF1765D00D2FC24 /* CollectionExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
