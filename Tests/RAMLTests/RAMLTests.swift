@@ -44,6 +44,10 @@ class RAMLTests: XCTestCase {
         do {
             let raml = try RAML(ramlString)
             XCTAssertNil(raml.version)
+            XCTAssertNil(raml.description)
+            XCTAssertNil(raml.baseURI)
+            XCTAssertNil(raml.protocols)
+            XCTAssertNil(raml.documentation)
         } catch {
             
         }
@@ -55,6 +59,7 @@ class RAMLTests: XCTestCase {
         """
         #%RAML 1.0
         title: GitHub API
+        description: Description of GitHub API
         version: v3
         baseUri: https://api.github.com
         mediaType:  application/json
@@ -76,6 +81,7 @@ class RAMLTests: XCTestCase {
         do {
             let raml = try RAML(ramlString)
             XCTAssertEqual(raml.title, "GitHub API")
+            XCTAssertEqual(raml.description, "Description of GitHub API")
             XCTAssertEqual(raml.version, "v3")
             XCTAssertEqual(raml.baseURI, "https://api.github.com")
         } catch {

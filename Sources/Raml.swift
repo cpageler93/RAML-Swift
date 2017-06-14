@@ -12,7 +12,7 @@ public class RAML {
     public var ramlVersion: String = ""
     
     public var title: String = ""
-//    public var description: String?
+    public var description: String?
     public var version: String?
     public var baseURI: String?
 //    baseUriParameters
@@ -93,6 +93,7 @@ extension RAML {
         guard let yamlTitle = yaml["title"].string else { throw RAMLError.ramlParsingError(message: "title is required") }
         
         self.title = yamlTitle
+        self.description = yaml["description"].string
         self.version = yaml["version"].string
         self.baseURI = yaml["baseUri"].string
         
