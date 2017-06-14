@@ -1,0 +1,12 @@
+{
+  "autoPin": true,
+  "pins": [
+    {
+      "package": "Yaml",
+      "reason": null,
+      "repositoryURL": "https://github.com/behrang/YamlSwift.git",
+      "version": "3.4.0"
+    }
+  ],
+  "version": 1
+}
