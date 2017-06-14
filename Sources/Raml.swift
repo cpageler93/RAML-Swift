@@ -12,9 +12,21 @@ public class RAML {
     public var ramlVersion: String = ""
     
     public var title: String = ""
+//    public var description: String?
     public var version: String?
     public var baseURI: String?
+//    baseUriParameters
+    public var protocols: Protocols?
+//    mediaType
     public var documentation: [DocumentationEntry]?
+//    schemas
+//    types
+//    traits
+//    resourceTypes
+//    annotationTypes
+//    securitySchemes
+//    securedBy
+//    uses
     
     static let keyWithEmptyValueFix = "RAMLEMPTYVALUEFIX"
     
@@ -33,6 +45,16 @@ public class RAML {
         
         // parse root raml
         try parseRoot(yaml)
+    }
+    
+    public struct Protocols: OptionSet {
+        public init(rawValue: Protocols.RawValue) {
+            self.rawValue = rawValue
+        }
+        public let rawValue: Int
+        
+        static let http  = Protocols(rawValue: 1 << 0)
+        static let https = Protocols(rawValue: 1 << 1)
     }
     
     public class DocumentationEntry {
@@ -74,6 +96,24 @@ extension RAML {
         self.version = yaml["version"].string
         self.baseURI = yaml["baseUri"].string
         
+        if let protocolsYaml = yaml["protocols"].array {
+            var protocols: Protocols = []
+            for protocolYaml in protocolsYaml {
+                guard let protocolString = protocolYaml.string else {
+                    throw RAMLError.ramlParsingError(message: "protocol must be kind of string")
+                }
+                
+                switch protocolString.uppercased() {
+                case "HTTP": protocols.insert(.http)
+                case "HTTPS": protocols.insert(.https)
+                default:
+                    throw RAMLError.ramlParsingError(message: "protocol `\(protocolString)` not supported")
+                }
+            }
+            self.protocols = protocols
+        }
+        
+        // documentation
         if let yamlDocumentationEntries = yaml["documentation"].array {
             var documentation: [DocumentationEntry] = []
             

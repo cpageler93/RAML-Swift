@@ -113,5 +113,38 @@ class RAMLTests: XCTestCase {
         }
     }
     
+    func testParseProtocols() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: Test
+        protocols: [ HTTP, HTTPS ]
+        """
+        
+        do {
+            let raml = try RAML(ramlString)
+            XCTAssertTrue(raml.protocols?.contains(.http) ?? false)
+            XCTAssertTrue(raml.protocols?.contains(.https) ?? false)
+        } catch {
+            print("error: \(error)")
+            XCTFail("Should not fail")
+        }
+    }
+    
+    func testParseInvalidProtocol() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: Test
+        protocols: [ HTTP, POP3 ]
+        """
+        
+        do {
+            let _ = try RAML(ramlString)
+            XCTFail("Should fail because POP3 is invalid protocol for RAML")
+        } catch {
+            
+        }
+    }
     
 }
