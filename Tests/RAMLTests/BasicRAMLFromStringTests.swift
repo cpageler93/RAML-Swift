@@ -147,4 +147,42 @@ class RAMLTests: XCTestCase {
             
         }
     }
+    
+    func testParseMediaType() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: New API
+        mediaType: application/json
+        """
+        
+        do {
+            let raml = try RAML(string: ramlString)
+            XCTAssertEqual(raml.mediaTypes?.count, 1)
+            if let firstMediaType = raml.mediaTypes?.first {
+                XCTAssertEqual(firstMediaType.identifier, "application/json")
+            }
+        } catch {
+            XCTFail()
+        }
+    }
+    
+    func testParseMultipleMediaTypes() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: New API
+        mediaType: [ application/xml, application/json ]
+        """
+        
+        do {
+            let raml = try RAML(string: ramlString)
+            XCTAssertEqual(raml.mediaTypes?.count, 2)
+            if let firstMediaType = raml.mediaTypes?.first {
+                XCTAssertEqual(firstMediaType.identifier, "application/xml")
+            }
+        } catch {
+            XCTFail()
+        }
+    }
 }

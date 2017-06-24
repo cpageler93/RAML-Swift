@@ -25,7 +25,7 @@ public class RAML {
     public var baseURI: String?
     public var baseURIParameters: [URIParameter]?
     public var protocols: Protocols?
-//    mediaType
+    public var mediaTypes: [MediaType]?
     public var documentation: [DocumentationEntry]?
 //    schemas
 //    types
@@ -87,6 +87,12 @@ extension RAML {
         
         if let protocolsYaml = yaml["protocols"].array {
             self.protocols = try parseProtocols(protocolsYaml)
+        }
+        
+        if let mediaTypesYaml = yaml["mediaType"].array {
+            self.mediaTypes = try parseMediaTypes(mediaTypesYaml)
+        } else if let mediaTypeString = yaml["mediaType"].string {
+            self.mediaTypes = [parseMediaType(mediaTypeString)]
         }
         
         if let yamlDocumentationEntries = yaml["documentation"].array {
