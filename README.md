@@ -1,8 +1,14 @@
 # RAML-Swift
-A RAML parser based on Yams written in Swift
+
+[![Twitter: @cpageler93](https://img.shields.io/badge/contact-@cpageler93-lightgrey.svg?style=flat)](https://twitter.com/cpageler93)
+[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/cpageler93/RAML-Swift/blob/master/LICENSE)
+
+A [RAML](http://raml.org) parser based on [YamlSwift](https://github.com/behrang/YamlSwift) written in **Swift 4**.
 
 
-## Run Script to copy test data
+## Test
+
+### Run Script to copy test data
 
 ```shell
 export SOURCE="$PROJECT_DIR/Tests/RAMLTests/TestData"
