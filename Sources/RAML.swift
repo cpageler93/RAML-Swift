@@ -27,7 +27,6 @@ public class RAML {
     public var protocols: Protocols?
     public var mediaTypes: [MediaType]?
     public var documentation: [DocumentationEntry]?
-//    schemas
 //    types
 //    traits
 //    resourceTypes
