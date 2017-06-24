@@ -106,4 +106,45 @@ class RAMLTests: XCTestCase {
         }
     }
     
+    func testParseBaseURIWithVersionParameter() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: Salesforce Chatter REST API
+        version: v28.0
+        baseUri: https://na1.salesforce.com/services/data/{version}/chatter
+        """
+        
+        do {
+            let raml = try RAML(string: ramlString)
+            XCTAssertEqual(raml.baseURI, "https://na1.salesforce.com/services/data/{version}/chatter")
+            XCTAssertEqual(raml.baseURIWithParameter(), "https://na1.salesforce.com/services/data/v28.0/chatter")
+        } catch {
+            
+        }
+    }
+    
+    func testParseBaseURIWithExplicitURIParameters() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: Amazon S3 REST API
+        version: 1
+        baseUri: https://{bucketName}.s3.amazonaws.com
+        baseUriParameters:
+          bucketName:
+            description: The name of the bucket
+        """
+        
+        do {
+            let raml = try RAML(string: ramlString)
+            XCTAssertEqual(raml.baseURI, "https://{bucketName}.s3.amazonaws.com")
+            XCTAssertEqual(raml.baseURIParameters?.count, 1)
+            if let firstURIParameter = raml.baseURIParameters?.first {
+                XCTAssertEqual(firstURIParameter.description, "The name of the bucket")
+            }
+        } catch {
+            
+        }
+    }
 }

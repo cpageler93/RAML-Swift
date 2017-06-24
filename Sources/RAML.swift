@@ -23,7 +23,7 @@ public class RAML {
     public var description: String?
     public var version: String?
     public var baseURI: String?
-//    baseUriParameters
+    public var baseURIParameters: [URIParameter]?
     public var protocols: Protocols?
 //    mediaType
     public var documentation: [DocumentationEntry]?
@@ -58,6 +58,16 @@ public class RAML {
         includesAvailable = false
         try loadRamlFromString(string)
     }
+    
+    // MARK: Public Methods
+    
+    public func baseURIWithParameter() -> String? {
+        guard var baseURI = baseURI else { return nil }
+        if let version = version {
+            baseURI = baseURI.replacingOccurrences(of: "{version}", with: version)
+        }
+        return baseURI
+    }
 }
 
 // MARK: Parsing
@@ -70,6 +80,10 @@ extension RAML {
         self.description = yaml["description"].string
         self.version = yaml["version"].string
         self.baseURI = yaml["baseUri"].string
+        
+        if let baseURIParameters = yaml["baseUriParameters"].dictionary {
+            self.baseURIParameters = try parseURIParameters(baseURIParameters)
+        }
         
         if let protocolsYaml = yaml["protocols"].array {
             self.protocols = try parseProtocols(protocolsYaml)
