@@ -1,40 +1,15 @@
+//
+//  Raml+LoadFromString.swift
+//  RAML
+//
+//  Created by Christoph Pageler on 24.06.17.
+//
+
 import Foundation
 import Yaml
 
-enum RAMLError: Error {
-    case yamlParsingError(message: String)
-    case invalidRAMLVersion(message: String)
-    case ramlParsingError(message: String)
-}
-
-public class RAML {
-    
-    public var ramlVersion: String = ""
-    
-    public var title: String = ""
-    public var description: String?
-    public var version: String?
-    public var baseURI: String?
-//    baseUriParameters
-    public var protocols: Protocols?
-//    mediaType
-    public var documentation: [DocumentationEntry]?
-//    schemas
-//    types
-//    traits
-//    resourceTypes
-//    annotationTypes
-//    securitySchemes
-//    securedBy
-//    uses
-    
-    // we need this static constant because our yaml parser doesnt work well
-    // the value from `keyWithEmptyValueFix` will be inserted in the yaml string
-    // where no value is given and the node has no children
-    // after the parsing the value will be removed recursively
-    static let keyWithEmptyValueFix = "RAMLEMPTYVALUEFIX"
-    
-    public init(_ string: String) throws {
+extension RAML {
+    internal func loadRamlFromString(_ string: String) throws {
         let yamlString = cleanedYamlString(from: string)
         
         // validate version
@@ -50,30 +25,6 @@ public class RAML {
         // parse root raml
         try parseRoot(yaml)
     }
-    
-    public struct Protocols: OptionSet {
-        public init(rawValue: Protocols.RawValue) {
-            self.rawValue = rawValue
-        }
-        public let rawValue: Int
-        
-        static let http  = Protocols(rawValue: 1 << 0)
-        static let https = Protocols(rawValue: 1 << 1)
-    }
-    
-    public class DocumentationEntry {
-        public var title: String
-        public var content: String
-        
-        init(title: String, content: String) {
-            self.title = title
-            self.content = content
-        }
-    }
-}
-
-// MARK: Parsing
-extension RAML {
     
     fileprivate func validateRamlVersion(string: String) throws -> String {
         guard let firstLine = string.components(separatedBy: "\n").first else { throw RAMLError.invalidRAMLVersion(message: "string has no first line") }
@@ -92,52 +43,7 @@ extension RAML {
             throw RAMLError.yamlParsingError(message: error.localizedDescription)
         }
     }
-    
-    fileprivate func parseRoot(_ yaml: Yaml) throws {
-        guard let yamlTitle = yaml["title"].string else { throw RAMLError.ramlParsingError(message: "title is required") }
-        
-        self.title = yamlTitle
-        self.description = yaml["description"].string
-        self.version = yaml["version"].string
-        self.baseURI = yaml["baseUri"].string
-        
-        if let protocolsYaml = yaml["protocols"].array {
-            var protocols: Protocols = []
-            for protocolYaml in protocolsYaml {
-                guard let protocolString = protocolYaml.string else {
-                    throw RAMLError.ramlParsingError(message: "protocol must be kind of string")
-                }
-                
-                switch protocolString.uppercased() {
-                case "HTTP": protocols.insert(.http)
-                case "HTTPS": protocols.insert(.https)
-                default:
-                    throw RAMLError.ramlParsingError(message: "protocol `\(protocolString)` not supported")
-                }
-            }
-            self.protocols = protocols
-        }
-        
-        // documentation
-        if let yamlDocumentationEntries = yaml["documentation"].array {
-            var documentation: [DocumentationEntry] = []
-            
-            for (index, yamlDocumentationEntry) in yamlDocumentationEntries.enumerated() {
-                guard let title = yamlDocumentationEntry["title"].string else {
-                    throw RAMLError.ramlParsingError(message: "`title` not set in documentation entry \(index)")
-                }
-                guard let content = yamlDocumentationEntry["content"].string else {
-                    throw RAMLError.ramlParsingError(message: "`content` not set in documentation entry \(index)")
-                }
-                let documentationEntry = DocumentationEntry(title: title, content: content)
-                documentation.append(documentationEntry)
-            }
-            
-            self.documentation = documentation
-        }
-    }
 }
-
 
 // MARK: YAML Cleanup
 extension RAML {

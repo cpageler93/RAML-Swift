@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_25"
+               BlueprintIdentifier = "OBJ_40"
                BuildableName = "Yaml.framework"
                BlueprintName = "Yaml"
                ReferencedContainer = "container:RAML.xcodeproj">
@@ -28,7 +28,35 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_37"
+               BlueprintIdentifier = "OBJ_52"
+               BuildableName = "Spectre.framework"
+               BlueprintName = "Spectre"
+               ReferencedContainer = "container:RAML.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "OBJ_66"
+               BuildableName = "PathKit.framework"
+               BlueprintName = "PathKit"
+               ReferencedContainer = "container:RAML.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "OBJ_75"
                BuildableName = "RAML.framework"
                BlueprintName = "RAML"
                ReferencedContainer = "container:RAML.xcodeproj">
@@ -46,7 +74,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "OBJ_46"
+               BlueprintIdentifier = "OBJ_89"
                BuildableName = "RAMLTests.xctest"
                BlueprintName = "RAMLTests"
                ReferencedContainer = "container:RAML.xcodeproj">
@@ -69,7 +97,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "OBJ_25"
+            BlueprintIdentifier = "OBJ_40"
             BuildableName = "Yaml.framework"
             BlueprintName = "Yaml"
             ReferencedContainer = "container:RAML.xcodeproj">
