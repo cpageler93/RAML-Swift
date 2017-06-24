@@ -12,6 +12,7 @@
 		59FDF0001EFEB05A00D46228 /* RAMLError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59FDEFFF1EFEB05A00D46228 /* RAMLError.swift */; };
 		59FDF0021EFEB07D00D46228 /* RAML+Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59FDF0011EFEB07D00D46228 /* RAML+Protocols.swift */; };
 		59FDF0041EFEB0A100D46228 /* RAML+DocumentationEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59FDF0031EFEB0A100D46228 /* RAML+DocumentationEntry.swift */; };
+		59FDF0061EFEB4FC00D46228 /* RAML+Include.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59FDF0051EFEB4FC00D46228 /* RAML+Include.swift */; };
 		OBJ_100 /* RAML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_38 /* RAML.framework */; };
 		OBJ_45 /* Yaml.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_28 /* Yaml.swift */; };
 		OBJ_46 /* YAMLOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_29 /* YAMLOperators.swift */; };
@@ -106,6 +107,7 @@
 		59FDEFFF1EFEB05A00D46228 /* RAMLError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAMLError.swift; sourceTree = "<group>"; };
 		59FDF0011EFEB07D00D46228 /* RAML+Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RAML+Protocols.swift"; sourceTree = "<group>"; };
 		59FDF0031EFEB0A100D46228 /* RAML+DocumentationEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RAML+DocumentationEntry.swift"; sourceTree = "<group>"; };
+		59FDF0051EFEB4FC00D46228 /* RAML+Include.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RAML+Include.swift"; sourceTree = "<group>"; };
 		OBJ_12 /* BasicRAMLFromStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRAMLFromStringTests.swift; sourceTree = "<group>"; };
 		OBJ_13 /* UserDocumentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDocumentationTests.swift; sourceTree = "<group>"; };
 		OBJ_16 /* PathKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathKit.swift; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 				59FDEFFD1EFEAF3D00D46228 /* RAML+LoadFromString.swift */,
 				59FDEFFF1EFEB05A00D46228 /* RAMLError.swift */,
 				59FDF0011EFEB07D00D46228 /* RAML+Protocols.swift */,
+				59FDF0051EFEB4FC00D46228 /* RAML+Include.swift */,
 				59FDF0031EFEB0A100D46228 /* RAML+DocumentationEntry.swift */,
 			);
 			path = Sources;
@@ -474,6 +477,7 @@
 				59FDF0001EFEB05A00D46228 /* RAMLError.swift in Sources */,
 				OBJ_80 /* CollectionExtensions.swift in Sources */,
 				59FDF0021EFEB07D00D46228 /* RAML+Protocols.swift in Sources */,
+				59FDF0061EFEB4FC00D46228 /* RAML+Include.swift in Sources */,
 				59FDF0041EFEB0A100D46228 /* RAML+DocumentationEntry.swift in Sources */,
 				OBJ_81 /* RAML.swift in Sources */,
 				59FDEFFE1EFEAF3D00D46228 /* RAML+LoadFromString.swift in Sources */,

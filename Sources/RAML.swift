@@ -7,13 +7,13 @@ public class RAML {
     // MARK: meta (not raml related)
     
     /// Version of RAML file
-    public var ramlVersion: String = ""
+    internal var ramlVersion: String = ""
     
     /// indicates whether includes are available in raml file
-    private var includesAvailable: Bool
+    internal var includesAvailable: Bool
     
     /// initial file path, when loaded from file
-    private var initialFilePath: Path?
+    internal var initialFilePath: Path?
     
     
     

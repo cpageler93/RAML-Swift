@@ -32,6 +32,9 @@ extension RAML {
             guard let content = yamlDocumentationEntry["content"].string else {
                 throw RAMLError.ramlParsingError(message: "`content` not set in documentation entry \(index)")
             }
+            
+            try testInclude(content)
+            
             let documentationEntry = DocumentationEntry(title: title, content: content)
             documentation.append(documentationEntry)
         }

@@ -43,10 +43,9 @@ extension RAML {
             throw RAMLError.yamlParsingError(message: error.localizedDescription)
         }
     }
-}
 
-// MARK: YAML Cleanup
-extension RAML {
+    // MARK: YAML Cleanup
+    
     fileprivate func cleanedYamlString(from string: String) -> String {
         return cleanKeysWithoutValues(from: string)
     }
