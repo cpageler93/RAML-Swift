@@ -27,7 +27,7 @@ public class RAML {
     public var protocols: Protocols?
     public var mediaTypes: [MediaType]?
     public var documentation: [DocumentationEntry]?
-//    types
+    public var types: [Type]?
 //    traits
 //    resourceTypes
 //    annotationTypes
@@ -94,8 +94,12 @@ extension RAML {
             self.mediaTypes = [parseMediaType(mediaTypeString)]
         }
         
-        if let yamlDocumentationEntries = yaml["documentation"].array {
-            self.documentation = try parseDocumentation(yamlDocumentationEntries)
+        if let DocumentationEntriesYaml = yaml["documentation"].array {
+            self.documentation = try parseDocumentation(DocumentationEntriesYaml)
+        }
+        
+        if let typesYaml = yaml["types"].dictionary {
+            self.types = try parseTypes(typesYaml)
         }
     }
 }

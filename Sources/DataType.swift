@@ -7,7 +7,7 @@
 
 import Foundation
 
-public indirect enum DataType {
+public indirect enum DataType: Equatable {
     
     public enum ScalarType {
         case number
@@ -28,4 +28,16 @@ public indirect enum DataType {
     case union(types: [DataType])
     case scalar(type: ScalarType)
     case custom(type: String)
+}
+
+public func ==(lhs: DataType, rhs: DataType) -> Bool {
+    switch (lhs, rhs) {
+    case (.any, .any): return true
+    case (.object, .object): return true
+    case let (.array(ofType: a), .array(ofType: b)): return a == b
+    case let (.union(types: a), .union(types: b)): return a == b
+    case let (.scalar(type: a), .scalar(type: b)): return a == b
+    case let (.custom(type: a), .custom(type: b)): return a == b
+    default: return false
+    }
 }

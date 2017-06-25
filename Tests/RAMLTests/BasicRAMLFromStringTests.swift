@@ -1,7 +1,7 @@
 import XCTest
 @testable import RAML
 
-class RAMLTests: XCTestCase {
+class BasicRAMLFromStringTests: XCTestCase {
     
     func testParseRamlMissingAttributesInBasicRoot() {
         let ramlString =
