@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		594165E01EFEC7490066BD56 /* Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594165DF1EFEC7490066BD56 /* Type.swift */; };
+		594165E21EFF03C70066BD56 /* DataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594165E11EFF03C70066BD56 /* DataType.swift */; };
+		594165E41EFF050C0066BD56 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594165E31EFF050C0066BD56 /* Property.swift */; };
+		594165E61EFF06D00066BD56 /* TypeExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594165E51EFF06D00066BD56 /* TypeExample.swift */; };
 		59FDEFF01EFEA84300D46228 /* GitHubExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59FDEFEF1EFEA84300D46228 /* GitHubExampleTests.swift */; };
 		59FDEFFE1EFEAF3D00D46228 /* RAML+LoadFromString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59FDEFFD1EFEAF3D00D46228 /* RAML+LoadFromString.swift */; };
 		59FDF0001EFEB05A00D46228 /* RAMLError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59FDEFFF1EFEB05A00D46228 /* RAMLError.swift */; };
@@ -106,6 +109,9 @@
 
 /* Begin PBXFileReference section */
 		594165DF1EFEC7490066BD56 /* Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Type.swift; sourceTree = "<group>"; };
+		594165E11EFF03C70066BD56 /* DataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataType.swift; sourceTree = "<group>"; };
+		594165E31EFF050C0066BD56 /* Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
+		594165E51EFF06D00066BD56 /* TypeExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeExample.swift; sourceTree = "<group>"; };
 		59FDEFEF1EFEA84300D46228 /* GitHubExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubExampleTests.swift; sourceTree = "<group>"; };
 		59FDEFFD1EFEAF3D00D46228 /* RAML+LoadFromString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RAML+LoadFromString.swift"; sourceTree = "<group>"; };
 		59FDEFFF1EFEB05A00D46228 /* RAMLError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAMLError.swift; sourceTree = "<group>"; };
@@ -300,6 +306,9 @@
 				59FDF0071EFEBE4B00D46228 /* URIParameter.swift */,
 				59FDF0091EFEC47E00D46228 /* MediaType.swift */,
 				594165DF1EFEC7490066BD56 /* Type.swift */,
+				594165E11EFF03C70066BD56 /* DataType.swift */,
+				594165E31EFF050C0066BD56 /* Property.swift */,
+				594165E51EFF06D00066BD56 /* TypeExample.swift */,
 			);
 			path = Sources;
 			sourceTree = SOURCE_ROOT;
@@ -488,9 +497,12 @@
 				59FDF0081EFEBE4B00D46228 /* URIParameter.swift in Sources */,
 				59FDF0021EFEB07D00D46228 /* Protocols.swift in Sources */,
 				594165E01EFEC7490066BD56 /* Type.swift in Sources */,
+				594165E61EFF06D00066BD56 /* TypeExample.swift in Sources */,
+				594165E41EFF050C0066BD56 /* Property.swift in Sources */,
 				59FDF0061EFEB4FC00D46228 /* RAML+Include.swift in Sources */,
 				59FDF0041EFEB0A100D46228 /* DocumentationEntry.swift in Sources */,
 				OBJ_81 /* RAML.swift in Sources */,
+				594165E21EFF03C70066BD56 /* DataType.swift in Sources */,
 				59FDEFFE1EFEAF3D00D46228 /* RAML+LoadFromString.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
