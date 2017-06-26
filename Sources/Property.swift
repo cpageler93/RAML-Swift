@@ -13,7 +13,7 @@ public class Property {
     public var name: String
     public var required: Bool = true
     public var type: DataType?
-    
+    public var restrictions: PropertyRestrictions?
     
     init(name: String) {
         self.name = name

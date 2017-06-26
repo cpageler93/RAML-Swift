@@ -23,13 +23,16 @@ public class Type {
     // enum?
     
     // MARK: Object Type
+    public var properties: [Property]?
+    public var minProperties: Int?
+    public var maxProperties: Int?
+    public var additionalProperties: Bool = true
+    public var discriminator: String?
+    public var discriminatorValue: String?
     
-    var properties: [Property]?
-    var minProperties: Int?
-    var maxProperties: Int?
-    var additionalProperties: Bool = true
-    var discriminator: String?
-    var discriminatorValue: String?
+    
+    // MARK: Scalar Type
+    public var restrictions: PropertyRestrictions?
     
     init(name: String) {
         self.name = name
@@ -54,25 +57,61 @@ extension RAML {
         var types: [Type] = []
         for (key, value) in yaml {
             guard let keyString = key.string else { throw RAMLError.ramlParsingError(message: "type key must be a string `\(key)`") }
-            
-            let type = parseType(name: keyString, yaml: value)
-            
-            if let yamlProperties = value["properties"].dictionary {
-                type.properties = try parseProperties(yamlProperties)
-            }
-            
+            let type = try parseType(name: keyString, yaml: value)
             types.append(type)
         }
         return types
     }
     
-    private func parseType(name: String, yaml: Yaml) -> Type {
+    private func parseType(name: String, yaml: Yaml) throws -> Type {
         let type = Type(name: name)
         
         if let typeString = yaml["type"].string {
             type.type = DataType.dataTypeEnumFrom(string: typeString)
         }
         
+        if let yamlProperties = yaml["properties"].dictionary {
+            type.properties = try parseProperties(yamlProperties)
+        }
+        
+        type.restrictions = try parseRestrictions(forType: type, yaml: yaml)
+        
         return type
+    }
+    
+    private func parseRestrictions(forType type: Type, yaml: Yaml) throws -> PropertyRestrictions? {
+        guard let dataType = type.type else { return nil }
+        switch dataType {
+        case .scalar(type: let scalarType):
+            switch scalarType {
+            case .string: return try parseStringRestrictions(yaml)
+            case .number: return try parseNumberRestrictions(yaml)
+            default: return nil
+            }
+        default: return nil
+        }
+    }
+    
+    private func parseStringRestrictions(_ yaml: Yaml) throws -> StringRestrictions? {
+        let restrictions = StringRestrictions()
+        
+        restrictions.pattern = yaml["pattern"].string
+        restrictions.minLength = yaml["minLength"].int
+        restrictions.maxLength = yaml["maxLength"].int
+        
+        return restrictions
+    }
+    
+    private func parseNumberRestrictions(_ yaml: Yaml) throws -> NumberRestrictions? {
+        let restrictions = NumberRestrictions()
+        
+        restrictions.minimum = yaml["minimum"].int
+        restrictions.maximum = yaml["maximum"].int
+        if let formatString = yaml["format"].string {
+            restrictions.format = NumberRestrictions.NumberRestrictionFormat(rawValue: formatString)
+        }
+        restrictions.multipleOf = yaml["multipleOf"].int
+        
+        return restrictions
     }
 }

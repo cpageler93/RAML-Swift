@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		591201561F019BAA00522620 /* PropertyRestrictions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591201551F019BAA00522620 /* PropertyRestrictions.swift */; };
+		591201581F019CCA00522620 /* PropertyRestrictionsFromStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 591201571F019CCA00522620 /* PropertyRestrictionsFromStringTests.swift */; };
 		594165E01EFEC7490066BD56 /* Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594165DF1EFEC7490066BD56 /* Type.swift */; };
 		594165E21EFF03C70066BD56 /* DataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594165E11EFF03C70066BD56 /* DataType.swift */; };
 		594165E41EFF050C0066BD56 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594165E31EFF050C0066BD56 /* Property.swift */; };
@@ -110,6 +112,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		591201551F019BAA00522620 /* PropertyRestrictions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyRestrictions.swift; sourceTree = "<group>"; };
+		591201571F019CCA00522620 /* PropertyRestrictionsFromStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyRestrictionsFromStringTests.swift; sourceTree = "<group>"; };
 		594165DF1EFEC7490066BD56 /* Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Type.swift; sourceTree = "<group>"; };
 		594165E11EFF03C70066BD56 /* DataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataType.swift; sourceTree = "<group>"; };
 		594165E31EFF050C0066BD56 /* Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
@@ -210,6 +214,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_12 /* BasicRAMLFromStringTests.swift */,
+				591201571F019CCA00522620 /* PropertyRestrictionsFromStringTests.swift */,
 				594165E71F0027FE0066BD56 /* TypesFromStringTests.swift */,
 				OBJ_13 /* UserDocumentationTests.swift */,
 				59FDEFEF1EFEA84300D46228 /* GitHubExampleTests.swift */,
@@ -314,6 +319,7 @@
 				594165DF1EFEC7490066BD56 /* Type.swift */,
 				594165E11EFF03C70066BD56 /* DataType.swift */,
 				594165E31EFF050C0066BD56 /* Property.swift */,
+				591201551F019BAA00522620 /* PropertyRestrictions.swift */,
 				594165E51EFF06D00066BD56 /* TypeExample.swift */,
 			);
 			path = Sources;
@@ -498,6 +504,7 @@
 			buildActionMask = 0;
 			files = (
 				59FDF0001EFEB05A00D46228 /* RAMLError.swift in Sources */,
+				591201561F019BAA00522620 /* PropertyRestrictions.swift in Sources */,
 				OBJ_80 /* CollectionExtensions.swift in Sources */,
 				59FDF00A1EFEC47E00D46228 /* MediaType.swift in Sources */,
 				59FDF0081EFEBE4B00D46228 /* URIParameter.swift in Sources */,
@@ -521,6 +528,7 @@
 				59FDEFF01EFEA84300D46228 /* GitHubExampleTests.swift in Sources */,
 				OBJ_94 /* BasicRAMLFromStringTests.swift in Sources */,
 				OBJ_95 /* UserDocumentationTests.swift in Sources */,
+				591201581F019CCA00522620 /* PropertyRestrictionsFromStringTests.swift in Sources */,
 				594165EA1F002B440066BD56 /* DataTypeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
