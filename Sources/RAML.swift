@@ -67,6 +67,15 @@ public class RAML {
         }
         return baseURI
     }
+    
+    public func type(withName name: String) -> Type? {
+        for type in types ?? [] {
+            if type.name == name {
+                return type
+            }
+        }
+        return nil
+    }
 }
 
 // MARK: Parsing

@@ -22,19 +22,40 @@ class TypesFromStringTests: XCTestCase {
               name:
                 required: true
                 type: string
+              optionalTest?: string
+              optionalTest2??: number
         """
         
         do {
             let raml = try RAML(string: ramlString)
             XCTAssertEqual(raml.types?.count, 1)
-            if let firstType = raml.types?.first {
-                XCTAssertEqual(firstType.name, "Person")
-                XCTAssertEqual(firstType.type, DataType.object)
-                XCTAssertEqual(firstType.properties?.count, 1)
-                if let firstProperty = firstType.properties?.first {
-                    XCTAssertEqual(firstProperty.required, true)
-                    XCTAssertEqual(firstProperty.type, DataType.scalar(type: DataType.ScalarType.string))
+            if let personType = raml.type(withName: "Person") {
+                XCTAssertEqual(personType.name, "Person")
+                XCTAssertEqual(personType.type, DataType.object)
+                XCTAssertEqual(personType.properties?.count, 3)
+                
+                if let nameProperty = personType.property(withName: "name") {
+                    XCTAssertEqual(nameProperty.required, true)
+                    XCTAssertEqual(nameProperty.type, DataType.scalar(type: DataType.ScalarType.string))
+                } else {
+                    XCTFail()
                 }
+                
+                if let optionalTestProperty = personType.property(withName: "optionalTest") {
+                    XCTAssertEqual(optionalTestProperty.required, false)
+                    XCTAssertEqual(optionalTestProperty.type, DataType.scalar(type: DataType.ScalarType.string))
+                } else {
+                    XCTFail()
+                }
+                
+                if let optionalTest2Property = personType.property(withName: "optionalTest2?") {
+                    XCTAssertEqual(optionalTest2Property.required, false)
+                    XCTAssertEqual(optionalTest2Property.type, DataType.scalar(type: DataType.ScalarType.number))
+                } else {
+                    XCTFail()
+                }
+            } else {
+                XCTFail()
             }
         } catch {
             XCTFail()

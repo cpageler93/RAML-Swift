@@ -9,7 +9,7 @@ import Foundation
 
 public indirect enum DataType: Equatable {
     
-    public enum ScalarType {
+    public enum ScalarType: String {
         case number
         case boolean
         case string
@@ -28,6 +28,18 @@ public indirect enum DataType: Equatable {
     case union(types: [DataType])
     case scalar(type: ScalarType)
     case custom(type: String)
+    
+    public static func dataTypeEnumFrom(string: String) -> DataType {
+        if string == "object" {
+            return .object
+        } else if string.hasSuffix("[]") {
+            let arrayType = String(string.dropLast(2))
+            return .array(ofType: dataTypeEnumFrom(string: arrayType))
+        } else if let scalar = ScalarType(rawValue: string) {
+            return .scalar(type: scalar)
+        }
+        return .custom(type: string)
+    }
 }
 
 public func ==(lhs: DataType, rhs: DataType) -> Bool {

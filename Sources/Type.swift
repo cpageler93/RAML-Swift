@@ -36,6 +36,15 @@ public class Type {
         
     }
     
+    public func property(withName name: String) -> Property? {
+        for property in properties ?? [] {
+            if property.name == name {
+                return property
+            }
+        }
+        return nil
+    }
+    
 }
 
 // MARK: Type Parsing
@@ -45,7 +54,13 @@ extension RAML {
         var types: [Type] = []
         for (key, value) in yaml {
             guard let keyString = key.string else { throw RAMLError.ramlParsingError(message: "type key must be a string `\(key)`") }
+            
             let type = parseType(name: keyString, yaml: value)
+            
+            if let yamlProperties = value["properties"].dictionary {
+                type.properties = try parseProperties(yamlProperties)
+            }
+            
             types.append(type)
         }
         return types
@@ -55,20 +70,9 @@ extension RAML {
         let type = Type(name: name)
         
         if let typeString = yaml["type"].string {
-            type.type = typeEnumFrom(string: typeString)
+            type.type = DataType.dataTypeEnumFrom(string: typeString)
         }
         
         return type
     }
-    
-    private func typeEnumFrom(string: String) -> DataType {
-        if string == "object" {
-            return .object
-        } else if string.hasSuffix("[]") {
-            let arrayType = String(string.dropLast(2))
-            return .array(ofType: typeEnumFrom(string: arrayType))
-        }
-        return .custom(type: string)
-    }
-    
 }
