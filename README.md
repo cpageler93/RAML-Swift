@@ -16,3 +16,7 @@ export DESTINATION=${BUILT_PRODUCTS_DIR}/${EXECUTABLE_NAME}.xctest/Contents/Reso
 echo "Copy from $SOURCE to $DESTINATION"
 cp -r $SOURCE $DESTINATION
 ```
+
+## Links
+
+[Spec](https://github.com/raml-org/raml-spec/blob/master/versions/raml-10/raml-10.md/)
