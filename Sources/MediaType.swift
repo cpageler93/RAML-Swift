@@ -12,7 +12,7 @@ public class MediaType {
     
     public var identifier: String
     
-    init(identifier: String) {
+    public init(identifier: String) {
         self.identifier = identifier
     }
 }

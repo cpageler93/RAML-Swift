@@ -10,10 +10,10 @@ import Yaml
 
 public class BaseURI {
     
-    var value: String
-    var annotations: [Annotation]
+    public var value: String
+    public var annotations: [Annotation]
     
-    init(value: String) {
+    public init(value: String) {
         self.value = value
         self.annotations = []
     }

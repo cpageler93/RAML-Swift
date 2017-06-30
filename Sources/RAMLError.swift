@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum RAMLError: Error {
+public enum RAMLError: Error {
     case yamlParsingError(message: String)
     case invalidRAMLVersion(message: String)
     case ramlParsingError(message: String)

@@ -10,13 +10,14 @@ import Yaml
 
 public class TypeExample {
     
-    var displayName: String?
-    var description: String?
-//     annotations
-    var value: [Yaml: Yaml]
+    public var displayName: String?
+    public var description: String?
+    public var annotations: [Annotation]
+    public var value: [Yaml: Yaml]
     
     init(value: [Yaml: Yaml]) {
         self.value = value
+        self.annotations = []
     }
     
 }

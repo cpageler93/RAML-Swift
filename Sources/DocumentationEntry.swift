@@ -12,7 +12,7 @@ public class DocumentationEntry {
     public var title: String
     public var content: String
     
-    init(title: String, content: String) {
+    public init(title: String, content: String) {
         self.title = title
         self.content = content
     }

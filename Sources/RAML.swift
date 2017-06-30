@@ -34,6 +34,7 @@ public class RAML {
 //    securitySchemes
 //    securedBy
 //    uses
+    public var resources: [Resource]?
     
     // we need this static constant because our yaml parser doesnt work well
     // the value from `keyWithEmptyValueFix` will be inserted in the yaml string
@@ -85,6 +86,15 @@ public class RAML {
         }
         return nil
     }
+    
+    public func resourceWith(path: String) -> Resource? {
+        for resource in resources ?? [] {
+            if resource.path == path {
+                return resource
+            }
+        }
+        return nil
+    }
 }
 
 // MARK: Parsing
@@ -129,5 +139,7 @@ extension RAML {
         if let annotationTypesYaml = yaml["annotationTypes"].dictionary {
             self.annotationTypes = try parseAnnotationTypes(annotationTypesYaml)
         }
+        
+        self.resources = try parseResources(yaml)
     }
 }

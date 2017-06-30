@@ -35,10 +35,10 @@ public class URIParameter {
     public var type: ParameterType?
     public var items: [URIParameterItem]?
     
-    init(identifier: String? = nil,
-         description: String? = nil,
-         type: ParameterType? = nil,
-         items: [URIParameterItem]? = nil) {
+    public init(identifier: String? = nil,
+                description: String? = nil,
+                type: ParameterType? = nil,
+                items: [URIParameterItem]? = nil) {
         self.identifier = identifier
         self.description = description
         self.type = type

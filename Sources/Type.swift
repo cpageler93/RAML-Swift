@@ -34,7 +34,7 @@ public class Type {
     // MARK: Scalar Type
     public var restrictions: PropertyRestrictions?
     
-    init(name: String) {
+    public init(name: String) {
         self.name = name
         
     }

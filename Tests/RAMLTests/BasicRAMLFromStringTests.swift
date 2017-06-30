@@ -203,4 +203,53 @@ class BasicRAMLFromStringTests: XCTestCase {
             XCTFail()
         }
     }
+    
+    func testParseMediaTypeOverriding() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: New API
+        mediaType: [ application/json, application/xml ]
+        types:
+          Person:
+          Another:
+        /list:
+          get:
+            responses:
+              200:
+                body: Person[]
+        /send:
+          post:
+            body:
+              application/json:
+                type: Another
+        """
+        
+        do {
+            let raml = try RAML(string: ramlString)
+            XCTAssertEqual(raml.resources?.count, 2)
+            
+            guard let pathResource = raml.resourceWith(path: "/list") else {
+                XCTFail()
+                return
+            }
+            XCTAssertNil(pathResource.annotations)
+            XCTAssertNil(pathResource.description)
+            XCTAssertNil(pathResource.displayName)
+            XCTAssertEqual(pathResource.methods?.count, 1)
+            
+            guard let sendResource = raml.resourceWith(path: "/send") else {
+                XCTFail()
+                return
+            }
+            XCTAssertNil(sendResource.annotations)
+            XCTAssertNil(sendResource.description)
+            XCTAssertNil(sendResource.displayName)
+            XCTAssertEqual(sendResource.methods?.count, 1)
+            
+        } catch {
+            XCTFail()
+        }
+        
+    }
 }

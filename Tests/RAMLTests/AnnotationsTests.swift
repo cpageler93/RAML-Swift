@@ -94,7 +94,7 @@ class AnnotationsTests: XCTestCase {
             return
         }
         XCTAssertTrue(signatureProperty.required ?? false)
-        XCTAssertEqual(signatureProperty.pattern, "\\d{3}-\\w{12}")
+        XCTAssertEqual(signatureProperty.pattern, "\\\\d{3}-\\\\w{12}")
         
     }
     

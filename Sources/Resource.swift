@@ -1,0 +1,64 @@
+//
+//  Resource.swift
+//  RAML
+//
+//  Created by Christoph on 30.06.17.
+//
+
+import Foundation
+import Yaml
+
+public class Resource {
+    
+    public var path: String
+    public var displayName: String?
+    public var description: String?
+    public var annotations: [Annotation]?
+    public var methods: [ResourceMethod]?
+    // traits
+    // type
+    // securedBy
+    // uriParameters
+    public var resources: [Resource]?
+    
+    public init(path: String) {
+        self.path = path
+    }
+    
+    public func methodWith(type: ResourceMethodType) -> ResourceMethod? {
+        for method in methods ?? [] {
+            if method.type == type {
+                return method
+            }
+        }
+        return nil
+    }
+    
+}
+
+// Resources Parsing
+extension RAML {
+    
+    internal func parseResources(_ yaml: Yaml) throws -> [Resource]? {
+        var resources: [Resource] = []
+        for (key, value) in yaml.dictionary ?? [:] {
+            if let keyString = key.string, keyString.hasPrefix("/") {
+                let resource = try parseResource(path: keyString, yaml: value)
+                resources.append(resource)
+            }
+        }
+        
+        if resources.count > 0 {
+            return resources
+        } else {
+            return nil
+        }
+    }
+    
+    internal func parseResource(path: String, yaml: Yaml) throws -> Resource {
+        let resource = Resource(path: path)
+        resource.methods = try parseResourceMethods(yaml)
+        return resource
+    }
+    
+}

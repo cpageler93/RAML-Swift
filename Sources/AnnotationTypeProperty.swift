@@ -10,10 +10,10 @@ import Yaml
 
 public class AnnotationTypeProperty {
     
-    var name: String
-    var `enum`: [String]?
-    var required: Bool?
-    var pattern: String?
+    public var name: String
+    public var `enum`: [String]?
+    public var required: Bool?
+    public var pattern: String?
     
     public init(name: String) {
         self.name = name
