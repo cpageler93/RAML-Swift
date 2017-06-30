@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		5902527B1F0645B9004C9AB6 /* BaseURI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5902527A1F0645B9004C9AB6 /* BaseURI.swift */; };
 		5902527D1F0647DD004C9AB6 /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5902527C1F0647DD004C9AB6 /* Annotation.swift */; };
+		59ADB3501F0658760003B348 /* AnnotationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59ADB34F1F0658760003B348 /* AnnotationsTests.swift */; };
+		59ADB3521F0658D80003B348 /* AnnotationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59ADB3511F0658D80003B348 /* AnnotationType.swift */; };
+		59ADB3541F0661C00003B348 /* AnnotationTypeProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59ADB3531F0661C00003B348 /* AnnotationTypeProperty.swift */; };
 		OBJ_100 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* MediaType.swift */; };
 		OBJ_101 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Property.swift */; };
 		OBJ_102 /* PropertyRestrictions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* PropertyRestrictions.swift */; };
@@ -117,6 +120,9 @@
 /* Begin PBXFileReference section */
 		5902527A1F0645B9004C9AB6 /* BaseURI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseURI.swift; sourceTree = "<group>"; };
 		5902527C1F0647DD004C9AB6 /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
+		59ADB34F1F0658760003B348 /* AnnotationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationsTests.swift; sourceTree = "<group>"; };
+		59ADB3511F0658D80003B348 /* AnnotationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationType.swift; sourceTree = "<group>"; };
+		59ADB3531F0661C00003B348 /* AnnotationTypeProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationTypeProperty.swift; sourceTree = "<group>"; };
 		OBJ_10 /* DocumentationEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentationEntry.swift; sourceTree = "<group>"; };
 		OBJ_11 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
 		OBJ_12 /* Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
@@ -222,6 +228,7 @@
 				OBJ_24 /* AnnotationsFromStringTests.swift */,
 				OBJ_25 /* BasicRAMLFromStringTests.swift */,
 				OBJ_26 /* DataTypeTests.swift */,
+				59ADB34F1F0658760003B348 /* AnnotationsTests.swift */,
 				OBJ_27 /* GitHubExampleTests.swift */,
 				OBJ_28 /* PropertyRestrictionsFromStringTests.swift */,
 				OBJ_29 /* TypesFromStringTests.swift */,
@@ -288,7 +295,7 @@
 			path = ".build/checkouts/YamlSwift.git-7415335214681294347/Sources/Yaml";
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -297,7 +304,6 @@
 				OBJ_31 /* Dependencies */,
 				OBJ_51 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_51 /* Products */ = {
@@ -331,6 +337,8 @@
 				OBJ_21 /* URIParameter.swift */,
 				5902527A1F0645B9004C9AB6 /* BaseURI.swift */,
 				5902527C1F0647DD004C9AB6 /* Annotation.swift */,
+				59ADB3511F0658D80003B348 /* AnnotationType.swift */,
+				59ADB3531F0661C00003B348 /* AnnotationTypeProperty.swift */,
 			);
 			path = Sources;
 			sourceTree = SOURCE_ROOT;
@@ -442,7 +450,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_51 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -479,6 +487,7 @@
 			files = (
 				OBJ_123 /* AnnotationsFromStringTests.swift in Sources */,
 				OBJ_124 /* BasicRAMLFromStringTests.swift in Sources */,
+				59ADB3501F0658760003B348 /* AnnotationsTests.swift in Sources */,
 				OBJ_125 /* DataTypeTests.swift in Sources */,
 				OBJ_126 /* GitHubExampleTests.swift in Sources */,
 				OBJ_127 /* PropertyRestrictionsFromStringTests.swift in Sources */,
@@ -531,6 +540,7 @@
 				OBJ_98 /* DataType.swift in Sources */,
 				5902527B1F0645B9004C9AB6 /* BaseURI.swift in Sources */,
 				OBJ_99 /* DocumentationEntry.swift in Sources */,
+				59ADB3521F0658D80003B348 /* AnnotationType.swift in Sources */,
 				OBJ_100 /* MediaType.swift in Sources */,
 				OBJ_101 /* Property.swift in Sources */,
 				5902527D1F0647DD004C9AB6 /* Annotation.swift in Sources */,
@@ -541,6 +551,7 @@
 				OBJ_106 /* RAML.swift in Sources */,
 				OBJ_107 /* RAMLError.swift in Sources */,
 				OBJ_108 /* Type.swift in Sources */,
+				59ADB3541F0661C00003B348 /* AnnotationTypeProperty.swift in Sources */,
 				OBJ_109 /* TypeExample.swift in Sources */,
 				OBJ_110 /* URIParameter.swift in Sources */,
 			);

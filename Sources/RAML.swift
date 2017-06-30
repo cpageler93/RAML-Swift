@@ -30,7 +30,7 @@ public class RAML {
     public var types: [Type]?
 //    traits
 //    resourceTypes
-//    annotationTypes
+    public var annotationTypes: [AnnotationType]?
 //    securitySchemes
 //    securedBy
 //    uses
@@ -76,6 +76,15 @@ public class RAML {
         }
         return nil
     }
+    
+    public func annotationType(withName name: String) -> AnnotationType? {
+        for annotationType in annotationTypes ?? [] {
+            if annotationType.name == name {
+                return annotationType
+            }
+        }
+        return nil
+    }
 }
 
 // MARK: Parsing
@@ -115,6 +124,10 @@ extension RAML {
         
         if let typesYaml = yaml["types"].dictionary {
             self.types = try parseTypes(typesYaml)
+        }
+        
+        if let annotationTypesYaml = yaml["annotationTypes"].dictionary {
+            self.annotationTypes = try parseAnnotationTypes(annotationTypesYaml)
         }
     }
 }
