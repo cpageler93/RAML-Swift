@@ -229,27 +229,22 @@ class BasicRAMLFromStringTests: XCTestCase {
             let raml = try RAML(string: ramlString)
             XCTAssertEqual(raml.resources?.count, 2)
             
-            guard let pathResource = raml.resourceWith(path: "/list") else {
+            guard let listResource = raml.resourceWith(path: "/list") else {
                 XCTFail()
                 return
             }
-            XCTAssertNil(pathResource.annotations)
-            XCTAssertNil(pathResource.description)
-            XCTAssertNil(pathResource.displayName)
-            XCTAssertEqual(pathResource.methods?.count, 1)
+            
+            // TODO: check GET TYPE
             
             guard let sendResource = raml.resourceWith(path: "/send") else {
                 XCTFail()
                 return
             }
-            XCTAssertNil(sendResource.annotations)
-            XCTAssertNil(sendResource.description)
-            XCTAssertNil(sendResource.displayName)
-            XCTAssertEqual(sendResource.methods?.count, 1)
+            
+            // TODO: check POST TYPE
             
         } catch {
             XCTFail()
         }
-        
     }
 }

@@ -2,7 +2,7 @@ import Foundation
 import Yaml
 import PathKit
 
-public class RAML {
+public class RAML : HasTypes, HasAnnotationTypes, HasResources, HasTraits {
     
     // MARK: meta (not raml related)
     
@@ -28,7 +28,7 @@ public class RAML {
     public var mediaTypes: [MediaType]?
     public var documentation: [DocumentationEntry]?
     public var types: [Type]?
-//    traits
+    public var traits: [Trait]?
 //    resourceTypes
     public var annotationTypes: [AnnotationType]?
 //    securitySchemes
@@ -67,33 +67,6 @@ public class RAML {
             baseURIValue = baseURIValue.replacingOccurrences(of: "{version}", with: version)
         }
         return baseURIValue
-    }
-    
-    public func type(withName name: String) -> Type? {
-        for type in types ?? [] {
-            if type.name == name {
-                return type
-            }
-        }
-        return nil
-    }
-    
-    public func annotationType(withName name: String) -> AnnotationType? {
-        for annotationType in annotationTypes ?? [] {
-            if annotationType.name == name {
-                return annotationType
-            }
-        }
-        return nil
-    }
-    
-    public func resourceWith(path: String) -> Resource? {
-        for resource in resources ?? [] {
-            if resource.path == path {
-                return resource
-            }
-        }
-        return nil
     }
 }
 
@@ -134,6 +107,10 @@ extension RAML {
         
         if let typesYaml = yaml["types"].dictionary {
             self.types = try parseTypes(typesYaml)
+        }
+        
+        if let traitsYaml = yaml["traits"].dictionary {
+            self.traits = try parseTraits(traitsYaml)
         }
         
         if let annotationTypesYaml = yaml["annotationTypes"].dictionary {

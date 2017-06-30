@@ -11,7 +11,7 @@ import Yaml
 public class BaseURI {
     
     public var value: String
-    public var annotations: [Annotation]
+    public var annotations: [Annotation]?
     
     public init(value: String) {
         self.value = value

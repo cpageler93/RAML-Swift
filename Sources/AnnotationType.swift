@@ -99,3 +99,20 @@ extension RAML {
     }
     
 }
+
+public protocol HasAnnotationTypes {
+    var annotationTypes: [AnnotationType]? { get set }
+}
+
+extension HasAnnotationTypes {
+    
+    public func annotationType(withName name: String) -> AnnotationType? {
+        for annotationType in annotationTypes ?? [] {
+            if annotationType.name == name {
+                return annotationType
+            }
+        }
+        return nil
+    }
+    
+}

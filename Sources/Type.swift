@@ -115,3 +115,20 @@ extension RAML {
         return restrictions
     }
 }
+
+public protocol HasTypes {
+    var types: [Type]? { get set }
+}
+
+extension HasTypes {
+    
+    public func type(withName name: String) -> Type? {
+        for type in types ?? [] {
+            if type.name == name {
+                return type
+            }
+        }
+        return nil
+    }
+    
+}

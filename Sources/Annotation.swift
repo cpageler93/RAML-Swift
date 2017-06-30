@@ -20,7 +20,7 @@ public class Annotation {
 // MARK: Annotation Parsing
 extension RAML {
     
-    internal func parseAnnotations(_ yaml: [Yaml: Yaml]) throws -> [Annotation] {
+    internal func parseAnnotations(_ yaml: [Yaml: Yaml]) throws -> [Annotation]? {
         var annotations: [Annotation] = []
         
         for (key, value) in yaml {
@@ -31,7 +31,11 @@ extension RAML {
             }
         }
         
-        return annotations
+        if annotations.count > 0 {
+            return annotations
+        } else {
+            return nil
+        }
     }
     
     internal func parseAnnotation(name: String, yaml: Yaml) throws -> Annotation{
@@ -49,6 +53,23 @@ extension String {
     
     public func annotationKeyName() -> String {
         return String(self.dropFirst().dropLast())
+    }
+    
+}
+
+public protocol HasAnnotations {
+    var annotations: [Annotation]? { get set }
+}
+
+public extension HasAnnotations {
+    
+    public func annotationWith(name: String) -> Annotation? {
+        for annotation in annotations ?? [] {
+            if annotation.name == name {
+                return annotation
+            }
+        }
+        return nil
     }
     
 }

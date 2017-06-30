@@ -14,6 +14,10 @@
 		59ADB3501F0658760003B348 /* AnnotationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59ADB34F1F0658760003B348 /* AnnotationsTests.swift */; };
 		59ADB3521F0658D80003B348 /* AnnotationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59ADB3511F0658D80003B348 /* AnnotationType.swift */; };
 		59ADB3541F0661C00003B348 /* AnnotationTypeProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59ADB3531F0661C00003B348 /* AnnotationTypeProperty.swift */; };
+		59D415E41F06D8C100247940 /* ResourcesFromStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415E31F06D8C100247940 /* ResourcesFromStringTests.swift */; };
+		59D415E61F06D97500247940 /* ResourceHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415E51F06D97500247940 /* ResourceHeader.swift */; };
+		59D415E81F06DE7800247940 /* Trait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415E71F06DE7800247940 /* Trait.swift */; };
+		59D415EA1F06E8E400247940 /* ResourceMethodResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415E91F06E8E400247940 /* ResourceMethodResponse.swift */; };
 		OBJ_100 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* MediaType.swift */; };
 		OBJ_101 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Property.swift */; };
 		OBJ_102 /* PropertyRestrictions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* PropertyRestrictions.swift */; };
@@ -127,6 +131,10 @@
 		59ADB34F1F0658760003B348 /* AnnotationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationsTests.swift; sourceTree = "<group>"; };
 		59ADB3511F0658D80003B348 /* AnnotationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationType.swift; sourceTree = "<group>"; };
 		59ADB3531F0661C00003B348 /* AnnotationTypeProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationTypeProperty.swift; sourceTree = "<group>"; };
+		59D415E31F06D8C100247940 /* ResourcesFromStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesFromStringTests.swift; sourceTree = "<group>"; };
+		59D415E51F06D97500247940 /* ResourceHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceHeader.swift; sourceTree = "<group>"; };
+		59D415E71F06DE7800247940 /* Trait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trait.swift; sourceTree = "<group>"; };
+		59D415E91F06E8E400247940 /* ResourceMethodResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceMethodResponse.swift; sourceTree = "<group>"; };
 		OBJ_10 /* DocumentationEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentationEntry.swift; sourceTree = "<group>"; };
 		OBJ_11 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
 		OBJ_12 /* Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
@@ -237,6 +245,7 @@
 				OBJ_28 /* PropertyRestrictionsFromStringTests.swift */,
 				OBJ_29 /* TypesFromStringTests.swift */,
 				OBJ_30 /* UserDocumentationTests.swift */,
+				59D415E31F06D8C100247940 /* ResourcesFromStringTests.swift */,
 			);
 			name = RAMLTests;
 			path = Tests/RAMLTests;
@@ -345,6 +354,9 @@
 				59ADB3531F0661C00003B348 /* AnnotationTypeProperty.swift */,
 				59558E7C1F0687D300EEF042 /* Resource.swift */,
 				59558E7E1F069E1400EEF042 /* ResourceMethod.swift */,
+				59D415E91F06E8E400247940 /* ResourceMethodResponse.swift */,
+				59D415E71F06DE7800247940 /* Trait.swift */,
+				59D415E51F06D97500247940 /* ResourceHeader.swift */,
 			);
 			path = Sources;
 			sourceTree = SOURCE_ROOT;
@@ -491,6 +503,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				59D415E41F06D8C100247940 /* ResourcesFromStringTests.swift in Sources */,
 				OBJ_123 /* AnnotationsFromStringTests.swift in Sources */,
 				OBJ_124 /* BasicRAMLFromStringTests.swift in Sources */,
 				59ADB3501F0658760003B348 /* AnnotationsTests.swift in Sources */,
@@ -547,9 +560,11 @@
 				OBJ_98 /* DataType.swift in Sources */,
 				5902527B1F0645B9004C9AB6 /* BaseURI.swift in Sources */,
 				OBJ_99 /* DocumentationEntry.swift in Sources */,
+				59D415EA1F06E8E400247940 /* ResourceMethodResponse.swift in Sources */,
 				59ADB3521F0658D80003B348 /* AnnotationType.swift in Sources */,
 				OBJ_100 /* MediaType.swift in Sources */,
 				OBJ_101 /* Property.swift in Sources */,
+				59D415E81F06DE7800247940 /* Trait.swift in Sources */,
 				5902527D1F0647DD004C9AB6 /* Annotation.swift in Sources */,
 				OBJ_102 /* PropertyRestrictions.swift in Sources */,
 				OBJ_103 /* Protocols.swift in Sources */,
@@ -558,6 +573,7 @@
 				59558E7D1F0687D300EEF042 /* Resource.swift in Sources */,
 				OBJ_106 /* RAML.swift in Sources */,
 				OBJ_107 /* RAMLError.swift in Sources */,
+				59D415E61F06D97500247940 /* ResourceHeader.swift in Sources */,
 				OBJ_108 /* Type.swift in Sources */,
 				59ADB3541F0661C00003B348 /* AnnotationTypeProperty.swift in Sources */,
 				OBJ_109 /* TypeExample.swift in Sources */,

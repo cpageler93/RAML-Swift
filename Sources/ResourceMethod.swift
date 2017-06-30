@@ -18,16 +18,16 @@ public enum ResourceMethodType: String {
     case head
 }
 
-public class ResourceMethod {
+public class ResourceMethod: HasResourceHeaders, HasAnnotations {
     
     public var type: ResourceMethodType
     public var displayName: String?
     public var description: String?
     public var annotations: [Annotation]?
     // queryParameters
-    // headers
+    public var headers: [ResourceHeader]?
     // queryString
-    // responses
+    public var responses: [ResourceMethodResponse]?
     // body
     // protocols
     // is (traits)
@@ -36,7 +36,6 @@ public class ResourceMethod {
     public init(type: ResourceMethodType) {
         self.type = type
     }
-    
 }
 
 // MARK: ResourceMethod Parsing
@@ -58,7 +57,7 @@ extension RAML {
         for (key, value) in yaml.dictionary ?? [:] {
             if let keyString = key.string,
                    availableMethods.contains(keyString),
-               let resourceMethod = parseResourceMethod(keyString, fromYaml: value) {
+               let resourceMethod = try parseResourceMethod(keyString, fromYaml: value) {
                 resourceMethods.append(resourceMethod)
             }
         }
@@ -70,10 +69,40 @@ extension RAML {
         }
     }
     
-    private func parseResourceMethod(_ method: String, fromYaml yaml: Yaml) -> ResourceMethod? {
+    private func parseResourceMethod(_ method: String, fromYaml yaml: Yaml) throws -> ResourceMethod? {
         guard let methodType = ResourceMethodType(rawValue: method) else { return nil }
-        var resourceMethod = ResourceMethod(type: methodType)
+        let resourceMethod = ResourceMethod(type: methodType)
+        
+        if let headersYaml = yaml["headers"].dictionary {
+            resourceMethod.headers = try parseHeaders(headersYaml)
+        }
+        
+        if let descriptionString = yaml["description"].string {
+            resourceMethod.description = descriptionString
+        }
+        
+        if let responsesYaml = yaml["responses"].dictionary {
+            resourceMethod.responses = try parseResponses(responsesYaml)
+        }
+        
         return resourceMethod
+    }
+    
+}
+
+public protocol HasResourceMethods {
+    var methods: [ResourceMethod]? { get set }
+}
+
+public extension HasResourceMethods {
+    
+    public func methodWith(type: ResourceMethodType) -> ResourceMethod? {
+        for method in methods ?? [] {
+            if method.type == type {
+                return method
+            }
+        }
+        return nil
     }
     
 }

@@ -8,7 +8,7 @@
 import Foundation
 import Yaml
 
-public class Resource {
+public class Resource: HasResources, HasResourceMethods {
     
     public var path: String
     public var displayName: String?
@@ -24,16 +24,6 @@ public class Resource {
     public init(path: String) {
         self.path = path
     }
-    
-    public func methodWith(type: ResourceMethodType) -> ResourceMethod? {
-        for method in methods ?? [] {
-            if method.type == type {
-                return method
-            }
-        }
-        return nil
-    }
-    
 }
 
 // Resources Parsing
@@ -59,6 +49,23 @@ extension RAML {
         let resource = Resource(path: path)
         resource.methods = try parseResourceMethods(yaml)
         return resource
+    }
+    
+}
+
+public protocol HasResources {
+    var resources: [Resource]? { get set }
+}
+
+extension HasResources {
+    
+    public func resourceWith(path: String) -> Resource? {
+        for resource in resources ?? [] {
+            if resource.path == path {
+                return resource
+            }
+        }
+        return nil
     }
     
 }
