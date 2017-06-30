@@ -39,6 +39,6 @@ class GitHubExampleTests: XCTestCase {
         XCTAssertEqual(raml.title, "GitHub API")
         XCTAssertEqual(raml.description, "Description of GitHub API")
         XCTAssertEqual(raml.version, "v3")
-        XCTAssertEqual(raml.baseURI, "https://api.github.com")
+        XCTAssertEqual(raml.baseURI?.value, "https://api.github.com")
     }
 }

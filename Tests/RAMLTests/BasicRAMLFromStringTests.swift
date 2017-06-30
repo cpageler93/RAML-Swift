@@ -117,8 +117,26 @@ class BasicRAMLFromStringTests: XCTestCase {
         
         do {
             let raml = try RAML(string: ramlString)
-            XCTAssertEqual(raml.baseURI, "https://na1.salesforce.com/services/data/{version}/chatter")
+            XCTAssertEqual(raml.baseURI?.value, "https://na1.salesforce.com/services/data/{version}/chatter")
             XCTAssertEqual(raml.baseURIWithParameter(), "https://na1.salesforce.com/services/data/v28.0/chatter")
+        } catch {
+            
+        }
+    }
+    
+    func testParseBaseURIWithValue() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: Salesforce Chatter REST API
+        version: v28.0
+        baseUri:
+          value: https://na1.salesforce.com/services/data/{version}/chatter
+        """
+        
+        do {
+            let raml = try RAML(string: ramlString)
+            XCTAssertEqual(raml.baseURI?.value, "https://na1.salesforce.com/services/data/{version}/chatter")
         } catch {
             
         }
@@ -138,7 +156,7 @@ class BasicRAMLFromStringTests: XCTestCase {
         
         do {
             let raml = try RAML(string: ramlString)
-            XCTAssertEqual(raml.baseURI, "https://{bucketName}.s3.amazonaws.com")
+            XCTAssertEqual(raml.baseURI?.value, "https://{bucketName}.s3.amazonaws.com")
             XCTAssertEqual(raml.baseURIParameters?.count, 1)
             if let firstURIParameter = raml.baseURIParameters?.first {
                 XCTAssertEqual(firstURIParameter.description, "The name of the bucket")
