@@ -68,4 +68,8 @@ extension HasResources {
         return nil
     }
     
+    public func hasResourceWith(path: String) -> Bool {
+        return resourceWith(path: path) != nil
+    }
+    
 }

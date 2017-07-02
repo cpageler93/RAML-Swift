@@ -25,7 +25,7 @@ class PropertyRestrictionsFromStringTests: XCTestCase {
         
         do {
             let raml = try RAML(string: ramlString)
-            guard let emailType = raml.type(withName: "Email") else {
+            guard let emailType = raml.typeWith(name: "Email") else {
                 XCTFail()
                 return
             }
@@ -61,7 +61,7 @@ class PropertyRestrictionsFromStringTests: XCTestCase {
         
         do {
             let raml = try RAML(string: ramlString)
-            guard let weightType = raml.type(withName: "Weight") else {
+            guard let weightType = raml.typeWith(name: "Weight") else {
                 XCTFail()
                 return
             }

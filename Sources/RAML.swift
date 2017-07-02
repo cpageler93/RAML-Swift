@@ -101,8 +101,8 @@ extension RAML {
             self.mediaTypes = [parseMediaType(mediaTypeString)]
         }
         
-        if let DocumentationEntriesYaml = yaml["documentation"].array {
-            self.documentation = try parseDocumentation(DocumentationEntriesYaml)
+        if let documentationEntriesYaml = yaml["documentation"].array {
+            self.documentation = try parseDocumentation(documentationEntriesYaml)
         }
         
         if let typesYaml = yaml["types"].dictionary {

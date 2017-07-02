@@ -72,4 +72,8 @@ public extension HasAnnotations {
         return nil
     }
     
+    public func hasAnnotationWith(name: String) -> Bool {
+        return annotationWith(name: name) != nil
+    }
+    
 }

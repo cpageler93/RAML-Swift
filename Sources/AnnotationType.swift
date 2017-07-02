@@ -26,7 +26,7 @@ public func ==(lhs: AnnotationTypeEnum, rhs: AnnotationTypeEnum) -> Bool {
 }
 
 
-public class AnnotationType {
+public class AnnotationType: HasAnnotationTypeProperties {
     
     public var name: String
     public var type = AnnotationTypeEnum.string
@@ -34,15 +34,6 @@ public class AnnotationType {
     
     public init(name: String) {
         self.name = name
-    }
-    
-    public func property(withName name: String) -> AnnotationTypeProperty? {
-        for property in properties ?? [] {
-            if property.name == name {
-                return property
-            }
-        }
-        return nil
     }
 }
 
@@ -106,13 +97,17 @@ public protocol HasAnnotationTypes {
 
 extension HasAnnotationTypes {
     
-    public func annotationType(withName name: String) -> AnnotationType? {
+    public func annotationTypeWith(name: String) -> AnnotationType? {
         for annotationType in annotationTypes ?? [] {
             if annotationType.name == name {
                 return annotationType
             }
         }
         return nil
+    }
+    
+    public func hasAnnotationTypeWith(name: String) -> Bool {
+        return annotationTypeWith(name: name) != nil
     }
     
 }

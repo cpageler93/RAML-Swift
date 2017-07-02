@@ -58,3 +58,20 @@ extension RAML {
     }
     
 }
+
+public protocol HasProperties {
+    var properties: [Property]? { get set }
+}
+
+public extension HasProperties {
+    
+    public func propertyWith(name: String) -> Property? {
+        for property in properties ?? [] {
+            if property.name == name {
+                return property
+            }
+        }
+        return nil
+    }
+    
+}

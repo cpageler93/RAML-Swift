@@ -18,7 +18,7 @@ public enum ResourceMethodType: String {
     case head
 }
 
-public class ResourceMethod: HasResourceHeaders, HasAnnotations {
+public class ResourceMethod: HasResourceHeaders, HasAnnotations, HasTraitUsages {
     
     public var type: ResourceMethodType
     public var displayName: String?
@@ -30,7 +30,7 @@ public class ResourceMethod: HasResourceHeaders, HasAnnotations {
     public var responses: [ResourceMethodResponse]?
     // body
     // protocols
-    // is (traits)
+    public var traitUsages: [TraitUsage]?
     // securedBy
     
     public init(type: ResourceMethodType) {
@@ -85,6 +85,12 @@ extension RAML {
             resourceMethod.responses = try parseResponses(responsesYaml)
         }
         
+        if let singleTraitString = yaml["is"].string {
+            resourceMethod.traitUsages = [TraitUsage(name: singleTraitString)]
+        } else if let traitsYamlArray = yaml["is"].array {
+            resourceMethod.traitUsages = try parseTraitUsages(yamlArray: traitsYamlArray)
+        }
+        
         return resourceMethod
     }
     
@@ -103,6 +109,10 @@ public extension HasResourceMethods {
             }
         }
         return nil
+    }
+    
+    public func hasMethodWith(type: ResourceMethodType) -> Bool {
+        return methodWith(type: type) != nil
     }
     
 }

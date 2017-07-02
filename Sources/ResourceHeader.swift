@@ -105,4 +105,8 @@ public extension HasResourceHeaders {
         return nil
     }
     
+    public func hasHeaderWith(key: String) -> Bool {
+        return hasHeaderWith(key: key) != nil
+    }
+    
 }

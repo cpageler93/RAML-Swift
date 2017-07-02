@@ -29,26 +29,26 @@ class TypesFromStringTests: XCTestCase {
         do {
             let raml = try RAML(string: ramlString)
             XCTAssertEqual(raml.types?.count, 1)
-            if let personType = raml.type(withName: "Person") {
+            if let personType = raml.typeWith(name: "Person") {
                 XCTAssertEqual(personType.name, "Person")
                 XCTAssertEqual(personType.type, DataType.object)
                 XCTAssertEqual(personType.properties?.count, 3)
                 
-                if let nameProperty = personType.property(withName: "name") {
+                if let nameProperty = personType.propertyWith(name: "name") {
                     XCTAssertEqual(nameProperty.required, true)
                     XCTAssertEqual(nameProperty.type, DataType.scalar(type: DataType.ScalarType.string))
                 } else {
                     XCTFail()
                 }
                 
-                if let optionalTestProperty = personType.property(withName: "optionalTest") {
+                if let optionalTestProperty = personType.propertyWith(name: "optionalTest") {
                     XCTAssertEqual(optionalTestProperty.required, false)
                     XCTAssertEqual(optionalTestProperty.type, DataType.scalar(type: DataType.ScalarType.string))
                 } else {
                     XCTFail()
                 }
                 
-                if let optionalTest2Property = personType.property(withName: "optionalTest2?") {
+                if let optionalTest2Property = personType.propertyWith(name: "optionalTest2?") {
                     XCTAssertEqual(optionalTest2Property.required, false)
                     XCTAssertEqual(optionalTest2Property.type, DataType.scalar(type: DataType.ScalarType.number))
                 } else {

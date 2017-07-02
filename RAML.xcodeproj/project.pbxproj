@@ -18,6 +18,8 @@
 		59D415E61F06D97500247940 /* ResourceHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415E51F06D97500247940 /* ResourceHeader.swift */; };
 		59D415E81F06DE7800247940 /* TraitDefiniton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415E71F06DE7800247940 /* TraitDefiniton.swift */; };
 		59D415EA1F06E8E400247940 /* ResourceMethodResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415E91F06E8E400247940 /* ResourceMethodResponse.swift */; };
+		59D415EC1F09003100247940 /* TraitsFromStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415EB1F09003100247940 /* TraitsFromStringTests.swift */; };
+		59D415EE1F09012800247940 /* TraitUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415ED1F09012800247940 /* TraitUsage.swift */; };
 		OBJ_100 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* MediaType.swift */; };
 		OBJ_101 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Property.swift */; };
 		OBJ_102 /* PropertyRestrictions.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* PropertyRestrictions.swift */; };
@@ -135,6 +137,8 @@
 		59D415E51F06D97500247940 /* ResourceHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceHeader.swift; sourceTree = "<group>"; };
 		59D415E71F06DE7800247940 /* TraitDefiniton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitDefiniton.swift; sourceTree = "<group>"; };
 		59D415E91F06E8E400247940 /* ResourceMethodResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceMethodResponse.swift; sourceTree = "<group>"; };
+		59D415EB1F09003100247940 /* TraitsFromStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitsFromStringTests.swift; sourceTree = "<group>"; };
+		59D415ED1F09012800247940 /* TraitUsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitUsage.swift; sourceTree = "<group>"; };
 		OBJ_10 /* DocumentationEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentationEntry.swift; sourceTree = "<group>"; };
 		OBJ_11 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
 		OBJ_12 /* Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Property.swift; sourceTree = "<group>"; };
@@ -246,6 +250,7 @@
 				OBJ_29 /* TypesFromStringTests.swift */,
 				OBJ_30 /* UserDocumentationTests.swift */,
 				59D415E31F06D8C100247940 /* ResourcesFromStringTests.swift */,
+				59D415EB1F09003100247940 /* TraitsFromStringTests.swift */,
 			);
 			name = RAMLTests;
 			path = Tests/RAMLTests;
@@ -356,6 +361,7 @@
 				59558E7E1F069E1400EEF042 /* ResourceMethod.swift */,
 				59D415E91F06E8E400247940 /* ResourceMethodResponse.swift */,
 				59D415E71F06DE7800247940 /* TraitDefiniton.swift */,
+				59D415ED1F09012800247940 /* TraitUsage.swift */,
 				59D415E51F06D97500247940 /* ResourceHeader.swift */,
 			);
 			path = Sources;
@@ -512,6 +518,7 @@
 				OBJ_127 /* PropertyRestrictionsFromStringTests.swift in Sources */,
 				OBJ_128 /* TypesFromStringTests.swift in Sources */,
 				OBJ_129 /* UserDocumentationTests.swift in Sources */,
+				59D415EC1F09003100247940 /* TraitsFromStringTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -567,6 +574,7 @@
 				59D415E81F06DE7800247940 /* TraitDefiniton.swift in Sources */,
 				5902527D1F0647DD004C9AB6 /* Annotation.swift in Sources */,
 				OBJ_102 /* PropertyRestrictions.swift in Sources */,
+				59D415EE1F09012800247940 /* TraitUsage.swift in Sources */,
 				OBJ_103 /* Protocols.swift in Sources */,
 				OBJ_104 /* RAML+Include.swift in Sources */,
 				OBJ_105 /* RAML+LoadFromString.swift in Sources */,

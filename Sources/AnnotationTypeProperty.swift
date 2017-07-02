@@ -36,7 +36,7 @@ extension RAML {
     }
     
     private func parseAnnotationTypeProperty(name: String, yaml: Yaml) throws -> AnnotationTypeProperty {
-        let annotationType = AnnotationTypeProperty(name: name)
+        var annotationType = AnnotationTypeProperty(name: name)
         
         if let enumArrayYaml = yaml["enum"].array {
             var enumValues: [String] = []
@@ -56,6 +56,23 @@ extension RAML {
         }
         
         return annotationType
+    }
+    
+}
+
+public protocol HasAnnotationTypeProperties {
+    var properties: [AnnotationTypeProperty]? { get set }
+}
+
+public extension HasAnnotationTypeProperties {
+    
+    public func propertyWith(name: String) -> AnnotationTypeProperty? {
+        for property in properties ?? [] {
+            if property.name == name {
+                return property
+            }
+        }
+        return nil
     }
     
 }

@@ -38,49 +38,49 @@ class AnnotationsTests: XCTestCase {
     func testAnnotationTypes() {
         XCTAssertEqual(raml.annotationTypes?.count, 6)
         
-        guard let deprecatedType = raml.annotationType(withName: "deprecated") else {
+        guard let deprecatedType = raml.annotationTypeWith(name: "deprecated") else {
             XCTFail()
             return
         }
         XCTAssertEqual(deprecatedType.type, AnnotationTypeEnum.nil)
         XCTAssertNil(deprecatedType.properties)
         
-        guard let experimentalType = raml.annotationType(withName: "experimental") else {
+        guard let experimentalType = raml.annotationTypeWith(name: "experimental") else {
             XCTFail()
             return
         }
         XCTAssertEqual(experimentalType.type, AnnotationTypeEnum.multiple(of: [.nil, .string]))
         XCTAssertNil(experimentalType.properties)
         
-        guard let feedbackRequestedType = raml.annotationType(withName: "feedbackRequested") else {
+        guard let feedbackRequestedType = raml.annotationTypeWith(name: "feedbackRequested") else {
             XCTFail()
             return
         }
         XCTAssertEqual(feedbackRequestedType.type, AnnotationTypeEnum.multiple(of: [.string, .nil]))
         XCTAssertNil(feedbackRequestedType.properties)
         
-        guard let testHarnessType = raml.annotationType(withName: "testHarness") else {
+        guard let testHarnessType = raml.annotationTypeWith(name: "testHarness") else {
             XCTFail()
             return
         }
         XCTAssertEqual(testHarnessType.type, AnnotationTypeEnum.string)
         XCTAssertNil(testHarnessType.properties)
         
-        guard let badgeType = raml.annotationType(withName: "badge") else {
+        guard let badgeType = raml.annotationTypeWith(name: "badge") else {
             XCTFail()
             return
         }
         XCTAssertEqual(badgeType.type, AnnotationTypeEnum.string)
         XCTAssertNil(badgeType.properties)
         
-        guard let clearanceLevelType = raml.annotationType(withName: "clearanceLevel") else {
+        guard let clearanceLevelType = raml.annotationTypeWith(name: "clearanceLevel") else {
             XCTFail()
             return
         }
         XCTAssertEqual(clearanceLevelType.type, AnnotationTypeEnum.properties)
         XCTAssertNotNil(clearanceLevelType.properties)
         
-        guard let levelProperty = clearanceLevelType.property(withName: "level") else {
+        guard let levelProperty = clearanceLevelType.propertyWith(name: "level") else {
             XCTFail()
             return
         }
@@ -89,7 +89,7 @@ class AnnotationsTests: XCTestCase {
         XCTAssertTrue(levelProperty.enum?.contains("medium") ?? false)
         XCTAssertTrue(levelProperty.enum?.contains("high") ?? false)
         
-        guard let signatureProperty = clearanceLevelType.property(withName: "signature") else {
+        guard let signatureProperty = clearanceLevelType.propertyWith(name: "signature") else {
             XCTFail()
             return
         }

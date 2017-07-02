@@ -8,7 +8,7 @@
 import Foundation
 import Yaml
 
-public class Type {
+public class Type: HasProperties {
     
     public var name: String
     // default?
@@ -38,16 +38,6 @@ public class Type {
         self.name = name
         
     }
-    
-    public func property(withName name: String) -> Property? {
-        for property in properties ?? [] {
-            if property.name == name {
-                return property
-            }
-        }
-        return nil
-    }
-    
 }
 
 // MARK: Type Parsing
@@ -122,13 +112,17 @@ public protocol HasTypes {
 
 extension HasTypes {
     
-    public func type(withName name: String) -> Type? {
+    public func typeWith(name: String) -> Type? {
         for type in types ?? [] {
             if type.name == name {
                 return type
             }
         }
         return nil
+    }
+    
+    public func hasTypeWith(name: String) -> Bool {
+        return typeWith(name: name) != nil
     }
     
 }

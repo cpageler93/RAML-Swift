@@ -66,4 +66,8 @@ public extension HasTraitDefinitions {
         return nil
     }
     
+    public func hasTraitDefinitionWith(name: String) -> Bool {
+        return traitDefinitionWith(name: name) != nil
+    }
+    
 }

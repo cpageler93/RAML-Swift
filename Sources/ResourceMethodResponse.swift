@@ -69,4 +69,8 @@ public extension HasResourceMethodResponses {
         return nil
     }
     
+    public func hasResponseWith(code: Int) -> Bool {
+        return responseWith(code: code) != nil
+    }
+    
 }
