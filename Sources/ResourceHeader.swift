@@ -60,12 +60,16 @@ extension RAML {
             header.type = resourceHeaderType
         }
         
-        if let requiredBool = yaml["required"].bool {
-            header.required = requiredBool
+        if let exampleString = yaml["example"].string {
+            header.example = exampleString
         }
         
         if let itemsYaml = yaml["items"].dictionary {
             header.items = try parseResourceHeaderItems(itemsYaml)
+        }
+        
+        if let requiredBool = yaml["required"].bool {
+            header.required = requiredBool
         }
         
         return header

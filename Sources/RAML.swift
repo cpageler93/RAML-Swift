@@ -2,7 +2,7 @@ import Foundation
 import Yaml
 import PathKit
 
-public class RAML : HasTypes, HasAnnotationTypes, HasResources, HasTraits {
+public class RAML : HasTypes, HasAnnotationTypes, HasResources, HasTraitDefinitions {
     
     // MARK: meta (not raml related)
     
@@ -28,7 +28,7 @@ public class RAML : HasTypes, HasAnnotationTypes, HasResources, HasTraits {
     public var mediaTypes: [MediaType]?
     public var documentation: [DocumentationEntry]?
     public var types: [Type]?
-    public var traits: [Trait]?
+    public var traitDefinitions: [TraitDefinition]?
 //    resourceTypes
     public var annotationTypes: [AnnotationType]?
 //    securitySchemes
@@ -110,7 +110,7 @@ extension RAML {
         }
         
         if let traitsYaml = yaml["traits"].dictionary {
-            self.traits = try parseTraits(traitsYaml)
+            self.traitDefinitions = try parseTraitDefinitions(traitsYaml)
         }
         
         if let annotationTypesYaml = yaml["annotationTypes"].dictionary {

@@ -154,7 +154,7 @@ class ResourcesFromStringTests: XCTestCase {
         
         do {
             let raml = try RAML(string: ramlString)
-            guard let chargeableTrait = raml.traitWith(name: "chargeable") else {
+            guard let chargeableTrait = raml.traitDefinitionWith(name: "chargeable") else {
                 XCTFail()
                 return
             }
