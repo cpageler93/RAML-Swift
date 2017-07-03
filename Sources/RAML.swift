@@ -48,15 +48,13 @@ public class RAML : HasTypes, HasAnnotationTypes, HasResources, HasTraitDefiniti
         includesAvailable = true
         initialFilePath = Path(file)
         guard let filePath = initialFilePath else { throw RAMLError.yamlParsingError(message: "invalid file") }
-        if !filePath.exists { throw RAMLError.yamlParsingError(message: "invalid file") }
-        
-        let content = try filePath.read(String.Encoding.utf8)
-        try loadRamlFromString(content)
+        let content = try contentFromFile(path: filePath)
+        try loadRamlRootFromString(content)
     }
     
     public init(string: String) throws {
         includesAvailable = false
-        try loadRamlFromString(string)
+        try loadRamlRootFromString(string)
     }
     
     // MARK: Public Methods
@@ -110,6 +108,15 @@ extension RAML {
         }
         
         if let traitsYaml = yaml["traits"].dictionary {
+            self.traitDefinitions = try parseTraitDefinitions(traitsYaml)
+        } else if let traitIncludeString = yaml["traits"].string {
+            try testInclude(traitIncludeString)
+            guard let parentPath = initialFilePath?.absolute() else {
+                throw RAMLError.ramlParsingError(message: "invalid initial path")
+            }
+            
+            let yaml = try parseYamlFromIncludeString(traitIncludeString, parentFilePath: parentPath)
+            guard let traitsYaml = yaml.dictionary else { throw RAMLError.ramlParsingError(message: "invalid include") }
             self.traitDefinitions = try parseTraitDefinitions(traitsYaml)
         }
         

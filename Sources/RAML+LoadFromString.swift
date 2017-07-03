@@ -7,20 +7,32 @@
 
 import Foundation
 import Yaml
+import PathKit
 
 extension RAML {
-    internal func loadRamlFromString(_ string: String) throws {
+    
+    internal func contentFromFile(path: Path) throws -> String {
+        if !path.exists { throw RAMLError.yamlParsingError(message: "invalid file") }
+        return try path.read(String.Encoding.utf8)
+    }
+    
+    internal func yamlFromString(_ string: String ) throws -> Yaml {
         let yamlString = cleanedYamlString(from: string)
-        
-        // validate version
-        let ramlVersion = try validateRamlVersion(string: yamlString)
-        self.ramlVersion = ramlVersion
         
         // parse string to yaml
         let dirtyYaml = try parsedYAMLFromString(yamlString)
         
         // clean yaml from "key without values"-fix
-        let yaml = cleanedYaml(dirtyYaml)
+        return cleanedYaml(dirtyYaml)
+    }
+    
+    internal func loadRamlRootFromString(_ string: String) throws {
+        // validate version
+        let ramlVersion = try validateRamlVersion(string: string)
+        self.ramlVersion = ramlVersion
+        
+        // parse yaml from string
+        let yaml = try yamlFromString(string)
         
         // parse root raml
         try parseRoot(yaml)

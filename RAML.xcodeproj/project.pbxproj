@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5902527B1F0645B9004C9AB6 /* BaseURI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5902527A1F0645B9004C9AB6 /* BaseURI.swift */; };
 		5902527D1F0647DD004C9AB6 /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5902527C1F0647DD004C9AB6 /* Annotation.swift */; };
+		590676A01F0A3B770022DFCE /* IncludeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5906769F1F0A3B770022DFCE /* IncludeTests.swift */; };
 		59558E7D1F0687D300EEF042 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59558E7C1F0687D300EEF042 /* Resource.swift */; };
 		59558E7F1F069E1400EEF042 /* ResourceMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59558E7E1F069E1400EEF042 /* ResourceMethod.swift */; };
 		59ADB3501F0658760003B348 /* AnnotationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59ADB34F1F0658760003B348 /* AnnotationsTests.swift */; };
@@ -128,6 +129,7 @@
 /* Begin PBXFileReference section */
 		5902527A1F0645B9004C9AB6 /* BaseURI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseURI.swift; sourceTree = "<group>"; };
 		5902527C1F0647DD004C9AB6 /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
+		5906769F1F0A3B770022DFCE /* IncludeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncludeTests.swift; sourceTree = "<group>"; };
 		59558E7C1F0687D300EEF042 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		59558E7E1F069E1400EEF042 /* ResourceMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceMethod.swift; sourceTree = "<group>"; };
 		59ADB34F1F0658760003B348 /* AnnotationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationsTests.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				OBJ_30 /* UserDocumentationTests.swift */,
 				59D415E31F06D8C100247940 /* ResourcesFromStringTests.swift */,
 				59D415EB1F09003100247940 /* TraitsFromStringTests.swift */,
+				5906769F1F0A3B770022DFCE /* IncludeTests.swift */,
 			);
 			name = RAMLTests;
 			path = Tests/RAMLTests;
@@ -519,6 +522,7 @@
 				OBJ_128 /* TypesFromStringTests.swift in Sources */,
 				OBJ_129 /* UserDocumentationTests.swift in Sources */,
 				59D415EC1F09003100247940 /* TraitsFromStringTests.swift in Sources */,
+				590676A01F0A3B770022DFCE /* IncludeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
