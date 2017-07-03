@@ -42,7 +42,7 @@ public class RAML : HasTypes, HasAnnotationTypes, HasResources, HasTraitDefiniti
     // after the parsing the value will be removed recursively
     static let keyWithEmptyValueFix = "RAMLEMPTYVALUEFIX"
     
-    // MARK: Initializer
+    // MARK: - Initializer
     
     public init(file: String) throws {
         includesAvailable = true
@@ -57,7 +57,16 @@ public class RAML : HasTypes, HasAnnotationTypes, HasResources, HasTraitDefiniti
         try loadRamlRootFromString(string)
     }
     
-    // MARK: Public Methods
+    // MARK: - Internal Methods
+    
+    internal func directoryOfInitialFilePath() throws -> Path {
+        guard let initialFilePath = initialFilePath else {
+            throw RAMLError.ramlParsingError(message: "invalid initial path")
+        }
+        return initialFilePath.absolute().directory()
+    }
+    
+    // MARK: - Public Methods
     
     public func baseURIWithParameter() -> String? {
         guard var baseURIValue = baseURI?.value else { return nil }
@@ -111,11 +120,7 @@ extension RAML {
             self.traitDefinitions = try parseTraitDefinitions(traitsYaml)
         } else if let traitIncludeString = yaml["traits"].string {
             try testInclude(traitIncludeString)
-            guard let parentPath = initialFilePath?.absolute() else {
-                throw RAMLError.ramlParsingError(message: "invalid initial path")
-            }
-            
-            let yaml = try parseYamlFromIncludeString(traitIncludeString, parentFilePath: parentPath)
+            let yaml = try parseTraitFromIncludeString(traitIncludeString)
             guard let traitsYaml = yaml.dictionary else { throw RAMLError.ramlParsingError(message: "invalid include") }
             self.traitDefinitions = try parseTraitDefinitions(traitsYaml)
         }

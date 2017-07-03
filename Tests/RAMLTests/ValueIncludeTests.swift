@@ -1,5 +1,5 @@
 //
-//  IncludeTests.swift
+//  ValueIncludeTests.swift
 //  RAMLTests
 //
 //  Created by Christoph on 03.07.17.
@@ -8,8 +8,7 @@
 import XCTest
 @testable import RAML
 
-
-class IncludeTests: XCTestCase {
+class ValueIncludeTests: XCTestCase {
     
     var raml: RAML!
     
@@ -17,7 +16,7 @@ class IncludeTests: XCTestCase {
         super.setUp()
         
         let bundle = Bundle(for: type(of: self))
-        guard let path = bundle.path(forResource: "main",
+        guard let path = bundle.path(forResource: "value_includes",
                                      ofType: "raml",
                                      inDirectory: "TestData/Includes") else {
                                         XCTFail()
@@ -37,9 +36,8 @@ class IncludeTests: XCTestCase {
     }
     
     func testTraits() {
-        
         XCTAssertTrue(raml.hasTraitDefinitionWith(name: "chargeable"))
         XCTAssertTrue(raml.hasTraitDefinitionWith(name: "paged"))
-        
     }
+    
 }

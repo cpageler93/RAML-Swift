@@ -22,13 +22,16 @@ extension RAML {
     }
     
     internal func parseYamlFromIncludeString(_ string: String,
-                                             parentFilePath: Path) throws -> Yaml {
+                                             parentFilePath: Path,
+                                             permittedFragmentIdentifier: String) throws -> Yaml {
         guard isInclude(string) else { throw RAMLError.ramlParsingError(message: "string parsed as include is not an include `\(string)`") }
         
         let pathString = string.replacingOccurrences(of: "!include ", with: "")
         let absolutePath = parentFilePath.directory() + Path(pathString)
         
         let content = try contentFromFile(path: absolutePath)
+        try validateRamlFragmentIdentifier(permittedFragmentIdentifier, inString: content, required: false)
+        
         return try yamlFromString(content)
     }
     

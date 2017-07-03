@@ -42,11 +42,24 @@ extension RAML {
     private func parseTraitDefinition(name: String, yaml: Yaml) throws -> TraitDefinition {
         let traitDefinition = TraitDefinition(name: name)
         
-        if let headersYaml = yaml["headers"].dictionary {
-            traitDefinition.headers = try parseHeaders(headersYaml)
+        if let yamlDict = yaml.dictionary {
+            if let headersYaml = yamlDict["headers"]?.dictionary {
+                traitDefinition.headers = try parseHeaders(headersYaml)
+            }
+        } else if let yamlString = yaml.string {
+            try testInclude(yamlString)
+            let yamlFromInclude = try parseTraitFromIncludeString(yamlString)
+            return try parseTraitDefinition(name: name,
+                                            yaml: yamlFromInclude)
         }
         
         return traitDefinition
+    }
+    
+    internal func parseTraitFromIncludeString(_ includeString: String) throws -> Yaml {
+        return try parseYamlFromIncludeString(includeString,
+                                              parentFilePath: try directoryOfInitialFilePath(),
+                                              permittedFragmentIdentifier: "Trait")
     }
     
 }

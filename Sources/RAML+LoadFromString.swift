@@ -11,6 +11,8 @@ import PathKit
 
 extension RAML {
     
+    // MARK: - Internal
+    
     internal func contentFromFile(path: Path) throws -> String {
         if !path.exists { throw RAMLError.yamlParsingError(message: "invalid file") }
         return try path.read(String.Encoding.utf8)
@@ -38,6 +40,15 @@ extension RAML {
         try parseRoot(yaml)
     }
     
+    internal func validateRamlFragmentIdentifier(_ fragmentIdentifier: String,
+                                                 inString: String,
+                                                 required: Bool) throws {
+        do validation
+    }
+    
+    // MARK: - Private
+    
+    @discardableResult
     fileprivate func validateRamlVersion(string: String) throws -> String {
         guard let firstLine = string.components(separatedBy: "\n").first else { throw RAMLError.invalidRAMLVersion(message: "string has no first line") }
         let ramlPrefix = "#%RAML "
