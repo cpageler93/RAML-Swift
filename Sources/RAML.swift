@@ -88,9 +88,9 @@ extension RAML {
         self.version = yaml["version"].string
         
         if let baseURIString = yaml["baseUri"].string {
-            self.baseURI = BaseURI(value: baseURIString)
+            self.baseURI = try parseBaseURI(string: baseURIString)
         } else if let baseURIDictionary = yaml["baseUri"].dictionary {
-            self.baseURI = try parseBaseURI(baseURIDictionary)
+            self.baseURI = try parseBaseURI(yaml: baseURIDictionary)
         }
         
         

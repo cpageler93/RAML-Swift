@@ -180,4 +180,73 @@ class ResourcesFromStringTests: XCTestCase {
         }
     }
     
+    func testResourceURLs() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: Resource Test
+        baseUri: http://api.test.com/common/
+        /users:
+          /groups:
+        """
+        
+        do {
+            let raml = try RAML(string: ramlString)
+            guard let usersResource = raml.resourceWith(path: "/users") else {
+                XCTFail()
+                return
+            }
+            
+            guard let usersGroupsResource = usersResource.resourceWith(path: "/groups") else {
+                XCTFail()
+                return
+            }
+            
+            XCTAssertEqual(raml.baseURI?.value, "http://api.test.com/common")
+            XCTAssertEqual(usersResource.absolutePath(), "http://api.test.com/common/users")
+            XCTAssertEqual(usersGroupsResource.absolutePath(), "http://api.test.com/common/users/groups")
+            
+        } catch {
+            XCTFail()
+        }
+    }
+    
+    func testResourceURLsWithWhoTheFuckEntersSuchURLS() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: Resource Test
+        baseUri: //api.test.com//common//
+        /:
+          /users/:
+            /groups//:
+        """
+        
+        do {
+            let raml = try RAML(string: ramlString)
+            
+            guard let wtfResource = raml.resourceWith(path: "/") else {
+                XCTFail()
+                return
+            }
+            
+            guard let usersResource = wtfResource.resourceWith(path: "/users/") else {
+                XCTFail()
+                return
+            }
+            
+            guard let usersGroupsResource = usersResource.resourceWith(path: "/groups//") else {
+                XCTFail()
+                return
+            }
+            
+            XCTAssertEqual(raml.baseURI?.value, "//api.test.com//common")
+            XCTAssertEqual(usersResource.absolutePath(), "//api.test.com//common//users/")
+            XCTAssertEqual(usersGroupsResource.absolutePath(), "//api.test.com//common//users//groups//")
+            
+        } catch {
+            XCTFail()
+        }
+    }
+    
 }

@@ -24,6 +24,10 @@ public class Resource: HasResources, HasResourceMethods {
     public init(path: String) {
         self.path = path
     }
+    
+    public func absolutePath() -> String {
+        return ""
+    }
 }
 
 // Resources Parsing
@@ -48,6 +52,8 @@ extension RAML {
     internal func parseResource(path: String, yaml: Yaml) throws -> Resource {
         let resource = Resource(path: path)
         resource.methods = try parseResourceMethods(yaml)
+        resource.resources = try parseResources(yaml)
+        
         return resource
     }
     
