@@ -25,12 +25,12 @@ extension RAML {
     internal func parseDocumentation(_ yaml: [Yaml]) throws -> [DocumentationEntry] {
         var documentation: [DocumentationEntry] = []
         
-        for (index, yamlDocumentationEntry) in yaml.enumerated() {
+        for (_, yamlDocumentationEntry) in yaml.enumerated() {
             guard let title = yamlDocumentationEntry["title"].string else {
-                throw RAMLError.ramlParsingError(message: "`title` not set in documentation entry \(index)")
+                throw RAMLError.ramlParsingError(error: .missingValueFor(key: "title"))
             }
             guard var content = yamlDocumentationEntry["content"].string else {
-                throw RAMLError.ramlParsingError(message: "`content` not set in documentation entry \(index)")
+                throw RAMLError.ramlParsingError(error: .missingValueFor(key: "content"))
             }
             
             if isInclude(content) {

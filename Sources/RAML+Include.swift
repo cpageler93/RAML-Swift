@@ -17,7 +17,7 @@ extension RAML {
     
     internal func testInclude(_ value: String) throws {
         if isInclude(value) && !includesAvailable {
-            throw RAMLError.ramlParsingError(message: "Includes not available at `\(value)`")
+            throw RAMLError.ramlParsingError(error: .includesNotAvailable)
         }
     }
     
@@ -32,7 +32,7 @@ extension RAML {
     
     internal func contentFromIncludeString(_ string: String,
                                            parentFilePath: Path) throws -> String {
-        guard isInclude(string) else { throw RAMLError.ramlParsingError(message: "string parsed as include is not an include `\(string)`") }
+        guard isInclude(string) else { throw RAMLError.ramlParsingError(error: .stringWhichIsParsedAsIncludeIsNotInclude) }
         try testInclude(string)
         
         let pathString = string.replacingOccurrences(of: "!include ", with: "")
