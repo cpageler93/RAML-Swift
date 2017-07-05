@@ -119,7 +119,6 @@ extension RAML {
         if let traitsYaml = yaml["traits"].dictionary {
             self.traitDefinitions = try parseTraitDefinitions(traitsYaml)
         } else if let traitIncludeString = yaml["traits"].string {
-            try testInclude(traitIncludeString)
             let yaml = try parseTraitFromIncludeString(traitIncludeString)
             guard let traitsYaml = yaml.dictionary else { throw RAMLError.ramlParsingError(message: "invalid include") }
             self.traitDefinitions = try parseTraitDefinitions(traitsYaml)

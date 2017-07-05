@@ -47,7 +47,6 @@ extension RAML {
                 traitDefinition.headers = try parseHeaders(headersYaml)
             }
         } else if let yamlString = yaml.string {
-            try testInclude(yamlString)
             let yamlFromInclude = try parseTraitFromIncludeString(yamlString)
             return try parseTraitDefinition(name: name,
                                             yaml: yamlFromInclude)

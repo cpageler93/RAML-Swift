@@ -41,9 +41,15 @@ extension RAML {
     }
     
     internal func validateRamlFragmentIdentifier(_ fragmentIdentifier: String,
-                                                 inString: String,
-                                                 required: Bool) throws {
-        do validation
+                                                 inString: String) throws {
+        guard let firstLine = inString.components(separatedBy: "\n").first else { return }
+        let ramlPrefix = "#%RAML 1.0"
+        guard firstLine.hasPrefix(ramlPrefix) else { return }
+        let foundFragmentIdentifier = firstLine.substring(from: ramlPrefix.endIndex).trimmingCharacters(in: CharacterSet.whitespaces)
+        guard foundFragmentIdentifier.characters.count > 0 else { throw RAMLError.ramlParsingError(message: "Fragment Identifier must be present in Fragments with RAML Comment") }
+        if fragmentIdentifier != foundFragmentIdentifier {
+            throw RAMLError.ramlParsingError(message: "Fragment Identifier `\(foundFragmentIdentifier)` is not allowed here. Only `\(fragmentIdentifier)` is allowed")
+        }
     }
     
     // MARK: - Private
@@ -52,7 +58,7 @@ extension RAML {
     fileprivate func validateRamlVersion(string: String) throws -> String {
         guard let firstLine = string.components(separatedBy: "\n").first else { throw RAMLError.invalidRAMLVersion(message: "string has no first line") }
         let ramlPrefix = "#%RAML "
-        guard firstLine.hasPrefix(ramlPrefix) else { throw RAMLError.invalidRAMLVersion(message: "first line must look like this `#%RAML <version>`") }
+        guard firstLine.hasPrefix(ramlPrefix) else { throw RAMLError.invalidRAMLVersion(message: "first line must look like this `#%RAML <Version>`") }
         let ramlVersion = firstLine.substring(from: ramlPrefix.endIndex)
         guard ramlVersion == "1.0" else { throw RAMLError.invalidRAMLVersion(message: "only RAML Version 1.0 is supported") }
         return ramlVersion
