@@ -23,6 +23,7 @@ public class RAML : HasTypes, HasAnnotationTypes, HasResources, HasTraitDefiniti
     public var description: String?
     public var version: String?
     public var baseURI: BaseURI?
+    
     public var baseURIParameters: [URIParameter]?
     public var protocols: Protocols?
     public var mediaTypes: [MediaType]?
@@ -128,6 +129,14 @@ extension RAML {
             self.annotationTypes = try parseAnnotationTypes(annotationTypesYaml)
         }
         
-        self.resources = try parseResources(yaml)
+        self.resources = try parseResources(yaml, parent: self)
     }
+}
+
+extension RAML: ResourceParent {
+    
+    public func absolutePath() -> String {
+        return baseURI?.value ?? ""
+    }
+    
 }
