@@ -29,17 +29,36 @@ extension RAML {
             guard let title = yamlDocumentationEntry["title"].string else {
                 throw RAMLError.ramlParsingError(message: "`title` not set in documentation entry \(index)")
             }
-            guard let content = yamlDocumentationEntry["content"].string else {
+            guard var content = yamlDocumentationEntry["content"].string else {
                 throw RAMLError.ramlParsingError(message: "`content` not set in documentation entry \(index)")
             }
             
-            try testInclude(content)
+            if isInclude(content) {
+                content = try contentFromIncludeString(content, parentFilePath: try directoryOfInitialFilePath())
+            }
             
             let documentationEntry = DocumentationEntry(title: title, content: content)
             documentation.append(documentationEntry)
         }
         
         return documentation
+    }
+    
+}
+
+protocol HasDocumentationEntries {
+    var documentation: [DocumentationEntry]? { get set }
+}
+
+extension HasDocumentationEntries {
+    
+    func documentationWithTitle(_ title: String) -> DocumentationEntry? {
+        for documentationEntry in documentation ?? [] {
+            if documentationEntry.title == title {
+                return documentationEntry
+            }
+        }
+        return nil
     }
     
 }
