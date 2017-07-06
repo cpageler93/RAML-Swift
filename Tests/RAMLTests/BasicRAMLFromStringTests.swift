@@ -249,10 +249,22 @@ class BasicRAMLFromStringTests: XCTestCase {
                 return
             }
             
-            guard let getListMethid = listResource.methodWith(type: .get) else {
+            guard let getListMethod = listResource.methodWith(type: .get) else {
                 XCTFail()
                 return
             }
+            
+            guard let okResponse = getListMethod.responseWith(code: 200) else {
+                XCTFail()
+                return
+            }
+            
+            guard let okResponseBody = okResponse.body else {
+                XCTFail()
+                return
+            }
+            
+            XCTAssertEqual(okResponseBody.type, DataType.array(ofType: .custom(type: "Person")))
             // TODO: check response/mediaType
             
             guard let sendResource = raml.resourceWith(path: "/send") else {
@@ -260,7 +272,17 @@ class BasicRAMLFromStringTests: XCTestCase {
                 return
             }
             
-            // TODO: check response/mediaType
+            guard let postSendMethod = sendResource.methodWith(type: .post) else {
+                XCTFail()
+                return
+            }
+            
+            guard let postSendBody = postSendMethod.body else {
+                XCTFail()
+                return
+            }
+            
+            // TODO: check postSendBody/mediaType
             
         } catch {
             XCTFail()

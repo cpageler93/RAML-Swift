@@ -18,7 +18,7 @@ public enum ResourceMethodType: String {
     case head
 }
 
-public class ResourceMethod: HasResourceHeaders, HasAnnotations, HasTraitUsages {
+public class ResourceMethod: HasResourceHeaders, HasAnnotations, HasTraitUsages, HasResourceMethodResponses {
     
     public var type: ResourceMethodType
     public var displayName: String?
@@ -28,7 +28,7 @@ public class ResourceMethod: HasResourceHeaders, HasAnnotations, HasTraitUsages 
     public var headers: [ResourceHeader]?
     // queryString
     public var responses: [ResourceMethodResponse]?
-    // body
+    public var body: ResponseBody?
     // protocols
     public var traitUsages: [TraitUsage]?
     // securedBy

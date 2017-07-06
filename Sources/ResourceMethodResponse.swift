@@ -14,7 +14,7 @@ public class ResourceMethodResponse: HasAnnotations, HasResourceHeaders {
     public var description: String?
     public var annotations: [Annotation]?
     public var headers: [ResourceHeader]?
-    // public var body
+    public var body: ResponseBody?
     
     public init(code: Int) {
         self.code = code
@@ -50,6 +50,16 @@ extension RAML {
         
         if let headerYaml = yaml["headers"].dictionary {
             response.headers = try parseHeaders(headerYaml)
+        }
+        
+        if let bodyString = yaml["body"].string {
+            // body with type
+            let body = ResponseBody()
+            body.type = DataType.dataTypeEnumFrom(string: bodyString)
+            response.body = body
+            
+        } else if let bodyYamlDict = yaml["body"].dictionary {
+            
         }
         
         return response
