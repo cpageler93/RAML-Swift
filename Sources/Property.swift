@@ -56,6 +56,8 @@ extension RAML {
         } else if let yamlString = yaml.string {
             // if type is not explicitly set, check for type in value
             property.type = DataType.dataTypeEnumFrom(string: yamlString)
+        } else {
+            property.type = .scalar(type: .string)
         }
         
         // parse enum

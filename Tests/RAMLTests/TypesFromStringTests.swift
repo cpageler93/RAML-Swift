@@ -145,4 +145,105 @@ class TypesFromStringTests: XCTestCase {
             XCTFail("This should not fail")
         }
     }
+    
+    func testTypeDefaultTypeExplicit() {
+        let ramlStringExplicit =
+        """
+        #%RAML 1.0
+        title: My API with Types
+        types:
+          Person:
+            type: object
+            properties:
+        """
+        
+        do {
+            let ramlExplicit = try RAML(string: ramlStringExplicit)
+            guard let personType = ramlExplicit.typeWith(name: "Person") else {
+                XCTFail("This should not fail")
+                return
+            }
+            XCTAssertEqual(personType.type, .object)
+        } catch {
+            XCTFail("This should not fail")
+        }
+    }
+    
+    func testTypeDefaultTypeImplicit() {
+        
+        let ramlStringImplicit =
+        """
+        #%RAML 1.0
+        title: My API with Types
+        types:
+          Person:
+            properties:
+        """
+        
+        do {
+            let ramlImplicit = try RAML(string: ramlStringImplicit)
+            guard let personType = ramlImplicit.typeWith(name: "Person") else {
+                XCTFail("This should not fail")
+                return
+            }
+            XCTAssertEqual(personType.type, .object)
+        } catch {
+            XCTFail("This should not fail")
+        }
+        
+    }
+    
+    func testTypeDefaultTypeImplicitString() {
+        
+        let ramlStringImplicitString =
+        """
+        #%RAML 1.0
+        title: My API with Types
+        types:
+          Person:
+        """
+        
+        do {
+            let ramlImplicitString = try RAML(string: ramlStringImplicitString)
+            guard let personType = ramlImplicitString.typeWith(name: "Person") else {
+                XCTFail("This should not fail")
+                return
+            }
+            XCTAssertEqual(personType.type, .scalar(type: .string))
+        } catch {
+            XCTFail("This should not fail")
+        }
+    }
+    
+    func testTypeDefaultTypeImplicitStringInProperty() {
+        
+        let ramlStringImplicitStringInProperty =
+        """
+        #%RAML 1.0
+        title: My API with Types
+        types:
+          Person:
+            properties:
+              name:
+        """
+        
+        do {
+            let ramlImplicitStringInProperty = try RAML(string: ramlStringImplicitStringInProperty)
+            guard let personType = ramlImplicitStringInProperty.typeWith(name: "Person") else {
+                XCTFail("This should not fail")
+                return
+            }
+            XCTAssertEqual(personType.type, .object)
+            
+            guard let nameProperty = personType.propertyWith(name: "name") else {
+                XCTFail("This should not fail")
+                return
+            }
+            
+            XCTAssertEqual(nameProperty.type, .scalar(type: .string))
+            
+        } catch {
+            XCTFail("This should not fail")
+        }
+    }
 }
