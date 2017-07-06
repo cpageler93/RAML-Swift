@@ -249,14 +249,18 @@ class BasicRAMLFromStringTests: XCTestCase {
                 return
             }
             
-            // TODO: check GET TYPE
+            guard let getListMethid = listResource.methodWith(type: .get) else {
+                XCTFail()
+                return
+            }
+            // TODO: check response/mediaType
             
             guard let sendResource = raml.resourceWith(path: "/send") else {
                 XCTFail()
                 return
             }
             
-            // TODO: check POST TYPE
+            // TODO: check response/mediaType
             
         } catch {
             XCTFail()

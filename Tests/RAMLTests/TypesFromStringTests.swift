@@ -100,4 +100,49 @@ class TypesFromStringTests: XCTestCase {
             XCTFail("Should not fail")
         }
     }
+    
+    func testPropertyTypeEnum() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: My API with Types
+        mediaType: application/json
+        types:
+          Person:
+            type: object
+            properties:
+              firstname: string
+              lastname:  string
+              title?:    string
+          Admin:
+            type: Person
+            properties:
+              clearanceLevel:
+                enum: [ low, high ]
+        """
+        
+        do {
+            let raml = try RAML(string: ramlString)
+            
+            guard let adminType = raml.typeWith(name: "Admin") else {
+                XCTFail()
+                return
+            }
+            
+            guard let clearanceLevelProperty = adminType.propertyWith(name: "clearanceLevel") else {
+                XCTFail()
+                return
+            }
+            
+            guard let clearanceLevelPropertyEnum = clearanceLevelProperty.enum else {
+                XCTFail()
+                return
+            }
+            XCTAssertTrue(clearanceLevelPropertyEnum.contains("low"))
+            XCTAssertTrue(clearanceLevelPropertyEnum.contains("high"))
+            
+        } catch {
+            XCTFail("This should not fail")
+        }
+    }
 }

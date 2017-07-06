@@ -14,6 +14,7 @@ public class Property {
     public var required: Bool = true
     public var type: DataType?
     public var restrictions: PropertyRestrictions?
+    public var `enum`: [String]?
     
     public init(name: String) {
         self.name = name
@@ -31,13 +32,13 @@ extension RAML {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "Property Key",
                                                                   mustBeKindOf: "String"))
             }
-            let property = parseProperty(name: keyString, yaml: value)
+            let property = try parseProperty(name: keyString, yaml: value)
             properties.append(property)
         }
         return properties
     }
     
-    private func parseProperty(name: String, yaml: Yaml) -> Property {
+    private func parseProperty(name: String, yaml: Yaml) throws -> Property {
         let property = Property(name: name)
         
         // parse required / optional
@@ -55,6 +56,19 @@ extension RAML {
         } else if let yamlString = yaml.string {
             // if type is not explicitly set, check for type in value
             property.type = DataType.dataTypeEnumFrom(string: yamlString)
+        }
+        
+        // parse enum
+        if let yamlEnumArray = yaml["enum"].array {
+            var enumValues: [String] = []
+            for yamlEnumValue in yamlEnumArray {
+                guard let enumString = yamlEnumValue.string else {
+                    throw RAMLError.ramlParsingError(.invalidDataType(for: "Enum Value",
+                                                                      mustBeKindOf: "String"))
+                }
+                enumValues.append(enumString)
+            }
+            property.enum = enumValues
         }
         
         return property
