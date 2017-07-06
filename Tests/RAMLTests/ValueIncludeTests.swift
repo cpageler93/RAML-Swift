@@ -25,7 +25,6 @@ class ValueIncludeTests: XCTestCase {
         do {
             raml = try RAML(file: path)
         } catch {
-            print("error: \(error)")
             XCTFail()
         }
     }

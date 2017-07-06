@@ -39,7 +39,10 @@ extension RAML {
     internal func parseHeaders(_ yaml: [Yaml: Yaml]) throws -> [ResourceHeader] {
         var headers: [ResourceHeader] = []
         for (key, value) in yaml {
-            guard let keyString = key.string else { throw RAMLError.ramlParsingError(message: "header key must be a string") }
+            guard let keyString = key.string else {
+                throw RAMLError.ramlParsingError(.invalidDataType(for: "Header Key",
+                                                                  mustBeKindOf: "Sring"))
+            }
             let header = try parseHeader(key: keyString, yaml: value)
             headers.append(header)
         }
@@ -55,7 +58,7 @@ extension RAML {
         
         if let typeString = yaml["type"].string {
             guard let resourceHeaderType = ResourceHeaderType(rawValue: typeString) else {
-                throw RAMLError.ramlParsingError(message: "resource header type `\(typeString)` not valid")
+                throw RAMLError.ramlParsingError(.invalidResourceHeaderType(typeString))
             }
             header.type = resourceHeaderType
         }

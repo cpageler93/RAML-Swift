@@ -33,8 +33,9 @@ class AnnotationsFromStringTests: XCTestCase {
         do {
             let raml = try RAML(string: ramlString)
             XCTAssertEqual(raml.baseURI?.annotations?.count ?? 0, 1)
-            if let firstAnnotation = raml.baseURI?.annotations?.first {
-                XCTAssertEqual(firstAnnotation.name, "redirectable")
+            
+            if let redirectableAnnotation = raml.baseURI?.annotationWith(name: "redirectable") {
+                XCTAssertEqual(redirectableAnnotation.name, "redirectable")
             }
         } catch {
             XCTFail()

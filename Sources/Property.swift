@@ -28,7 +28,8 @@ extension RAML {
         var properties: [Property] = []
         for (key, value) in yaml {
             guard let keyString = key.string else {
-                throw RAMLError.ramlParsingError(error: .invalidDataType(for: "Property Key", mustBeKindOf: "String"))
+                throw RAMLError.ramlParsingError(.invalidDataType(for: "Property Key",
+                                                                  mustBeKindOf: "String"))
             }
             let property = parseProperty(name: keyString, yaml: value)
             properties.append(property)

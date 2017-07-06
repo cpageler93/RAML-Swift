@@ -26,15 +26,15 @@ extension RAML {
         var protocols: Protocols = []
         for protocolYaml in yaml {
             guard let protocolString = protocolYaml.string else {
-                throw RAMLError.ramlParsingError(error: .invalidDataType(for: "Protocol",
-                                                                         mustBeKindOf: "String"))
+                throw RAMLError.ramlParsingError(.invalidDataType(for: "Protocol",
+                                                                  mustBeKindOf: "String"))
             }
             
             switch protocolString.uppercased() {
             case "HTTP": protocols.insert(.http)
             case "HTTPS": protocols.insert(.https)
             default:
-                throw RAMLError.ramlParsingError(error: .invalidProtocol(protocolString))
+                throw RAMLError.ramlParsingError(.invalidProtocol(protocolString))
             }
         }
         return protocols

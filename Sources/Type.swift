@@ -46,7 +46,10 @@ extension RAML {
     internal func parseTypes(_ yaml: [Yaml: Yaml]) throws -> [Type] {
         var types: [Type] = []
         for (key, value) in yaml {
-            guard let keyString = key.string else { throw RAMLError.ramlParsingError(message: "type key must be a string `\(key)`") }
+            guard let keyString = key.string else {
+                throw RAMLError.ramlParsingError(.invalidDataType(for: "type key",
+                                                                  mustBeKindOf: "String"))
+            }
             let type = try parseType(name: keyString, yaml: value)
             types.append(type)
         }

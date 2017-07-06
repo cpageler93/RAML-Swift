@@ -24,7 +24,10 @@ extension RAML {
         var annotations: [Annotation] = []
         
         for (key, value) in yaml {
-            guard let keyString = key.string else { throw RAMLError.ramlParsingError(message: "annotation key must be a string") }
+            guard let keyString = key.string else {
+                throw RAMLError.ramlParsingError(.invalidDataType(for: "Annotation Key",
+                                                                  mustBeKindOf: "String"))
+            }
             if keyString.isAnnotationKey() {
                 let annotation = try parseAnnotation(name: keyString.annotationKeyName(), yaml: value)
                 annotations.append(annotation)

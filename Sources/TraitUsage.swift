@@ -43,13 +43,16 @@ public extension RAML {
                 let traitName = traitDictionary.keys.first?.string,
                 let traitValue = traitDictionary.values.first?.dictionary
             else {
-                throw RAMLError.ramlParsingError(message: "failed parsing trait usage `\(yaml)`")
+                throw RAMLError.ramlParsingError(.failedParsingTraitUsage)
             }
             let traitUsage = TraitUsage(name: traitName)
             
             var parameters: [String: Yaml] = [:]
             for (key, value) in traitValue {
-                guard let keyString = key.string else { throw RAMLError.ramlParsingError(message: "parameter in trait usage must be a string") }
+                guard let keyString = key.string else {
+                    throw RAMLError.ramlParsingError(.invalidDataType(for: "Parameter in Trait Usage",
+                                                                      mustBeKindOf: "String"))
+                }
                 parameters[keyString] = value
             }
             traitUsage.parameters = parameters
@@ -57,7 +60,7 @@ public extension RAML {
             return traitUsage
         }
         
-        throw RAMLError.ramlParsingError(message: "failed parsing trait usage `\(yaml)`")
+        throw RAMLError.ramlParsingError(.failedParsingTraitUsage)
     }
 }
 

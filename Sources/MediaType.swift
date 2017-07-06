@@ -24,8 +24,8 @@ extension RAML {
         var mediaTypes: [MediaType] = []
         for yamlMediaType in yaml {
             guard let mediaTypeString = yamlMediaType.string else {
-                throw RAMLError.ramlParsingError(error: .invalidDataType(for: "MediaType",
-                                                                         mustBeKindOf: "String"))
+                throw RAMLError.ramlParsingError(.invalidDataType(for: "MediaType",
+                                                                  mustBeKindOf: "String"))
             }
             let mediaType = parseMediaType(mediaTypeString)
             mediaTypes.append(mediaType)

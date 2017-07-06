@@ -13,8 +13,12 @@ class BasicRAMLFromStringTests: XCTestCase {
         do {
             let _ = try RAML(string: ramlString)
             XCTFail("Should fail")
-        } catch {
-            
+        } catch let error {
+            guard let ramlError = error as? RAMLError else {
+                XCTFail("Should fail")
+                return
+            }
+            XCTAssertEqual(ramlError, RAMLError.ramlParsingError(.missingValueFor(key: "title")))
         }
     }
     
@@ -28,8 +32,12 @@ class BasicRAMLFromStringTests: XCTestCase {
         do {
             let _ = try RAML(string: ramlString)
             XCTFail("Should fail")
-        } catch {
-            
+        } catch let error {
+            guard let ramlError = error as? RAMLError else {
+                XCTFail("Should fail")
+                return
+            }
+            XCTAssertEqual(ramlError, RAMLError.ramlParsingError(.invalidVersion))
         }
     }
     
@@ -49,7 +57,7 @@ class BasicRAMLFromStringTests: XCTestCase {
             XCTAssertNil(raml.protocols)
             XCTAssertNil(raml.documentation)
         } catch {
-            
+            XCTFail("Should not fail")
         }
     }
     
@@ -66,7 +74,6 @@ class BasicRAMLFromStringTests: XCTestCase {
             XCTAssertTrue(raml.protocols?.contains(.http) ?? false)
             XCTAssertTrue(raml.protocols?.contains(.https) ?? false)
         } catch {
-            print("error: \(error)")
             XCTFail("Should not fail")
         }
     }
@@ -82,8 +89,12 @@ class BasicRAMLFromStringTests: XCTestCase {
         do {
             let _ = try RAML(string: ramlString)
             XCTFail("Should fail because POP3 is invalid protocol for RAML")
-        } catch {
-            
+        } catch let error {
+            guard let ramlError = error as? RAMLError else {
+                XCTFail("Should fail")
+                return
+            }
+            XCTAssertEqual(ramlError, RAMLError.ramlParsingError(.invalidProtocol("POP3")))
         }
     }
     
@@ -102,7 +113,11 @@ class BasicRAMLFromStringTests: XCTestCase {
             let _ = try RAML(string: ramlString)
             XCTFail("Should fail because includes are not possible when loading from string")
         } catch {
-            
+            guard let ramlError = error as? RAMLError else {
+                XCTFail("Should fail")
+                return
+            }
+            XCTAssertEqual(ramlError, RAMLError.ramlParsingError(.includesNotAvailable))
         }
     }
     
@@ -120,7 +135,7 @@ class BasicRAMLFromStringTests: XCTestCase {
             XCTAssertEqual(raml.baseURI?.value, "https://na1.salesforce.com/services/data/{version}/chatter")
             XCTAssertEqual(raml.baseURIWithParameter(), "https://na1.salesforce.com/services/data/v28.0/chatter")
         } catch {
-            
+            XCTFail("Should not fail")
         }
     }
     
@@ -138,7 +153,7 @@ class BasicRAMLFromStringTests: XCTestCase {
             let raml = try RAML(string: ramlString)
             XCTAssertEqual(raml.baseURI?.value, "https://na1.salesforce.com/services/data/{version}/chatter")
         } catch {
-            
+            XCTFail("Should not fail")
         }
     }
     
@@ -162,7 +177,7 @@ class BasicRAMLFromStringTests: XCTestCase {
                 XCTAssertEqual(firstURIParameter.description, "The name of the bucket")
             }
         } catch {
-            
+            XCTFail("Should not fail")
         }
     }
     
@@ -181,7 +196,7 @@ class BasicRAMLFromStringTests: XCTestCase {
                 XCTAssertEqual(firstMediaType.identifier, "application/json")
             }
         } catch {
-            XCTFail()
+            XCTFail("Should not fail")
         }
     }
     
@@ -200,7 +215,7 @@ class BasicRAMLFromStringTests: XCTestCase {
                 XCTAssertEqual(firstMediaType.identifier, "application/xml")
             }
         } catch {
-            XCTFail()
+            XCTFail("Should not fail")
         }
     }
     

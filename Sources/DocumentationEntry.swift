@@ -27,13 +27,14 @@ extension RAML {
         
         for (_, yamlDocumentationEntry) in yaml.enumerated() {
             guard let title = yamlDocumentationEntry["title"].string else {
-                throw RAMLError.ramlParsingError(error: .missingValueFor(key: "title"))
+                throw RAMLError.ramlParsingError(.missingValueFor(key: "title"))
             }
             guard var content = yamlDocumentationEntry["content"].string else {
-                throw RAMLError.ramlParsingError(error: .missingValueFor(key: "content"))
+                throw RAMLError.ramlParsingError(.missingValueFor(key: "content"))
             }
             
             if isInclude(content) {
+                try testInclude(content)
                 content = try contentFromIncludeString(content, parentFilePath: try directoryOfInitialFilePath())
             }
             

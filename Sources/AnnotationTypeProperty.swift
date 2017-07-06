@@ -28,7 +28,10 @@ extension RAML {
     internal func parseAnnotationTypeProperties(_ yaml: [Yaml: Yaml]) throws -> [AnnotationTypeProperty] {
         var annotationTypeProperties: [AnnotationTypeProperty] = []
         for (key, value) in yaml {
-            guard let keyString = key.string else { throw RAMLError.ramlParsingError(message: "property key of annotationType must be a string") }
+            guard let keyString = key.string else {
+                throw RAMLError.ramlParsingError(.invalidDataType(for: "Property Key Of AnnotationType",
+                                                                  mustBeKindOf: "String"))
+            }
             let annotationTypeProperty = try parseAnnotationTypeProperty(name: keyString, yaml: value)
             annotationTypeProperties.append(annotationTypeProperty)
         }
@@ -41,7 +44,10 @@ extension RAML {
         if let enumArrayYaml = yaml["enum"].array {
             var enumValues: [String] = []
             for enumYaml in enumArrayYaml {
-                guard let enumYamlString = enumYaml.string else { throw RAMLError.ramlParsingError(message: "enum value in annotation type property must be a string") }
+                guard let enumYamlString = enumYaml.string else {
+                    throw RAMLError.ramlParsingError(.invalidDataType(for: "Enum Value in Annotation Type Property",
+                                                                      mustBeKindOf: "String"))
+                }
                 enumValues.append(enumYamlString)
             }
             annotationType.enum = enumValues

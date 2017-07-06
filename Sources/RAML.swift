@@ -48,7 +48,7 @@ public class RAML : HasTypes, HasAnnotationTypes, HasResources, HasTraitDefiniti
     public init(file: String) throws {
         includesAvailable = true
         initialFilePath = Path(file)
-        guard let filePath = initialFilePath else { throw RAMLError.yamlParsingError(message: "invalid file") }
+        guard let filePath = initialFilePath else { throw RAMLError.invalidFile(atPath: file) }
         let content = try contentFromFile(path: filePath)
         try loadRamlRootFromString(content)
     }
@@ -62,7 +62,7 @@ public class RAML : HasTypes, HasAnnotationTypes, HasResources, HasTraitDefiniti
     
     internal func directoryOfInitialFilePath() throws -> Path {
         guard let initialFilePath = initialFilePath else {
-            throw RAMLError.ramlParsingError(message: "invalid initial path")
+            throw RAMLError.unknown
         }
         return initialFilePath.absolute().directory()
     }
@@ -82,7 +82,9 @@ public class RAML : HasTypes, HasAnnotationTypes, HasResources, HasTraitDefiniti
 extension RAML {
     
     internal func parseRoot(_ yaml: Yaml) throws {
-        guard let yamlTitle = yaml["title"].string else { throw RAMLError.ramlParsingError(message: "title is required") }
+        guard let yamlTitle = yaml["title"].string else {
+            throw RAMLError.ramlParsingError(.missingValueFor(key: "title"))
+        }
         
         self.title = yamlTitle
         self.description = yaml["description"].string
@@ -121,7 +123,9 @@ extension RAML {
             self.traitDefinitions = try parseTraitDefinitions(traitsYaml)
         } else if let traitIncludeString = yaml["traits"].string {
             let yaml = try parseTraitFromIncludeString(traitIncludeString)
-            guard let traitsYaml = yaml.dictionary else { throw RAMLError.ramlParsingError(message: "invalid include") }
+            guard let traitsYaml = yaml.dictionary else {
+                throw RAMLError.ramlParsingError(.invalidInclude)
+            }
             self.traitDefinitions = try parseTraitDefinitions(traitsYaml)
         }
         

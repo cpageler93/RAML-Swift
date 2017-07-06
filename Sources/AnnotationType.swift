@@ -44,7 +44,10 @@ extension RAML {
     internal func parseAnnotationTypes(_ yaml: [Yaml: Yaml]) throws -> [AnnotationType] {
         var annotationTypes: [AnnotationType] = []
         for (key, value) in yaml {
-            guard let keyString = key.string else { throw RAMLError.ramlParsingError(message: "AnnotationType key must be a string") }
+            guard let keyString = key.string else {
+                throw RAMLError.ramlParsingError(.invalidDataType(for: "AnnotationType Key",
+                                                                  mustBeKindOf: "String"))
+            }
             let annotationType = try parseAnnotationType(name: keyString, yaml: value)
             annotationTypes.append(annotationType)
         }
@@ -86,7 +89,7 @@ extension RAML {
             }
             return .multiple(of: types)
         }
-        throw RAMLError.ramlParsingError(message: "type `\(string)` not supported in AnnotatonType")
+        throw RAMLError.ramlParsingError(.invalidAnnotationType(string))
     }
     
 }

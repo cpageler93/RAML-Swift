@@ -27,7 +27,10 @@ extension RAML {
     internal func parseResponses(_ yaml: [Yaml: Yaml]) throws -> [ResourceMethodResponse] {
         var responses: [ResourceMethodResponse] = []
         for (key, value) in yaml {
-            guard let keyString = key.string, let keyInt = Int(keyString) else { throw RAMLError.invalidRAMLVersion(message: "response key must be a int `\(key)`") }
+            guard let keyString = key.string, let keyInt = Int(keyString) else {
+                throw RAMLError.ramlParsingError(.invalidDataType(for: "Response Key",
+                                                                  mustBeKindOf: "Int"))
+            }
             let response = try parseResponse(code: keyInt, yaml: value)
             responses.append(response)
         }

@@ -31,7 +31,10 @@ extension RAML {
         var traitDefinitions: [TraitDefinition] = []
         
         for (key, value) in yaml {
-            guard let keyString = key.string else { throw RAMLError.ramlParsingError(message: "trait key must be a string") }
+            guard let keyString = key.string else {
+                throw RAMLError.ramlParsingError(.invalidDataType(for: "Trait Key",
+                                                                  mustBeKindOf: "String"))
+            }
             let traitDefinition = try parseTraitDefinition(name: keyString, yaml: value)
             traitDefinitions.append(traitDefinition)
         }
@@ -56,6 +59,7 @@ extension RAML {
     }
     
     internal func parseTraitFromIncludeString(_ includeString: String) throws -> Yaml {
+        try testInclude(includeString)
         return try parseYamlFromIncludeString(includeString,
                                               parentFilePath: try directoryOfInitialFilePath(),
                                               permittedFragmentIdentifier: "Trait")

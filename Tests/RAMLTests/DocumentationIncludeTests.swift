@@ -32,8 +32,17 @@ class DocumentationIncludeTests: XCTestCase {
         do {
             let _ = try RAML(file: path)
             XCTFail("this should fail")
-        } catch {
-            print(error)
+        } catch let error {
+            guard let ramlError = error as? RAMLError else {
+                XCTFail("Should fail")
+                return
+            }
+            switch ramlError {
+            case .invalidFile(let path):
+                print("is correct error.. missing file at Path: \(path)")
+            default:
+                XCTFail("Should be invalidFile Error")
+            }
         }
     }
     

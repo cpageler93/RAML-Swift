@@ -14,7 +14,7 @@ extension RAML {
     // MARK: - Internal
     
     internal func contentFromFile(path: Path) throws -> String {
-        if !path.exists { throw RAMLError.yamlParsingError(error: .invalidFile(atPath: path.string)) }
+        if !path.exists { throw RAMLError.invalidFile(atPath: path.string) }
         return try path.read(String.Encoding.utf8)
     }
     
@@ -46,9 +46,10 @@ extension RAML {
         let ramlPrefix = "#%RAML 1.0"
         guard firstLine.hasPrefix(ramlPrefix) else { return }
         let foundFragmentIdentifier = firstLine.substring(from: ramlPrefix.endIndex).trimmingCharacters(in: CharacterSet.whitespaces)
-        guard foundFragmentIdentifier.characters.count > 0 else { throw RAMLError.ramlParsingError(error: .missingFragmentIdentifier) }
+        guard foundFragmentIdentifier.characters.count > 0 else { throw RAMLError.ramlParsingError(.missingFragmentIdentifier) }
         if fragmentIdentifier != foundFragmentIdentifier {
-            throw RAMLError.ramlParsingError(error: .invalidFragmentIdentifier(invalid: foundFragmentIdentifier, valid: fragmentIdentifier))
+            throw RAMLError.ramlParsingError( .invalidFragmentIdentifier(invalid: foundFragmentIdentifier,
+                                                                         valid: fragmentIdentifier))
         }
     }
     
@@ -56,11 +57,11 @@ extension RAML {
     
     @discardableResult
     fileprivate func validateRamlVersion(string: String) throws -> String {
-        guard let firstLine = string.components(separatedBy: "\n").first else { throw RAMLError.ramlParsingError(error: .stringIsEmpty) }
+        guard let firstLine = string.components(separatedBy: "\n").first else { throw RAMLError.ramlParsingError(.stringIsEmpty) }
         let ramlPrefix = "#%RAML "
-        guard firstLine.hasPrefix(ramlPrefix) else { throw RAMLError.ramlParsingError(error: .invalidVersion) }
+        guard firstLine.hasPrefix(ramlPrefix) else { throw RAMLError.ramlParsingError(.invalidVersion) }
         let ramlVersion = firstLine.substring(from: ramlPrefix.endIndex)
-        guard ramlVersion == "1.0" else { throw RAMLError.ramlParsingError(error: .invalidVersion) }
+        guard ramlVersion == "1.0" else { throw RAMLError.ramlParsingError(.invalidVersion) }
         return ramlVersion
     }
     
@@ -69,7 +70,7 @@ extension RAML {
             let parsedYaml = try Yaml.load(string)
             return parsedYaml
         } catch {
-            throw RAMLError.yamlParsingError(error: .error(error))
+            throw RAMLError.yamlParsingError(error)
         }
     }
 

@@ -97,7 +97,7 @@ class TypesFromStringTests: XCTestCase {
             
             XCTAssertTrue(foundArrayType)
         } catch {
-            XCTFail()
+            XCTFail("Should not fail")
         }
     }
 }

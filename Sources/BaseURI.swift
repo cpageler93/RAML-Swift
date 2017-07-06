@@ -8,7 +8,7 @@
 import Foundation
 import Yaml
 
-public class BaseURI {
+public class BaseURI: HasAnnotations {
     
     public var value: String
     public var annotations: [Annotation]?
@@ -30,7 +30,9 @@ extension RAML {
     }
         
     internal func parseBaseURI(yaml: [Yaml: Yaml]) throws -> BaseURI {
-        guard let rawValue = yaml["value"]?.string else { throw RAMLError.ramlParsingError(message: "`value` must be set in baseUri") }
+        guard let rawValue = yaml["value"]?.string else {
+            throw RAMLError.ramlParsingError(.missingValueFor(key: "value"))
+        }
         let value = parseBaseURIValue(rawValue)
         let baseURI = BaseURI(value: value)
         baseURI.annotations = try parseAnnotations(yaml)

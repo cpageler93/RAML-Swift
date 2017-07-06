@@ -53,7 +53,10 @@ extension RAML {
         var uriParameters: [URIParameter] = []
         
         for (key, value) in yaml {
-            guard let keyString = key.string else { throw RAMLError.ramlParsingError(message: "URIParameter key must be a string `\(key)`") }
+            guard let keyString = key.string else {
+                throw RAMLError.ramlParsingError(.invalidDataType(for: "URIParameter Key",
+                                                                  mustBeKindOf: "String"))
+            }
             
             var type: URIParameter.ParameterType? = nil
             if let typeString = value["type"].string {
