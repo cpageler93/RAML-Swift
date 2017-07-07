@@ -40,7 +40,9 @@ public indirect enum DataType: Equatable {
         }
         return .custom(type: string)
     }
+
 }
+
 
 public func ==(lhs: DataType, rhs: DataType) -> Bool {
     switch (lhs, rhs) {

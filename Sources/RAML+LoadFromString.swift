@@ -9,7 +9,7 @@ import Foundation
 import Yaml
 import PathKit
 
-extension RAML {
+internal extension RAML {
     
     // MARK: - Internal
     
@@ -164,15 +164,19 @@ extension RAML {
     }
 }
 
-extension Yaml {
-    public init(array elements: [Yaml]) {
+
+internal extension Yaml {
+    
+    internal init(array elements: [Yaml]) {
         self = .array(elements)
     }
-    public init(dictionary elements: [Yaml: Yaml]) {
+    
+    internal init(dictionary elements: [Yaml: Yaml]) {
         var dictionary = [Yaml: Yaml]()
         for (k, v) in elements {
             dictionary[k] = v
         }
         self = .dictionary(dictionary)
     }
+    
 }

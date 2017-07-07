@@ -15,10 +15,11 @@ public class MediaType {
     public init(identifier: String) {
         self.identifier = identifier
     }
+    
 }
 
 // MARK: MediaType Parsing
-extension RAML {
+internal extension RAML {
     
     internal func parseMediaTypes(_ yaml: [Yaml]) throws -> [MediaType] {
         var mediaTypes: [MediaType] = []
@@ -36,6 +37,5 @@ extension RAML {
     internal func parseMediaType(_ string: String) -> MediaType {
         return MediaType(identifier: string)
     }
-    
     
 }

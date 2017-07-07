@@ -18,8 +18,9 @@ public class ResponseBody: HasBodyMediaTypes {
     
 }
 
-// MAKR: Response Body Parsing
-public extension RAML {
+
+// MARK: Response Body Parsing
+internal extension RAML {
     
     internal func parseResponseBody(_ yaml: Yaml) throws -> ResponseBody? {
         if let bodyString = yaml.string {

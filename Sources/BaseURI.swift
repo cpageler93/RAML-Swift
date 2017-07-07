@@ -22,7 +22,7 @@ public class BaseURI: HasAnnotations {
 
 
 // MARK: BaseURI Parsing
-extension RAML {
+internal extension RAML {
     
     internal func parseBaseURI(string: String) throws -> BaseURI {
         let value = parseBaseURIValue(string)

@@ -14,6 +14,7 @@ public class BodyMediaType: MediaType {
     
 }
 
+
 // MARK: BodyMediaType Parsing
 public extension RAML {
     
@@ -47,9 +48,13 @@ public extension RAML {
     
 }
 
+
 public protocol HasBodyMediaTypes {
+    
     var mediaTypes: [BodyMediaType]? { get set }
+    
 }
+
 
 public extension HasBodyMediaTypes {
     

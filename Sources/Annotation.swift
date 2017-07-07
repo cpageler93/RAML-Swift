@@ -15,7 +15,9 @@ public class Annotation {
     public init(name: String) {
         self.name = name
     }
+    
 }
+
 
 // MARK: Annotation Parsing
 extension RAML {
@@ -48,21 +50,26 @@ extension RAML {
     
 }
 
-extension String {
+
+internal extension String {
     
-    public func isAnnotationKey() -> Bool {
+    internal func isAnnotationKey() -> Bool {
         return self.hasPrefix("(") && self.hasSuffix(")")
     }
     
-    public func annotationKeyName() -> String {
+    internal func annotationKeyName() -> String {
         return String(self.dropFirst().dropLast())
     }
     
 }
 
+
 public protocol HasAnnotations {
+    
     var annotations: [Annotation]? { get set }
+    
 }
+
 
 public extension HasAnnotations {
     

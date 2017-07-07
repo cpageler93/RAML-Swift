@@ -23,8 +23,8 @@ public class TraitUsage {
     
 }
 
-
-public extension RAML {
+// MARK: Trait Usage Parsing
+internal extension RAML {
     
     internal func parseTraitUsages(yamlArray: [Yaml]) throws -> [TraitUsage] {
         var traitUsages: [TraitUsage] = []
@@ -62,12 +62,16 @@ public extension RAML {
         
         throw RAMLError.ramlParsingError(.failedParsingTraitUsage)
     }
+    
 }
 
 
 public protocol HasTraitUsages {
+    
     var traitUsages: [TraitUsage]? { get set }
+    
 }
+
 
 public extension HasTraitUsages {
     

@@ -9,6 +9,7 @@ import Foundation
 import Yaml
 
 public struct Protocols: OptionSet {
+    
     public init(rawValue: Protocols.RawValue) {
         self.rawValue = rawValue
     }
@@ -16,11 +17,12 @@ public struct Protocols: OptionSet {
     
     static let http  = Protocols(rawValue: 1 << 0)
     static let https = Protocols(rawValue: 1 << 1)
+    
 }
 
 
 // MARK: Protocols Parsing
-extension RAML {
+internal extension RAML {
     
     internal func parseProtocols(_ yaml: [Yaml]) throws -> Protocols {
         var protocols: Protocols = []

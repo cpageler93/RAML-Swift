@@ -22,8 +22,9 @@ public class Property {
     
 }
 
+
 // MARK: Property Parsing
-extension RAML {
+internal extension RAML {
     
     internal func parseProperties(_ yaml: [Yaml: Yaml]) throws -> [Property] {
         var properties: [Property] = []
@@ -78,9 +79,13 @@ extension RAML {
     
 }
 
+
 public protocol HasProperties {
+    
     var properties: [Property]? { get set }
+    
 }
+
 
 public extension HasProperties {
     

@@ -9,10 +9,12 @@ import Foundation
 import Yaml
 
 public enum AnnotationTypeEnum: Equatable {
+    
     case `nil`
     case string
     case properties
     case multiple(of: [AnnotationTypeEnum])
+    
 }
 
 public func ==(lhs: AnnotationTypeEnum, rhs: AnnotationTypeEnum) -> Bool {
@@ -35,11 +37,12 @@ public class AnnotationType: HasAnnotationTypeProperties {
     public init(name: String) {
         self.name = name
     }
+    
 }
 
 
 // MARK: AnnotationTypes Parsing
-extension RAML {
+internal extension RAML {
     
     internal func parseAnnotationTypes(_ yaml: [Yaml: Yaml]) throws -> [AnnotationType] {
         var annotationTypes: [AnnotationType] = []
@@ -94,11 +97,15 @@ extension RAML {
     
 }
 
+
 public protocol HasAnnotationTypes {
+    
     var annotationTypes: [AnnotationType]? { get set }
+    
 }
 
-extension HasAnnotationTypes {
+
+public extension HasAnnotationTypes {
     
     public func annotationTypeWith(name: String) -> AnnotationType? {
         for annotationType in annotationTypes ?? [] {

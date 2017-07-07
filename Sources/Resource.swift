@@ -30,10 +30,12 @@ public class Resource: HasResources, HasResourceMethods, ResourceParent {
     public func absolutePath() -> String {
         return parent.absolutePath() + path
     }
+    
 }
 
-// Resources Parsing
-extension RAML {
+
+// MARK: Resources Parsing
+internal extension RAML {
     
     internal func parseResources(_ yaml: Yaml, parent: ResourceParent) throws -> [Resource]? {
         var resources: [Resource] = []
@@ -64,9 +66,13 @@ extension RAML {
     
 }
 
+
 public protocol HasResources {
+    
     var resources: [Resource]? { get set }
+    
 }
+
 
 extension HasResources {
     
@@ -85,10 +91,12 @@ extension HasResources {
     
 }
 
-public protocol ResourceParent: HasAbsolutePath {
-    
-}
+
+public protocol ResourceParent: HasAbsolutePath { }
+
 
 public protocol HasAbsolutePath {
+    
     func absolutePath() -> String
+    
 }

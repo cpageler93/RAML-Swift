@@ -40,6 +40,7 @@ public class Type: HasProperties {
     }
 }
 
+
 // MARK: Type Parsing
 extension RAML {
     
@@ -125,13 +126,18 @@ extension RAML {
         
         return restrictions
     }
+    
 }
+
 
 public protocol HasTypes {
+    
     var types: [Type]? { get set }
+    
 }
 
-extension HasTypes {
+
+public extension HasTypes {
     
     public func typeWith(name: String) -> Type? {
         for type in types ?? [] {

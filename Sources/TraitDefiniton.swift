@@ -23,9 +23,8 @@ public class TraitDefinition: HasResourceHeaders {
 }
 
 
-// Trait Parsing
-extension RAML {
-    // TODO: consider includes
+// MARK: Trait Parsing
+internal extension RAML {
     
     internal func parseTraitDefinitions(_ yaml: [Yaml: Yaml]) throws -> [TraitDefinition] {
         var traitDefinitions: [TraitDefinition] = []
@@ -67,9 +66,13 @@ extension RAML {
     
 }
 
+
 public protocol HasTraitDefinitions {
+    
     var traitDefinitions: [TraitDefinition]? { get set }
+    
 }
+
 
 public extension HasTraitDefinitions {
     

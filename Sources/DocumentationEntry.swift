@@ -9,6 +9,7 @@ import Foundation
 import Yaml
 
 public class DocumentationEntry {
+    
     public var title: String
     public var content: String
     
@@ -16,11 +17,12 @@ public class DocumentationEntry {
         self.title = title
         self.content = content
     }
+    
 }
 
 
 // MARK: Documentation Parsing
-extension RAML {
+internal extension RAML {
     
     internal func parseDocumentation(_ yaml: [Yaml]) throws -> [DocumentationEntry] {
         var documentation: [DocumentationEntry] = []
@@ -47,11 +49,13 @@ extension RAML {
     
 }
 
-protocol HasDocumentationEntries {
+public protocol HasDocumentationEntries {
+    
     var documentation: [DocumentationEntry]? { get set }
+    
 }
 
-extension HasDocumentationEntries {
+public extension HasDocumentationEntries {
     
     func documentationWithTitle(_ title: String) -> DocumentationEntry? {
         for documentationEntry in documentation ?? [] {

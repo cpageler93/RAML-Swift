@@ -8,11 +8,14 @@
 import Foundation
 
 public enum RAMLError: Error, Equatable {
+    
     case yamlParsingError(Error)
     case ramlParsingError(RAMLParsingError)
     case invalidFile(atPath: String)
     case unknown
+    
 }
+
 
 public func ==(lhs: RAMLError, rhs: RAMLError) -> Bool {
     switch (lhs, rhs) {
@@ -24,7 +27,9 @@ public func ==(lhs: RAMLError, rhs: RAMLError) -> Bool {
     }
 }
 
+
 public enum RAMLParsingError: Error {
+    
     case missingValueFor(key: String)
     case missingFragmentIdentifier
     
@@ -43,7 +48,9 @@ public enum RAMLParsingError: Error {
     case invalidResourceHeaderType(String)
     
     case failedParsingTraitUsage
+    
 }
+
 
 public func ==(lhs: RAMLParsingError, rhs: RAMLParsingError) -> Bool {
     switch (lhs, rhs) {
@@ -77,6 +84,9 @@ public func ==(lhs: RAMLParsingError, rhs: RAMLParsingError) -> Bool {
     }
 }
 
+
 public enum YAMLParsingError: Error {
+    
     case error(Error)
+    
 }

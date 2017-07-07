@@ -44,10 +44,12 @@ public class URIParameter {
         self.type = type
         self.items = items
     }
+    
 }
 
+
 // MARK: URIParameters Parsing
-extension RAML {
+internal extension RAML {
     
     internal func parseURIParameters(_ yaml: [Yaml: Yaml]) throws -> [URIParameter] {
         var uriParameters: [URIParameter] = []

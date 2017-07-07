@@ -76,7 +76,9 @@ public class RAML : HasTypes, HasAnnotationTypes, HasResources, HasTraitDefiniti
         }
         return baseURIValue
     }
+    
 }
+
 
 // MARK: Parsing
 extension RAML {
@@ -135,7 +137,9 @@ extension RAML {
         
         self.resources = try parseResources(yaml, parent: self)
     }
+    
 }
+
 
 extension RAML: ResourceParent {
     

@@ -7,8 +7,8 @@
 
 import Foundation
 
-public protocol PropertyRestrictions {
-}
+public protocol PropertyRestrictions { }
+
 
 public class StringRestrictions: PropertyRestrictions {
     
@@ -17,6 +17,7 @@ public class StringRestrictions: PropertyRestrictions {
     public var maxLength: Int?
     
 }
+
 
 public class NumberRestrictions: PropertyRestrictions {
     
@@ -37,6 +38,7 @@ public class NumberRestrictions: PropertyRestrictions {
     public var multipleOf: Int?
     
 }
+
 
 public class FileRestrictions: PropertyRestrictions {
     

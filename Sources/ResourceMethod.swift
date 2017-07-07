@@ -9,6 +9,7 @@ import Foundation
 import Yaml
 
 public enum ResourceMethodType: String {
+    
     case get
     case patch
     case put
@@ -16,7 +17,9 @@ public enum ResourceMethodType: String {
     case delete
     case options
     case head
+    
 }
+
 
 public class ResourceMethod: HasResourceHeaders, HasAnnotations, HasTraitUsages, HasMethodResponses {
     
@@ -36,10 +39,12 @@ public class ResourceMethod: HasResourceHeaders, HasAnnotations, HasTraitUsages,
     public init(type: ResourceMethodType) {
         self.type = type
     }
+    
 }
 
+
 // MARK: ResourceMethod Parsing
-extension RAML {
+internal extension RAML {
     
     internal func parseResourceMethods(_ yaml: Yaml) throws -> [ResourceMethod]? {
         var resourceMethods: [ResourceMethod] = []
@@ -98,9 +103,13 @@ extension RAML {
     
 }
 
+
 public protocol HasResourceMethods {
+    
     var methods: [ResourceMethod]? { get set }
+    
 }
+
 
 public extension HasResourceMethods {
     

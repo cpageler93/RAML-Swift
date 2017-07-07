@@ -9,9 +9,12 @@ import Foundation
 import Yaml
 
 public enum ResourceHeaderType: String {
+    
     case string
     case array
+    
 }
+
 
 public class ResourceHeader {
     
@@ -33,8 +36,9 @@ public class ResourceHeader {
     
 }
 
-// Parsing Headers
-extension RAML {
+
+// MARK: Parsing Headers
+internal extension RAML {
     
     internal func parseHeaders(_ yaml: [Yaml: Yaml]) throws -> [ResourceHeader] {
         var headers: [ResourceHeader] = []
@@ -91,11 +95,16 @@ extension RAML {
         
         return items
     }
+    
 }
 
+
 public protocol HasResourceHeaders {
+    
     var headers: [ResourceHeader]? { get set }
+    
 }
+
 
 public extension HasResourceHeaders {
     
@@ -109,7 +118,7 @@ public extension HasResourceHeaders {
     }
     
     public func hasHeaderWith(key: String) -> Bool {
-        return hasHeaderWith(key: key) != nil
+        return headerWith(key: key) != nil
     }
     
 }

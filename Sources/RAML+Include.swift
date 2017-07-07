@@ -9,7 +9,7 @@ import Foundation
 import PathKit
 import Yaml
 
-extension RAML {
+internal extension RAML {
     
     internal func isInclude(_ value: String) -> Bool {
         return value.hasPrefix("!include")
@@ -43,9 +43,10 @@ extension RAML {
     
 }
 
-extension Path {
+
+internal extension Path {
     
-    public func directory() -> Path {
+    internal func directory() -> Path {
         if isDirectory {
             return self
         }

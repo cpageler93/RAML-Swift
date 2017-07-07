@@ -21,8 +21,9 @@ public class MethodResponse: HasAnnotations, HasResourceHeaders {
     }
 }
 
+
 // MARK: Response Parsing
-extension RAML {
+internal extension RAML {
     
     internal func parseResponses(_ yaml: [Yaml: Yaml]) throws -> [MethodResponse] {
         var responses: [MethodResponse] = []
@@ -59,9 +60,13 @@ extension RAML {
     
 }
 
+
 public protocol HasMethodResponses {
+    
     var responses: [MethodResponse]? { get set }
+    
 }
+
 
 public extension HasMethodResponses {
     
