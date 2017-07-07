@@ -246,4 +246,35 @@ class TypesFromStringTests: XCTestCase {
             XCTFail("This should not fail")
         }
     }
+    
+    func testTypeDefaultTypeForBodyMediaTypes() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: My API with Types
+        /send:
+          post:
+            body:
+              application/json:
+        """
+        
+        do {
+            let raml = try RAML(string: ramlString)
+            
+            guard
+                let sendResource = raml.resourceWith(path: "/send"),
+                let postSend = sendResource.methodWith(type: .post),
+                let sendBody = postSend.body,
+                let jsonMediaType = sendBody.mediaTypeWith(identifier: "application/json")
+            else {
+                XCTFail("This should not fail")
+                return
+            }
+            
+            XCTAssertEqual(sendBody.type, DataType.any)
+            XCTAssertEqual(jsonMediaType.type, DataType.any)
+        } catch {
+            XCTFail("This should not fail")
+        }
+    }
 }

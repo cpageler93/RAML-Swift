@@ -30,11 +30,16 @@ internal extension RAML {
             return body
         } else if let bodyYamlDict = yaml.dictionary {
             let body = ResponseBody()
+            
+            // media types
             if let mediaTypes = try parseBodyMediaTypes(bodyYamlDict) {
                 body.mediaTypes = mediaTypes
             } else {
                 body.mediaTypes = inheritedBodyMediaTypes()
             }
+            
+            body.type = .any
+            
             return body
         }
         return nil
@@ -45,6 +50,7 @@ internal extension RAML {
         
         for mediaType in mediaTypes ?? [] {
             let bodyMediaType = BodyMediaType(identifier: mediaType.identifier)
+            bodyMediaType.type = .any
             bodyMediaTypes.append(bodyMediaType)
         }
 
