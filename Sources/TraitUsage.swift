@@ -23,6 +23,7 @@ public class TraitUsage {
     
 }
 
+
 // MARK: Trait Usage Parsing
 internal extension RAML {
     
