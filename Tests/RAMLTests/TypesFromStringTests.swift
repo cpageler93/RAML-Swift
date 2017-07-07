@@ -277,4 +277,47 @@ class TypesFromStringTests: XCTestCase {
             XCTFail("This should not fail")
         }
     }
+    
+    // https://github.com/raml-org/raml-spec/blob/master/versions/raml-10/raml-10.md/#type-expressions
+    func testTypeExpressions() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: My API with Types
+        types:
+          Person:
+            type: object
+            properties:
+          Persons: Person[]
+          Strings: string[]
+          BiDimensionalStrings: string[][]
+          StringOrPerson: string | Person
+          ArrayOfStringsOrPersons: (string | Person)[]
+        """
+        
+        do {
+            let raml = try RAML(string: ramlString)
+            guard
+                let personType = raml.typeWith(name: "Person"),
+                let personsType = raml.typeWith(name: "Persons"),
+                let stringsType = raml.typeWith(name: "Strings"),
+                let biDimensionalStringsType = raml.typeWith(name: "BiDimensionalStrings"),
+                let stringOrPerson = raml.typeWith(name: "StringOrPerson"),
+                let arrayOfstringsOrPersons = raml.typeWith(name: "ArrayOfStringsOrPersons")
+            else {
+                XCTFail("This should not fail")
+                return
+            }
+            
+            XCTAssertEqual(personType.type, .object)
+            XCTAssertEqual(personsType.type, .array(ofType: .custom(type: "Person")))
+            XCTAssertEqual(stringsType.type, .array(ofType: .scalar(type: .string)))
+            XCTAssertEqual(biDimensionalStringsType.type, .array(ofType: .array(ofType: .scalar(type: .string))))
+            XCTAssertEqual(stringOrPerson.type, .union(types: [.scalar(type: .string), .custom(type: "Person")]))
+            XCTAssertEqual(arrayOfstringsOrPersons.type, .array(ofType: .union(types: [.scalar(type: .string), .custom(type: "Person")])))
+            
+        } catch {
+            XCTFail("This should not fail")
+        }
+    }
 }

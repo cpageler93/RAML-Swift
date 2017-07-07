@@ -58,24 +58,27 @@ extension RAML {
     }
     
     private func parseType(name: String, yaml: Yaml) throws -> Type {
-        let yamlDict = yaml.dictionary
         let type = Type(name: name)
         
-        if let typeString = yaml["type"].string {
-            type.type = DataType.dataTypeEnumFrom(string: typeString)
-        }
-        
-        if let yamlProperties = yaml["properties"].dictionary {
-            type.properties = try parseProperties(yamlProperties)
-            type.type = .object
-        } else {
-            // no properties as dictionary.. check if properties is empty key
-            for (key, _) in yamlDict ?? [:] {
-                guard let keyString = key.string else { continue }
-                
-                // if there is an empty properties key and type isnt already set
-                if keyString == "properties" && type.type == nil {
-                    type.type = .object
+        if let yamlString = yaml.string {
+            type.type = DataType.dataTypeEnumFrom(string: yamlString)
+        } else if let yamlDict = yaml.dictionary {
+            if let typeString = yamlDict["type"]?.string {
+                type.type = DataType.dataTypeEnumFrom(string: typeString)
+            }
+            
+            if let yamlProperties = yamlDict["properties"]?.dictionary {
+                type.properties = try parseProperties(yamlProperties)
+                type.type = .object
+            } else {
+                // no properties as dictionary.. check if properties is empty key
+                for (key, _) in yamlDict {
+                    guard let keyString = key.string else { continue }
+                    
+                    // if there is an empty properties key and type isnt already set
+                    if keyString == "properties" && type.type == nil {
+                        type.type = .object
+                    }
                 }
             }
         }

@@ -37,6 +37,17 @@ public indirect enum DataType: Equatable {
             return .array(ofType: dataTypeEnumFrom(string: arrayType))
         } else if let scalar = ScalarType(rawValue: string) {
             return .scalar(type: scalar)
+        } else if string.contains("|") {
+            let stringTypes = string
+                .replacingOccurrences(of: " ", with: "")
+                .replacingOccurrences(of: "(", with: "")
+                .replacingOccurrences(of: ")", with: "")
+                .components(separatedBy: "|")
+            var types: [DataType] = []
+            for stringType in stringTypes {
+                types.append(dataTypeEnumFrom(string: stringType))
+            }
+            return .union(types: types)
         }
         return .custom(type: string)
     }
