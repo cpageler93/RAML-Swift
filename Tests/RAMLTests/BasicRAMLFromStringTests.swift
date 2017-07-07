@@ -282,7 +282,12 @@ class BasicRAMLFromStringTests: XCTestCase {
                 return
             }
             
-            // TODO: check postSendBody/mediaType
+            guard let jsonMediaType = postSendBody.mediaTypeWith(identifier: "application/json") else {
+                XCTFail()
+                return
+            }
+            
+            XCTAssertEqual(jsonMediaType.type, .custom(type: "Another"))
             
         } catch {
             XCTFail()

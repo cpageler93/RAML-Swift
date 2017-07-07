@@ -18,7 +18,7 @@ public enum ResourceMethodType: String {
     case head
 }
 
-public class ResourceMethod: HasResourceHeaders, HasAnnotations, HasTraitUsages, HasResourceMethodResponses {
+public class ResourceMethod: HasResourceHeaders, HasAnnotations, HasTraitUsages, HasMethodResponses {
     
     public var type: ResourceMethodType
     public var displayName: String?
@@ -27,7 +27,7 @@ public class ResourceMethod: HasResourceHeaders, HasAnnotations, HasTraitUsages,
     // queryParameters
     public var headers: [ResourceHeader]?
     // queryString
-    public var responses: [ResourceMethodResponse]?
+    public var responses: [MethodResponse]?
     public var body: ResponseBody?
     // protocols
     public var traitUsages: [TraitUsage]?
@@ -90,6 +90,8 @@ extension RAML {
         } else if let traitsYamlArray = yaml["is"].array {
             resourceMethod.traitUsages = try parseTraitUsages(yamlArray: traitsYamlArray)
         }
+        
+        resourceMethod.body = try parseResponseBody(yaml["body"])
         
         return resourceMethod
     }
