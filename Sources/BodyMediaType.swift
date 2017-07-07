@@ -67,4 +67,8 @@ public extension HasBodyMediaTypes {
         return nil
     }
     
+    public func hasMediaTypeWith(identifier: String) -> Bool {
+        return mediaTypeWith(identifier: identifier) != nil
+    }
+    
 }

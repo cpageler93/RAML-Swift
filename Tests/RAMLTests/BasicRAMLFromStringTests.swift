@@ -244,50 +244,37 @@ class BasicRAMLFromStringTests: XCTestCase {
             let raml = try RAML(string: ramlString)
             XCTAssertEqual(raml.resources?.count, 2)
             
-            guard let listResource = raml.resourceWith(path: "/list") else {
-                XCTFail()
-                return
-            }
-            
-            guard let getListMethod = listResource.methodWith(type: .get) else {
-                XCTFail()
-                return
-            }
-            
-            guard let okResponse = getListMethod.responseWith(code: 200) else {
-                XCTFail()
-                return
-            }
-            
-            guard let okResponseBody = okResponse.body else {
+            guard
+                let listResource = raml.resourceWith(path: "/list"),
+                let getListMethod = listResource.methodWith(type: .get),
+                let okResponse = getListMethod.responseWith(code: 200),
+                let okResponseBody = okResponse.body
+            else {
                 XCTFail()
                 return
             }
             
             XCTAssertEqual(okResponseBody.type, DataType.array(ofType: .custom(type: "Person")))
-            // TODO: check response/mediaType
             
-            guard let sendResource = raml.resourceWith(path: "/send") else {
-                XCTFail()
-                return
-            }
+            // inherited from default media types
+            XCTAssertEqual(okResponseBody.mediaTypes?.count, 2)
+            XCTAssertTrue(okResponseBody.hasMediaTypeWith(identifier: "application/json"))
+            XCTAssertTrue(okResponseBody.hasMediaTypeWith(identifier: "application/xml"))
             
-            guard let postSendMethod = sendResource.methodWith(type: .post) else {
-                XCTFail()
-                return
-            }
-            
-            guard let postSendBody = postSendMethod.body else {
-                XCTFail()
-                return
-            }
-            
-            guard let jsonMediaType = postSendBody.mediaTypeWith(identifier: "application/json") else {
+            guard
+                let sendResource = raml.resourceWith(path: "/send"),
+                let postSendMethod = sendResource.methodWith(type: .post),
+                let postSendBody = postSendMethod.body,
+                let jsonMediaType = postSendBody.mediaTypeWith(identifier: "application/json")
+            else {
                 XCTFail()
                 return
             }
             
             XCTAssertEqual(jsonMediaType.type, .custom(type: "Another"))
+            
+            // inheritance cancelled when mediaTypes are set explicitly
+            XCTAssertEqual(postSendBody.mediaTypes?.count, 1)
             
         } catch {
             XCTFail()

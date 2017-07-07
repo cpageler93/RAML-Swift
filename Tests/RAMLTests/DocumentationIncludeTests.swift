@@ -57,7 +57,7 @@ class DocumentationIncludeTests: XCTestCase {
         
         do {
             let raml = try RAML(file: path)
-            guard let legalDocumentationEntry = raml.documentationWithTitle("Legal") else {
+            guard let legalDocumentationEntry = raml.documentationEntryWith(title: "Legal") else {
                 XCTFail()
                 return
             }

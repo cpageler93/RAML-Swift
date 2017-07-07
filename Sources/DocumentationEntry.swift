@@ -57,13 +57,17 @@ public protocol HasDocumentationEntries {
 
 public extension HasDocumentationEntries {
     
-    func documentationWithTitle(_ title: String) -> DocumentationEntry? {
+    func documentationEntryWith(title: String) -> DocumentationEntry? {
         for documentationEntry in documentation ?? [] {
             if documentationEntry.title == title {
                 return documentationEntry
             }
         }
         return nil
+    }
+    
+    func hasDocumentationEntryWith(title: String) -> Bool {
+        return documentationEntryWith(title: title) != nil
     }
     
 }
