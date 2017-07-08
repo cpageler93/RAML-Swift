@@ -8,7 +8,7 @@
 import Foundation
 import Yaml
 
-public enum ResourceHeaderType: String {
+public enum HeaderType: String {
     
     case string
     case array
@@ -16,7 +16,7 @@ public enum ResourceHeaderType: String {
 }
 
 
-public class ResourceHeader {
+public class Header {
     
     public class Items {
         public var pattern: String?
@@ -25,7 +25,7 @@ public class ResourceHeader {
     
     public var key: String
     public var description: String?
-    public var type: ResourceHeaderType = .string
+    public var type: HeaderType = .string
     public var example: String?
     public var items: Items?
     public var required: Bool = true
@@ -40,8 +40,8 @@ public class ResourceHeader {
 // MARK: Parsing Headers
 internal extension RAML {
     
-    internal func parseHeaders(_ yaml: [Yaml: Yaml]) throws -> [ResourceHeader] {
-        var headers: [ResourceHeader] = []
+    internal func parseHeaders(_ yaml: [Yaml: Yaml]) throws -> [Header] {
+        var headers: [Header] = []
         for (key, value) in yaml {
             guard let keyString = key.string else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "Header Key",
@@ -53,16 +53,16 @@ internal extension RAML {
         return headers
     }
     
-    private func parseHeader(key: String, yaml: Yaml) throws -> ResourceHeader {
-        let header = ResourceHeader(key: key)
+    private func parseHeader(key: String, yaml: Yaml) throws -> Header {
+        let header = Header(key: key)
         
         if let descriptionString = yaml["description"].string {
             header.description = descriptionString
         }
         
         if let typeString = yaml["type"].string {
-            guard let resourceHeaderType = ResourceHeaderType(rawValue: typeString) else {
-                throw RAMLError.ramlParsingError(.invalidResourceHeaderType(typeString))
+            guard let resourceHeaderType = HeaderType(rawValue: typeString) else {
+                throw RAMLError.ramlParsingError(.invalidHeaderType(typeString))
             }
             header.type = resourceHeaderType
         }
@@ -82,8 +82,8 @@ internal extension RAML {
         return header
     }
     
-    private func parseResourceHeaderItems(_ yaml: [Yaml: Yaml]) throws -> ResourceHeader.Items {
-        let items = ResourceHeader.Items()
+    private func parseResourceHeaderItems(_ yaml: [Yaml: Yaml]) throws -> Header.Items {
+        let items = Header.Items()
         
         if let patternString = yaml["pattern"]?.string {
             items.pattern = patternString
@@ -99,16 +99,16 @@ internal extension RAML {
 }
 
 
-public protocol HasResourceHeaders {
+public protocol HasHeaders {
     
-    var headers: [ResourceHeader]? { get set }
+    var headers: [Header]? { get set }
     
 }
 
 
-public extension HasResourceHeaders {
+public extension HasHeaders {
     
-    public func headerWith(key: String) -> ResourceHeader? {
+    public func headerWith(key: String) -> Header? {
         for header in headers ?? [] {
             if header.key == key {
                 return header

@@ -8,13 +8,13 @@
 import Foundation
 import Yaml
 
-public class TraitDefinition: HasResourceHeaders {
+public class TraitDefinition: HasHeaders {
     
     public var name: String
     public var usage: String?
     public var description: String?
     
-    public var headers: [ResourceHeader]?
+    public var headers: [Header]?
     // queryParameters
     
     public init(name: String) {

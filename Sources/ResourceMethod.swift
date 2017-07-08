@@ -21,14 +21,14 @@ public enum ResourceMethodType: String {
 }
 
 
-public class ResourceMethod: HasResourceHeaders, HasAnnotations, HasTraitUsages, HasMethodResponses {
+public class ResourceMethod: HasHeaders, HasAnnotations, HasTraitUsages, HasMethodResponses {
     
     public var type: ResourceMethodType
     public var displayName: String?
     public var description: String?
     public var annotations: [Annotation]?
     // queryParameters
-    public var headers: [ResourceHeader]?
+    public var headers: [Header]?
     // queryString
     public var responses: [MethodResponse]?
     public var body: ResponseBody?

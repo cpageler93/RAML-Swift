@@ -45,7 +45,7 @@ public enum RAMLParsingError: Error {
     case invalidVersion
     case invalidInclude
     case invalidAnnotationType(String)
-    case invalidResourceHeaderType(String)
+    case invalidHeaderType(String)
     
     case failedParsingTraitUsage
     
@@ -77,7 +77,7 @@ public func ==(lhs: RAMLParsingError, rhs: RAMLParsingError) -> Bool {
     case (.invalidVersion, .invalidVersion): return true
     case (.invalidInclude, .invalidInclude): return true
     case (.invalidAnnotationType(let lhsString), .invalidAnnotationType(let rhsString)): return lhsString == rhsString
-    case (.invalidResourceHeaderType(let lhsString), .invalidResourceHeaderType(let rhsString)): return lhsString == rhsString
+    case (.invalidHeaderType(let lhsString), .invalidHeaderType(let rhsString)): return lhsString == rhsString
         
     case (.failedParsingTraitUsage, .failedParsingTraitUsage): return true
     default: return false

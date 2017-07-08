@@ -18,6 +18,10 @@
 		59ADB3501F0658760003B348 /* AnnotationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59ADB34F1F0658760003B348 /* AnnotationsTests.swift */; };
 		59ADB3521F0658D80003B348 /* AnnotationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59ADB3511F0658D80003B348 /* AnnotationType.swift */; };
 		59ADB3541F0661C00003B348 /* AnnotationTypeProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59ADB3531F0661C00003B348 /* AnnotationTypeProperty.swift */; };
+		59D3579E1F112E44003B6CE7 /* SecurityScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D3579D1F112E44003B6CE7 /* SecurityScheme.swift */; };
+		59D357A01F113021003B6CE7 /* SecuritySchemeDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D3579F1F113021003B6CE7 /* SecuritySchemeDescription.swift */; };
+		59D357A21F113043003B6CE7 /* SecuritySchemeSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D357A11F113043003B6CE7 /* SecuritySchemeSettings.swift */; };
+		59D357A41F113076003B6CE7 /* SecuritySchemesFromStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D357A31F113076003B6CE7 /* SecuritySchemesFromStringTests.swift */; };
 		59D415E41F06D8C100247940 /* ResourcesFromStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415E31F06D8C100247940 /* ResourcesFromStringTests.swift */; };
 		59D415E61F06D97500247940 /* ResourceHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415E51F06D97500247940 /* ResourceHeader.swift */; };
 		59D415E81F06DE7800247940 /* TraitDefiniton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415E71F06DE7800247940 /* TraitDefiniton.swift */; };
@@ -142,6 +146,10 @@
 		59ADB34F1F0658760003B348 /* AnnotationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationsTests.swift; sourceTree = "<group>"; };
 		59ADB3511F0658D80003B348 /* AnnotationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationType.swift; sourceTree = "<group>"; };
 		59ADB3531F0661C00003B348 /* AnnotationTypeProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationTypeProperty.swift; sourceTree = "<group>"; };
+		59D3579D1F112E44003B6CE7 /* SecurityScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityScheme.swift; sourceTree = "<group>"; };
+		59D3579F1F113021003B6CE7 /* SecuritySchemeDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySchemeDescription.swift; sourceTree = "<group>"; };
+		59D357A11F113043003B6CE7 /* SecuritySchemeSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySchemeSettings.swift; sourceTree = "<group>"; };
+		59D357A31F113076003B6CE7 /* SecuritySchemesFromStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySchemesFromStringTests.swift; sourceTree = "<group>"; };
 		59D415E31F06D8C100247940 /* ResourcesFromStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesFromStringTests.swift; sourceTree = "<group>"; };
 		59D415E51F06D97500247940 /* ResourceHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceHeader.swift; sourceTree = "<group>"; };
 		59D415E71F06DE7800247940 /* TraitDefiniton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitDefiniton.swift; sourceTree = "<group>"; };
@@ -264,6 +272,7 @@
 				59D415EB1F09003100247940 /* TraitsFromStringTests.swift */,
 				5906769F1F0A3B770022DFCE /* RootIncludeTests.swift */,
 				594E75681F0A4B9B00D9D5E7 /* ValueIncludeTests.swift */,
+				59D357A31F113076003B6CE7 /* SecuritySchemesFromStringTests.swift */,
 			);
 			name = RAMLTests;
 			path = Tests/RAMLTests;
@@ -378,6 +387,9 @@
 				59D415E71F06DE7800247940 /* TraitDefiniton.swift */,
 				59D415ED1F09012800247940 /* TraitUsage.swift */,
 				59D415E51F06D97500247940 /* ResourceHeader.swift */,
+				59D3579D1F112E44003B6CE7 /* SecurityScheme.swift */,
+				59D3579F1F113021003B6CE7 /* SecuritySchemeDescription.swift */,
+				59D357A11F113043003B6CE7 /* SecuritySchemeSettings.swift */,
 			);
 			path = Sources;
 			sourceTree = SOURCE_ROOT;
@@ -529,6 +541,7 @@
 				594E75691F0A4B9B00D9D5E7 /* ValueIncludeTests.swift in Sources */,
 				OBJ_124 /* BasicRAMLFromStringTests.swift in Sources */,
 				59ADB3501F0658760003B348 /* AnnotationsTests.swift in Sources */,
+				59D357A41F113076003B6CE7 /* SecuritySchemesFromStringTests.swift in Sources */,
 				594D4B6A1F0D34EB002E72BA /* DocumentationIncludeTests.swift in Sources */,
 				OBJ_125 /* DataTypeTests.swift in Sources */,
 				OBJ_126 /* GitHubExampleTests.swift in Sources */,
@@ -587,6 +600,8 @@
 				59F928A31F0F88AD003EE112 /* BodyMediaType.swift in Sources */,
 				OBJ_99 /* DocumentationEntry.swift in Sources */,
 				59D415EA1F06E8E400247940 /* MethodResponse.swift in Sources */,
+				59D357A21F113043003B6CE7 /* SecuritySchemeSettings.swift in Sources */,
+				59D3579E1F112E44003B6CE7 /* SecurityScheme.swift in Sources */,
 				59ADB3521F0658D80003B348 /* AnnotationType.swift in Sources */,
 				OBJ_100 /* MediaType.swift in Sources */,
 				OBJ_101 /* Property.swift in Sources */,
@@ -594,6 +609,7 @@
 				5902527D1F0647DD004C9AB6 /* Annotation.swift in Sources */,
 				OBJ_102 /* PropertyRestrictions.swift in Sources */,
 				59D415EE1F09012800247940 /* TraitUsage.swift in Sources */,
+				59D357A01F113021003B6CE7 /* SecuritySchemeDescription.swift in Sources */,
 				591027A41F0E77F600C8A7D0 /* ResponseBody.swift in Sources */,
 				OBJ_103 /* Protocols.swift in Sources */,
 				OBJ_104 /* RAML+Include.swift in Sources */,

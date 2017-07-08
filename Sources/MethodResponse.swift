@@ -8,12 +8,12 @@
 import Foundation
 import Yaml
 
-public class MethodResponse: HasAnnotations, HasResourceHeaders {
+public class MethodResponse: HasAnnotations, HasHeaders {
     
     public var code: Int
     public var description: String?
     public var annotations: [Annotation]?
-    public var headers: [ResourceHeader]?
+    public var headers: [Header]?
     public var body: ResponseBody?
     
     public init(code: Int) {
