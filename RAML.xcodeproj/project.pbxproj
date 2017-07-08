@@ -23,6 +23,8 @@
 		59D357A21F113043003B6CE7 /* SecuritySchemeSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D357A11F113043003B6CE7 /* SecuritySchemeSettings.swift */; };
 		59D357A41F113076003B6CE7 /* SecuritySchemesFromStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D357A31F113076003B6CE7 /* SecuritySchemesFromStringTests.swift */; };
 		59D357A61F11847C003B6CE7 /* SecuritySchemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D357A51F11847C003B6CE7 /* SecuritySchemeTests.swift */; };
+		59D357A81F11885D003B6CE7 /* RAML+Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D357A71F11885D003B6CE7 /* RAML+Routes.swift */; };
+		59D357AA1F118883003B6CE7 /* RouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D357A91F118883003B6CE7 /* RouteTests.swift */; };
 		59D415E41F06D8C100247940 /* ResourcesFromStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415E31F06D8C100247940 /* ResourcesFromStringTests.swift */; };
 		59D415E61F06D97500247940 /* ResourceHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415E51F06D97500247940 /* ResourceHeader.swift */; };
 		59D415E81F06DE7800247940 /* TraitDefiniton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415E71F06DE7800247940 /* TraitDefiniton.swift */; };
@@ -152,6 +154,8 @@
 		59D357A11F113043003B6CE7 /* SecuritySchemeSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySchemeSettings.swift; sourceTree = "<group>"; };
 		59D357A31F113076003B6CE7 /* SecuritySchemesFromStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySchemesFromStringTests.swift; sourceTree = "<group>"; };
 		59D357A51F11847C003B6CE7 /* SecuritySchemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySchemeTests.swift; sourceTree = "<group>"; };
+		59D357A71F11885D003B6CE7 /* RAML+Routes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RAML+Routes.swift"; sourceTree = "<group>"; };
+		59D357A91F118883003B6CE7 /* RouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteTests.swift; sourceTree = "<group>"; };
 		59D415E31F06D8C100247940 /* ResourcesFromStringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourcesFromStringTests.swift; sourceTree = "<group>"; };
 		59D415E51F06D97500247940 /* ResourceHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceHeader.swift; sourceTree = "<group>"; };
 		59D415E71F06DE7800247940 /* TraitDefiniton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitDefiniton.swift; sourceTree = "<group>"; };
@@ -276,6 +280,7 @@
 				594E75681F0A4B9B00D9D5E7 /* ValueIncludeTests.swift */,
 				59D357A31F113076003B6CE7 /* SecuritySchemesFromStringTests.swift */,
 				59D357A51F11847C003B6CE7 /* SecuritySchemeTests.swift */,
+				59D357A91F118883003B6CE7 /* RouteTests.swift */,
 			);
 			name = RAMLTests;
 			path = Tests/RAMLTests;
@@ -373,6 +378,7 @@
 				OBJ_14 /* Protocols.swift */,
 				OBJ_15 /* RAML+Include.swift */,
 				OBJ_16 /* RAML+LoadFromString.swift */,
+				59D357A71F11885D003B6CE7 /* RAML+Routes.swift */,
 				OBJ_17 /* RAML.swift */,
 				OBJ_18 /* RAMLError.swift */,
 				OBJ_19 /* Type.swift */,
@@ -552,6 +558,7 @@
 				59D357A61F11847C003B6CE7 /* SecuritySchemeTests.swift in Sources */,
 				OBJ_128 /* TypesFromStringTests.swift in Sources */,
 				OBJ_129 /* UserDocumentationTests.swift in Sources */,
+				59D357AA1F118883003B6CE7 /* RouteTests.swift in Sources */,
 				59D415EC1F09003100247940 /* TraitsFromStringTests.swift in Sources */,
 				590676A01F0A3B770022DFCE /* RootIncludeTests.swift in Sources */,
 			);
@@ -608,6 +615,7 @@
 				59D3579E1F112E44003B6CE7 /* SecurityScheme.swift in Sources */,
 				59ADB3521F0658D80003B348 /* AnnotationType.swift in Sources */,
 				OBJ_100 /* MediaType.swift in Sources */,
+				59D357A81F11885D003B6CE7 /* RAML+Routes.swift in Sources */,
 				OBJ_101 /* Property.swift in Sources */,
 				59D415E81F06DE7800247940 /* TraitDefiniton.swift in Sources */,
 				5902527D1F0647DD004C9AB6 /* Annotation.swift in Sources */,
