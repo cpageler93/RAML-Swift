@@ -24,6 +24,15 @@ internal extension RAML {
     
     internal func parseSecuritySchemeDescription(_ yaml: [Yaml: Yaml]) throws -> SecuritySchemeDescription {
         let securitySchemeDescription = SecuritySchemeDescription()
+        
+        if let yamlHeaders = yaml["headers"]?.dictionary {
+            securitySchemeDescription.headers = try parseHeaders(yamlHeaders)
+        }
+        
+        if let yamlResponses = yaml["responses"]?.dictionary {
+            securitySchemeDescription.responses = try parseResponses(yamlResponses)
+        }
+        
         return securitySchemeDescription
     }
     

@@ -34,6 +34,7 @@ public enum RAMLParsingError: Error {
     case missingFragmentIdentifier
     
     case includesNotAvailable
+    case settingsNotAvailableFor(String)
     
     case stringWhichIsParsedAsIncludeIsNotInclude
     case stringIsEmpty
@@ -46,8 +47,10 @@ public enum RAMLParsingError: Error {
     case invalidInclude
     case invalidAnnotationType(String)
     case invalidHeaderType(String)
+    case invalidSecuritySchemeType(String)
     
     case failedParsingTraitUsage
+    case failedParsingSecurityScheme
     
 }
 
@@ -58,6 +61,7 @@ public func ==(lhs: RAMLParsingError, rhs: RAMLParsingError) -> Bool {
     case (.missingFragmentIdentifier, .missingFragmentIdentifier): return true
         
     case (.includesNotAvailable, .includesNotAvailable): return true
+    case (.settingsNotAvailableFor(let lhsString), .settingsNotAvailableFor(let rhsString)): return lhsString == rhsString
         
     case (.stringWhichIsParsedAsIncludeIsNotInclude, .stringWhichIsParsedAsIncludeIsNotInclude): return true
     case (.stringIsEmpty, .stringIsEmpty): return true
@@ -78,8 +82,11 @@ public func ==(lhs: RAMLParsingError, rhs: RAMLParsingError) -> Bool {
     case (.invalidInclude, .invalidInclude): return true
     case (.invalidAnnotationType(let lhsString), .invalidAnnotationType(let rhsString)): return lhsString == rhsString
     case (.invalidHeaderType(let lhsString), .invalidHeaderType(let rhsString)): return lhsString == rhsString
+    case (.invalidSecuritySchemeType(let lhsString), .invalidSecuritySchemeType(let rhsString)): return lhsString == rhsString
         
     case (.failedParsingTraitUsage, .failedParsingTraitUsage): return true
+    case (.failedParsingSecurityScheme, .failedParsingSecurityScheme): return true
+        
     default: return false
     }
 }
