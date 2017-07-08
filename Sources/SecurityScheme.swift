@@ -86,11 +86,18 @@ internal extension RAML {
             
             return securityScheme
         } else if let yamlString = yaml.string {
-            // TODO: add missing include
-            return SecurityScheme(identifier: "NOT VALID", type: .basicAuth)
+            let yamlFromInclude = try parseSecuritySchemeFromIncludeString(yamlString)
+            return try parseSecurityScheme(identifier: identifier, yaml: yamlFromInclude)
         }
         
         throw RAMLError.ramlParsingError(.failedParsingSecurityScheme)
+    }
+    
+    internal func parseSecuritySchemeFromIncludeString(_ includeString: String) throws -> Yaml {
+        try testInclude(includeString)
+        return try parseYamlFromIncludeString(includeString,
+                                              parentFilePath: try directoryOfInitialFilePath(),
+                                              permittedFragmentIdentifier: "SecurityScheme")
     }
     
 }
