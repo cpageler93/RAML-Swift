@@ -50,7 +50,8 @@ class RouteTests: XCTestCase {
         
         do {
             let raml = try RAML(string: ramlString)
-            let routes = raml.routes()
+            let prep = RAMLPreprocessor(raml: raml)
+            let routes = prep.routes()
             
             XCTAssertEqual(routes, expectedRoutes)
         } catch {
