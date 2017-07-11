@@ -58,6 +58,11 @@ public class RAML : HasBaseURIParameters, HasProtocols, HasMediaTypes, HasDocume
         try loadRamlRootFromString(string)
     }
     
+    internal init() {
+        title = ""
+        includesAvailable = false
+    }
+    
     // MARK: - Internal Methods
     
     internal func directoryOfInitialFilePath() throws -> Path {
@@ -137,6 +142,28 @@ extension RAML {
         } // TODO: Consider Includes
         
         self.resources = try parseResources(yaml)
+    }
+    
+}
+
+
+// MARK: Default Values
+public extension RAML {
+    
+    public convenience init(initWithDefaultsBasedOn raml: RAML) {
+        self.init()
+        
+        self.ramlVersion = raml.ramlVersion
+        self.includesAvailable = raml.includesAvailable
+        self.initialFilePath = raml.initialFilePath
+        
+        self.title = raml.title
+        self.description = raml.description ?? nil // no default value
+        self.version = raml.version ?? nil // no default value
+    }
+    
+    public func applyDefaults() -> RAML {
+        return RAML(initWithDefaultsBasedOn: self)
     }
     
 }

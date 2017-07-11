@@ -29,6 +29,7 @@
 		59D415EA1F06E8E400247940 /* MethodResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415E91F06E8E400247940 /* MethodResponse.swift */; };
 		59D415EC1F09003100247940 /* TraitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415EB1F09003100247940 /* TraitTests.swift */; };
 		59D415EE1F09012800247940 /* TraitUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415ED1F09012800247940 /* TraitUsage.swift */; };
+		59DF5C231F15225100C81ADF /* DefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DF5C221F15225100C81ADF /* DefaultsTests.swift */; };
 		59F928A31F0F88AD003EE112 /* BodyMediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F928A21F0F88AD003EE112 /* BodyMediaType.swift */; };
 		OBJ_100 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* MediaType.swift */; };
 		OBJ_101 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Property.swift */; };
@@ -157,6 +158,7 @@
 		59D415E91F06E8E400247940 /* MethodResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MethodResponse.swift; sourceTree = "<group>"; };
 		59D415EB1F09003100247940 /* TraitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitTests.swift; sourceTree = "<group>"; };
 		59D415ED1F09012800247940 /* TraitUsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitUsage.swift; sourceTree = "<group>"; };
+		59DF5C221F15225100C81ADF /* DefaultsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsTests.swift; sourceTree = "<group>"; };
 		59F928A21F0F88AD003EE112 /* BodyMediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyMediaType.swift; sourceTree = "<group>"; };
 		OBJ_10 /* DocumentationEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentationEntry.swift; sourceTree = "<group>"; };
 		OBJ_11 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
@@ -272,6 +274,7 @@
 				59D415EB1F09003100247940 /* TraitTests.swift */,
 				5906769F1F0A3B770022DFCE /* IncludeTests.swift */,
 				59D357A51F11847C003B6CE7 /* SecuritySchemeTests.swift */,
+				59DF5C221F15225100C81ADF /* DefaultsTests.swift */,
 			);
 			name = RAMLTests;
 			path = Tests/RAMLTests;
@@ -541,6 +544,7 @@
 				OBJ_124 /* RAMLTests.swift in Sources */,
 				59D357AE1F1411AB003B6CE7 /* ProtocolTests.swift in Sources */,
 				59D357B01F14121D003B6CE7 /* BaseURITests.swift in Sources */,
+				59DF5C231F15225100C81ADF /* DefaultsTests.swift in Sources */,
 				OBJ_125 /* DataTypeTests.swift in Sources */,
 				OBJ_127 /* PropertyRestrictionTests.swift in Sources */,
 				59D357A61F11847C003B6CE7 /* SecuritySchemeTests.swift in Sources */,
