@@ -26,6 +26,7 @@ public class Header {
     public var key: String
     public var description: String?
     public var type: HeaderType?
+    public var pattern: String?
     public var example: String?
     public var items: Items?
     public var required: Bool?
@@ -57,6 +58,7 @@ internal extension RAML {
         let header = Header(key: key)
         
         header.description = yaml["description"].string
+        header.pattern = yaml["pattern"].string
         header.example = yaml["example"].string
         header.required = yaml["required"].bool
         

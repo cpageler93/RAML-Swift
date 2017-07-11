@@ -1,5 +1,5 @@
 //
-//  TypesFromStringTests.swift
+//  TypeTests.swift
 //  RAMLTests
 //
 //  Created by Christoph Pageler on 25.06.17.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import RAML
 
-class TypesFromStringTests: XCTestCase {
+class TypeTests: XCTestCase {
     
     func testBasicPersonType() {
         let ramlString =

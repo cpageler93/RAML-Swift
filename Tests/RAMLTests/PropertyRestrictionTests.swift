@@ -1,5 +1,5 @@
 //
-//  PropertyRestrictionsFromStringTests.swift
+//  PropertyRestrictionTests.swift
 //  RAMLTests
 //
 //  Created by Christoph Pageler on 26.06.17.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import RAML
 
-class PropertyRestrictionsFromStringTests: XCTestCase {
+class PropertyRestrictionTests: XCTestCase {
     
     func testStringRestrictions() {
         let ramlString =

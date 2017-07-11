@@ -8,7 +8,7 @@
 import XCTest
 @testable import RAML
 
-class AnnotationsFromStringTests: XCTestCase {
+class AnnotationTests: XCTestCase {
     
     func testAnnotationsInBaseURI() {
         let ramlString =

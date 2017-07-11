@@ -8,7 +8,7 @@
 import XCTest
 @testable import RAML
 
-class BasicRAMLFromStringTests: XCTestCase {
+class RAMLTests: XCTestCase {
     
     func testMissingTitle() {
         let ramlString =

@@ -21,6 +21,9 @@ public class TraitUsage {
         return parameters?[key]
     }
     
+    public func hasParameterFor(key: String) -> Bool {
+        return parameterFor(key: key) != nil
+    }
 }
 
 
