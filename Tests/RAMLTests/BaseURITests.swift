@@ -19,18 +19,17 @@ class BaseURITests: XCTestCase {
         baseUri: https://na1.salesforce.com/services/data/{version}/chatter
         """
         
-        do {
-            let raml = try RAML(string: ramlString)
-            
-            guard let baseURI = raml.baseURI else {
-                XCTFail("No BaseURI")
-                return
-            }
-            
-            XCTAssertEqual(baseURI.value, "https://na1.salesforce.com/services/data/{version}/chatter")
-        } catch {
+        guard let raml = try? RAML(string: ramlString) else {
             XCTFail("Parsing should not throw an error")
+            return
         }
+        
+        guard let baseURI = raml.baseURI else {
+            XCTFail("No BaseURI")
+            return
+        }
+        
+        XCTAssertEqual(baseURI.value, "https://na1.salesforce.com/services/data/{version}/chatter")
     }
     
     // TODO: Test BASE URI with version parameter
@@ -46,27 +45,26 @@ class BaseURITests: XCTestCase {
             description: The name of the bucket
         """
         
-        do {
-            let raml = try RAML(string: ramlString)
-            
-            guard let baseURI = raml.baseURI else {
-                XCTFail("No BaseURI")
-                return
-            }
-            
-            guard let baseURIParameters = raml.baseURIParameters else {
-                XCTFail("No BaseURI Parameters")
-                return
-            }
-            
-            XCTAssertEqual(baseURI.value, "https://{bucketName}.s3.amazonaws.com")
-            XCTAssertEqual(baseURIParameters.count, 1)
-            
-            if let firstURIParameter = raml.baseURIParameters?.first {
-                XCTAssertEqual(firstURIParameter.description, "The name of the bucket")
-            }
-        } catch {
+        guard let raml = try? RAML(string: ramlString) else {
             XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let baseURI = raml.baseURI else {
+            XCTFail("No BaseURI")
+            return
+        }
+        
+        guard let baseURIParameters = raml.baseURIParameters else {
+            XCTFail("No BaseURI Parameters")
+            return
+        }
+        
+        XCTAssertEqual(baseURI.value, "https://{bucketName}.s3.amazonaws.com")
+        XCTAssertEqual(baseURIParameters.count, 1)
+        
+        if let firstURIParameter = raml.baseURIParameters?.first {
+            XCTAssertEqual(firstURIParameter.description, "The name of the bucket")
         }
     }
     

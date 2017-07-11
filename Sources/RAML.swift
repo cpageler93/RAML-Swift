@@ -2,7 +2,7 @@ import Foundation
 import Yaml
 import PathKit
 
-public class RAML : HasTypes, HasAnnotationTypes, HasResources, HasTraitDefinitions, HasDocumentationEntries, HasSecuritySchemes, HasProtocols {
+public class RAML : HasBaseURIParameters, HasProtocols, HasMediaTypes, HasDocumentationEntries, HasTypes, HasTraitDefinitions, /* HasResourceTypes, */ HasAnnotationTypes, HasSecuritySchemes, /* HasUses, */ HasResources {
     
     // MARK: meta (not raml related)
     

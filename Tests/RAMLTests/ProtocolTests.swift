@@ -18,15 +18,14 @@ class ProtocolTests: XCTestCase {
         protocols: [ HTTP, HTTPS ]
         """
         
-        do {
-            let raml = try RAML(string: ramlString)
-            
-            XCTAssertNotNil(raml.protocols)
-            XCTAssertTrue(raml.hasProtocol(.http))
-            XCTAssertTrue(raml.hasProtocol(.https))
-        } catch {
+        guard let raml = try? RAML(string: ramlString) else {
             XCTFail("Parsing should not throw an error")
+            return
         }
+        
+        XCTAssertNotNil(raml.protocols)
+        XCTAssertTrue(raml.hasProtocol(.http))
+        XCTAssertTrue(raml.hasProtocol(.https))
     }
     
     func testParseInvalidProtocol() {

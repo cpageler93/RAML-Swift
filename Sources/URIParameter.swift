@@ -77,9 +77,28 @@ internal extension RAML {
     
 }
 
-protocol HasUriParameters {
+
+
+public protocol HasBaseURIParameters {
     
+    var baseURIParameters: [URIParameter]? { get set }
     
 }
-    <#requirements#>
+
+
+public extension HasBaseURIParameters {
+    
+    public func baseURIParameterWith(identifier: String) -> URIParameter? {
+        for baseURIParameter in baseURIParameters ?? [] {
+            if baseURIParameter.identifier == identifier {
+                return baseURIParameter
+            }
+        }
+        return nil
+    }
+    
+    public func hasBaseURIParameterWith(identifier: String) -> Bool {
+        return baseURIParameterWith(identifier: identifier) != nil
+    }
+    
 }

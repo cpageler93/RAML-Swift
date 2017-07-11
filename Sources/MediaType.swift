@@ -40,3 +40,28 @@ internal extension RAML {
     }
     
 }
+
+
+public protocol HasMediaTypes {
+    
+    var mediaTypes: [MediaType]? { get set }
+    
+}
+
+
+public extension HasMediaTypes {
+    
+    public func mediaTypeWith(identifier: String) -> MediaType? {
+        for mediaType in mediaTypes ?? [] {
+            if mediaType.identifier == identifier {
+                return mediaType
+            }
+        }
+        return nil
+    }
+    
+    public func hasMediaTypeWith(identifier: String) -> Bool {
+        return mediaTypeWith(identifier: identifier) != nil
+    }
+    
+}
