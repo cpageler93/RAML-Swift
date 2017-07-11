@@ -16,13 +16,10 @@
 		59558E7F1F069E1400EEF042 /* ResourceMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59558E7E1F069E1400EEF042 /* ResourceMethod.swift */; };
 		59ADB3521F0658D80003B348 /* AnnotationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59ADB3511F0658D80003B348 /* AnnotationType.swift */; };
 		59ADB3541F0661C00003B348 /* AnnotationTypeProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59ADB3531F0661C00003B348 /* AnnotationTypeProperty.swift */; };
-		59C191DD1F13B5CB00B5BC7B /* RAMLPreprocessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C191DC1F13B5CB00B5BC7B /* RAMLPreprocessor.swift */; };
-		59C191DF1F13B5F200B5BC7B /* RAMLPreprocessor+Routes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59C191DE1F13B5F200B5BC7B /* RAMLPreprocessor+Routes.swift */; };
 		59D3579E1F112E44003B6CE7 /* SecurityScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D3579D1F112E44003B6CE7 /* SecurityScheme.swift */; };
 		59D357A01F113021003B6CE7 /* SecuritySchemeDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D3579F1F113021003B6CE7 /* SecuritySchemeDescription.swift */; };
 		59D357A21F113043003B6CE7 /* SecuritySchemeSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D357A11F113043003B6CE7 /* SecuritySchemeSettings.swift */; };
 		59D357A61F11847C003B6CE7 /* SecuritySchemeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D357A51F11847C003B6CE7 /* SecuritySchemeTests.swift */; };
-		59D357AA1F118883003B6CE7 /* RAMLPreprocessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D357A91F118883003B6CE7 /* RAMLPreprocessorTests.swift */; };
 		59D357AC1F1409AF003B6CE7 /* YamlExtenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D357AB1F1409AF003B6CE7 /* YamlExtenstions.swift */; };
 		59D357AE1F1411AB003B6CE7 /* ProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D357AD1F1411AB003B6CE7 /* ProtocolTests.swift */; };
 		59D357B01F14121D003B6CE7 /* BaseURITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D357AF1F14121D003B6CE7 /* BaseURITests.swift */; };
@@ -147,13 +144,10 @@
 		59558E7E1F069E1400EEF042 /* ResourceMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceMethod.swift; sourceTree = "<group>"; };
 		59ADB3511F0658D80003B348 /* AnnotationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationType.swift; sourceTree = "<group>"; };
 		59ADB3531F0661C00003B348 /* AnnotationTypeProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationTypeProperty.swift; sourceTree = "<group>"; };
-		59C191DC1F13B5CB00B5BC7B /* RAMLPreprocessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAMLPreprocessor.swift; sourceTree = "<group>"; };
-		59C191DE1F13B5F200B5BC7B /* RAMLPreprocessor+Routes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RAMLPreprocessor+Routes.swift"; sourceTree = "<group>"; };
 		59D3579D1F112E44003B6CE7 /* SecurityScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityScheme.swift; sourceTree = "<group>"; };
 		59D3579F1F113021003B6CE7 /* SecuritySchemeDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySchemeDescription.swift; sourceTree = "<group>"; };
 		59D357A11F113043003B6CE7 /* SecuritySchemeSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySchemeSettings.swift; sourceTree = "<group>"; };
 		59D357A51F11847C003B6CE7 /* SecuritySchemeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySchemeTests.swift; sourceTree = "<group>"; };
-		59D357A91F118883003B6CE7 /* RAMLPreprocessorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAMLPreprocessorTests.swift; sourceTree = "<group>"; };
 		59D357AB1F1409AF003B6CE7 /* YamlExtenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YamlExtenstions.swift; sourceTree = "<group>"; };
 		59D357AD1F1411AB003B6CE7 /* ProtocolTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtocolTests.swift; sourceTree = "<group>"; };
 		59D357AF1F14121D003B6CE7 /* BaseURITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseURITests.swift; sourceTree = "<group>"; };
@@ -278,7 +272,6 @@
 				59D415EB1F09003100247940 /* TraitTests.swift */,
 				5906769F1F0A3B770022DFCE /* IncludeTests.swift */,
 				59D357A51F11847C003B6CE7 /* SecuritySchemeTests.swift */,
-				59D357A91F118883003B6CE7 /* RAMLPreprocessorTests.swift */,
 			);
 			name = RAMLTests;
 			path = Tests/RAMLTests;
@@ -397,8 +390,6 @@
 				59D3579D1F112E44003B6CE7 /* SecurityScheme.swift */,
 				59D3579F1F113021003B6CE7 /* SecuritySchemeDescription.swift */,
 				59D357A11F113043003B6CE7 /* SecuritySchemeSettings.swift */,
-				59C191DC1F13B5CB00B5BC7B /* RAMLPreprocessor.swift */,
-				59C191DE1F13B5F200B5BC7B /* RAMLPreprocessor+Routes.swift */,
 			);
 			path = Sources;
 			sourceTree = SOURCE_ROOT;
@@ -556,7 +547,6 @@
 				OBJ_128 /* TypeTests.swift in Sources */,
 				592FE03D1F14B296005DBF90 /* MediaTypeTests.swift in Sources */,
 				OBJ_129 /* DocumentationTests.swift in Sources */,
-				59D357AA1F118883003B6CE7 /* RAMLPreprocessorTests.swift in Sources */,
 				59D415EC1F09003100247940 /* TraitTests.swift in Sources */,
 				590676A01F0A3B770022DFCE /* IncludeTests.swift in Sources */,
 			);
@@ -617,7 +607,6 @@
 				OBJ_101 /* Property.swift in Sources */,
 				59D415E81F06DE7800247940 /* TraitDefiniton.swift in Sources */,
 				5902527D1F0647DD004C9AB6 /* Annotation.swift in Sources */,
-				59C191DD1F13B5CB00B5BC7B /* RAMLPreprocessor.swift in Sources */,
 				OBJ_102 /* PropertyRestrictions.swift in Sources */,
 				59D415EE1F09012800247940 /* TraitUsage.swift in Sources */,
 				59D357A01F113021003B6CE7 /* SecuritySchemeDescription.swift in Sources */,
@@ -626,7 +615,6 @@
 				OBJ_104 /* RAML+Include.swift in Sources */,
 				OBJ_105 /* RAML+LoadFromString.swift in Sources */,
 				59558E7D1F0687D300EEF042 /* Resource.swift in Sources */,
-				59C191DF1F13B5F200B5BC7B /* RAMLPreprocessor+Routes.swift in Sources */,
 				OBJ_106 /* RAML.swift in Sources */,
 				OBJ_107 /* RAMLError.swift in Sources */,
 				59D415E61F06D97500247940 /* ResourceHeader.swift in Sources */,
