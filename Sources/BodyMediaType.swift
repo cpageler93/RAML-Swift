@@ -41,8 +41,6 @@ public extension RAML {
         
         if let typeString = yaml["type"].string {
             bodyMediaType.type = DataType.dataTypeEnumFrom(string: typeString)
-        } else {
-            bodyMediaType.type = .any
         }
         
         return bodyMediaType

@@ -8,7 +8,7 @@
 import Foundation
 import Yaml
 
-public class Resource: HasResources, HasResourceMethods, ResourceParent {
+public class Resource: HasResources, HasResourceMethods {
     
     public var path: String
     public var displayName: String?
@@ -20,30 +20,21 @@ public class Resource: HasResources, HasResourceMethods, ResourceParent {
     // securedBy
     // uriParameters
     public var resources: [Resource]?
-    public var parent: ResourceParent
     
-    public init(path: String, parent: ResourceParent) {
+    public init(path: String) {
         self.path = path
-        self.parent = parent
     }
-    
-    public func absolutePath() -> String {
-        return parent.absolutePath() + path
-    }
-    
 }
 
 
 // MARK: Resources Parsing
 internal extension RAML {
     
-    internal func parseResources(_ yaml: Yaml, parent: ResourceParent) throws -> [Resource]? {
+    internal func parseResources(_ yaml: Yaml) throws -> [Resource]? {
         var resources: [Resource] = []
         for (key, value) in yaml.dictionary ?? [:] {
             if let keyString = key.string, keyString.hasPrefix("/") {
-                let resource = try parseResource(path: keyString,
-                                                 yaml: value,
-                                                 parent: parent)
+                let resource = try parseResource(path: keyString, yaml: value)
                 resources.append(resource)
             }
         }
@@ -55,12 +46,10 @@ internal extension RAML {
         }
     }
     
-    internal func parseResource(path: String, yaml: Yaml, parent: ResourceParent) throws -> Resource {
-        let resource = Resource(path: path, parent: self)
-        resource.parent = parent
+    internal func parseResource(path: String, yaml: Yaml) throws -> Resource {
+        let resource = Resource(path: path)
         resource.methods = try parseResourceMethods(yaml)
-        resource.resources = try parseResources(yaml, parent: resource)
-        
+        resource.resources = try parseResources(yaml)
         return resource
     }
     
@@ -88,15 +77,5 @@ extension HasResources {
     public func hasResourceWith(path: String) -> Bool {
         return resourceWith(path: path) != nil
     }
-    
-}
-
-
-public protocol ResourceParent: HasAbsolutePath { }
-
-
-public protocol HasAbsolutePath {
-    
-    func absolutePath() -> String
     
 }

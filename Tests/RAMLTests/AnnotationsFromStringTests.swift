@@ -10,16 +10,6 @@ import XCTest
 
 class AnnotationsFromStringTests: XCTestCase {
     
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
     func testBaseURIWithAnnotations() {
         let ramlString =
         """
@@ -32,11 +22,25 @@ class AnnotationsFromStringTests: XCTestCase {
         
         do {
             let raml = try RAML(string: ramlString)
-            XCTAssertEqual(raml.baseURI?.annotations?.count ?? 0, 1)
             
-            if let redirectableAnnotation = raml.baseURI?.annotationWith(name: "redirectable") {
-                XCTAssertEqual(redirectableAnnotation.name, "redirectable")
+            guard let baseURI = raml.baseURI else {
+                XCTFail("No BaseURI")
+                return
             }
+            
+            guard let baseURIAnnotations = baseURI.annotations else {
+                XCTFail("No Annotations")
+                return
+            }
+            XCTAssertEqual(baseURIAnnotations.count, 1)
+            
+            guard let redirectableAnnotation = baseURI.annotationWith(name: "redirectable") else {
+                XCTFail("No `redirectable` Anotation")
+                return
+            }
+            
+            XCTAssertEqual(redirectableAnnotation.name, "redirectable")
+            // TODO: Add Missing Value
         } catch {
             XCTFail()
         }

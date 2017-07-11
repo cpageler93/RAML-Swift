@@ -55,7 +55,6 @@ internal extension RAML {
     
     // MARK: - Private
     
-    @discardableResult
     fileprivate func validateRamlVersion(string: String) throws -> String {
         guard let firstLine = string.components(separatedBy: "\n").first else { throw RAMLError.ramlParsingError(.stringIsEmpty) }
         let ramlPrefix = "#%RAML "
@@ -162,21 +161,4 @@ internal extension RAML {
             return yaml
         }
     }
-}
-
-
-internal extension Yaml {
-    
-    internal init(array elements: [Yaml]) {
-        self = .array(elements)
-    }
-    
-    internal init(dictionary elements: [Yaml: Yaml]) {
-        var dictionary = [Yaml: Yaml]()
-        for (k, v) in elements {
-            dictionary[k] = v
-        }
-        self = .dictionary(dictionary)
-    }
-    
 }

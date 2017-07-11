@@ -83,7 +83,6 @@ internal extension RAML {
                 securityScheme.describedBy = try parseSecuritySchemeDescription(describedByYaml)
             }
             
-            
             return securityScheme
         } else if let yamlString = yaml.string {
             let yamlFromInclude = try parseSecuritySchemeFromIncludeString(yamlString)

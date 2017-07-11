@@ -11,7 +11,7 @@ import Yaml
 public class Property {
     
     public var name: String
-    public var required: Bool = true
+    public var required: Bool?
     public var type: DataType?
     public var restrictions: PropertyRestrictions?
     public var `enum`: [String]?
@@ -42,14 +42,7 @@ internal extension RAML {
     private func parseProperty(name: String, yaml: Yaml) throws -> Property {
         let property = Property(name: name)
         
-        // parse required / optional
-        if let yamlRequired = yaml["required"].bool {
-            property.required = yamlRequired
-        } else if name.hasSuffix("?") {
-            // if required is not explicity set, check for ? suffix
-            property.name = String(name.dropLast())
-            property.required = false
-        }
+        property.required = yaml["required"].bool
         
         // parse type
         if let yamlTypeString = yaml["type"].string {
@@ -57,8 +50,6 @@ internal extension RAML {
         } else if let yamlString = yaml.string {
             // if type is not explicitly set, check for type in value
             property.type = DataType.dataTypeEnumFrom(string: yamlString)
-        } else {
-            property.type = .scalar(type: .string)
         }
         
         // parse enum

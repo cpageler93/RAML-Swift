@@ -76,3 +76,10 @@ internal extension RAML {
     }
     
 }
+
+protocol HasUriParameters {
+    
+    
+}
+    <#requirements#>
+}

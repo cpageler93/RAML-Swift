@@ -53,13 +53,8 @@ internal extension RAML {
             annotationType.enum = enumValues
         }
         
-        if let requiredBool = yaml["required"].bool {
-            annotationType.required = requiredBool
-        }
-        
-        if let patternString = yaml["pattern"].string {
-            annotationType.pattern = patternString
-        }
+        annotationType.required = yaml["required"].bool
+        annotationType.pattern = yaml["pattern"].string
         
         return annotationType
     }

@@ -31,7 +31,7 @@ public func ==(lhs: AnnotationTypeEnum, rhs: AnnotationTypeEnum) -> Bool {
 public class AnnotationType: HasAnnotationTypeProperties {
     
     public var name: String
-    public var type = AnnotationTypeEnum.string
+    public var type: AnnotationTypeEnum?
     public var properties: [AnnotationTypeProperty]?
     
     public init(name: String) {
@@ -68,7 +68,6 @@ internal extension RAML {
             }
             
             if let yamlPropertiesDictionary = yamlDictionary["properties"]?.dictionary {
-                annotationType.type = .properties
                 annotationType.properties = try parseAnnotationTypeProperties(yamlPropertiesDictionary)
             }
         }

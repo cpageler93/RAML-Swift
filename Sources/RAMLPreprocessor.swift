@@ -15,7 +15,7 @@ public class RAMLPreprocessor {
         self.raml = raml
     }
     
-    public func enumerateResourceMethods(recursive: Bool = true, closure: @escaping (Resource) -> (Void)) {
+    public func enumerateResources(recursive: Bool = true, closure: @escaping (Resource) -> (Void)) {
         func enumerate(resources: [Resource]?) {
             for resource in resources ?? [] {
                 closure(resource)

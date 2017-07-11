@@ -43,3 +43,18 @@ internal extension RAML {
     }
     
 }
+
+
+public protocol HasProtocols {
+    
+    var protocols: Protocols? { get set }
+    
+}
+
+public extension HasProtocols {
+    
+    public func hasProtocol(_ p: Protocols) -> Bool {
+        return protocols?.contains(p) ?? false
+    }
+    
+}

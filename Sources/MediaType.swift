@@ -18,6 +18,7 @@ public class MediaType {
     
 }
 
+
 // MARK: MediaType Parsing
 internal extension RAML {
     

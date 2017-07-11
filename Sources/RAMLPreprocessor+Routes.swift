@@ -11,8 +11,8 @@ public extension RAMLPreprocessor {
     
     public func routes() -> String {
         var routes: [String] = []
-        enumerateResourceMethods { resource in
-            routes.append("GET \(resource.absolutePath())")
+        enumerateResources { resource in
+            routes.append("GET \(resource.path)")
         }
         return routes.joined(separator: "\n")
     }

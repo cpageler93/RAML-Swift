@@ -25,10 +25,10 @@ public class Header {
     
     public var key: String
     public var description: String?
-    public var type: HeaderType = .string
+    public var type: HeaderType?
     public var example: String?
     public var items: Items?
-    public var required: Bool = true
+    public var required: Bool?
     
     public init(key: String) {
         self.key = key
@@ -56,9 +56,9 @@ internal extension RAML {
     private func parseHeader(key: String, yaml: Yaml) throws -> Header {
         let header = Header(key: key)
         
-        if let descriptionString = yaml["description"].string {
-            header.description = descriptionString
-        }
+        header.description = yaml["description"].string
+        header.example = yaml["example"].string
+        header.required = yaml["required"].bool
         
         if let typeString = yaml["type"].string {
             guard let resourceHeaderType = HeaderType(rawValue: typeString) else {
@@ -67,16 +67,8 @@ internal extension RAML {
             header.type = resourceHeaderType
         }
         
-        if let exampleString = yaml["example"].string {
-            header.example = exampleString
-        }
-        
         if let itemsYaml = yaml["items"].dictionary {
             header.items = try parseResourceHeaderItems(itemsYaml)
-        }
-        
-        if let requiredBool = yaml["required"].bool {
-            header.required = requiredBool
         }
         
         return header
@@ -85,13 +77,8 @@ internal extension RAML {
     private func parseResourceHeaderItems(_ yaml: [Yaml: Yaml]) throws -> Header.Items {
         let items = Header.Items()
         
-        if let patternString = yaml["pattern"]?.string {
-            items.pattern = patternString
-        }
-        
-        if let exampleString = yaml["example"]?.string {
-            items.example = exampleString
-        }
+        items.pattern = yaml["pattern"]?.string
+        items.example = yaml["example"]?.string
         
         return items
     }

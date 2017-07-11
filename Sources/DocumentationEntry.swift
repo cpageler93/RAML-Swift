@@ -43,7 +43,6 @@ internal extension RAML {
             let documentationEntry = DocumentationEntry(title: title, content: content)
             documentation.append(documentationEntry)
         }
-        
         return documentation
     }
     

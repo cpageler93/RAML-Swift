@@ -25,26 +25,15 @@ public class BaseURI: HasAnnotations {
 internal extension RAML {
     
     internal func parseBaseURI(string: String) throws -> BaseURI {
-        let value = parseBaseURIValue(string)
-        return BaseURI(value: value)
+        return BaseURI(value: string)
     }
         
     internal func parseBaseURI(yaml: [Yaml: Yaml]) throws -> BaseURI {
-        guard let rawValue = yaml["value"]?.string else {
+        guard let value = yaml["value"]?.string else {
             throw RAMLError.ramlParsingError(.missingValueFor(key: "value"))
         }
-        let value = parseBaseURIValue(rawValue)
         let baseURI = BaseURI(value: value)
         baseURI.annotations = try parseAnnotations(yaml)
         return baseURI
     }
-    
-    private func parseBaseURIValue(_ string: String) -> String {
-        var newString = string
-        while newString.hasSuffix("/") {
-            newString = String(newString.dropLast())
-        }
-        return newString
-    }
-    
 }

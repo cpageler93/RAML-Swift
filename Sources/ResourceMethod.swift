@@ -82,9 +82,7 @@ internal extension RAML {
             resourceMethod.headers = try parseHeaders(headersYaml)
         }
         
-        if let descriptionString = yaml["description"].string {
-            resourceMethod.description = descriptionString
-        }
+        resourceMethod.description = yaml["description"].string
         
         if let responsesYaml = yaml["responses"].dictionary {
             resourceMethod.responses = try parseResponses(responsesYaml)

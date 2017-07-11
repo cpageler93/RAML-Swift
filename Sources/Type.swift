@@ -26,7 +26,7 @@ public class Type: HasProperties {
     public var properties: [Property]?
     public var minProperties: Int?
     public var maxProperties: Int?
-    public var additionalProperties: Bool = true
+    public var additionalProperties: Bool?
     public var discriminator: String?
     public var discriminatorValue: String?
     
@@ -36,7 +36,6 @@ public class Type: HasProperties {
     
     public init(name: String) {
         self.name = name
-        
     }
 }
 
@@ -69,24 +68,9 @@ extension RAML {
             
             if let yamlProperties = yamlDict["properties"]?.dictionary {
                 type.properties = try parseProperties(yamlProperties)
-                type.type = .object
-            } else {
-                // no properties as dictionary.. check if properties is empty key
-                for (key, _) in yamlDict {
-                    guard let keyString = key.string else { continue }
-                    
-                    // if there is an empty properties key and type isnt already set
-                    if keyString == "properties" && type.type == nil {
-                        type.type = .object
-                    }
-                }
+            } else if Yaml.hasKeyWith(string: "properties", inDictionary: yamlDict) {
+                type.properties = []
             }
-        }
-        
-        
-        // if we havent figured out the type, set type to string
-        if type.type == nil {
-            type.type = .scalar(type: .string)
         }
         
         type.restrictions = try parseRestrictions(forType: type, yaml: yaml)

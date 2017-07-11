@@ -2,7 +2,7 @@ import Foundation
 import Yaml
 import PathKit
 
-public class RAML : HasTypes, HasAnnotationTypes, HasResources, HasTraitDefinitions, HasDocumentationEntries, HasSecuritySchemes {
+public class RAML : HasTypes, HasAnnotationTypes, HasResources, HasTraitDefinitions, HasDocumentationEntries, HasSecuritySchemes, HasProtocols {
     
     // MARK: meta (not raml related)
     
@@ -66,17 +66,6 @@ public class RAML : HasTypes, HasAnnotationTypes, HasResources, HasTraitDefiniti
         }
         return initialFilePath.absolute().directory()
     }
-    
-    // MARK: - Public Methods
-    
-    public func baseURIWithParameter() -> String? {
-        guard var baseURIValue = baseURI?.value else { return nil }
-        if let version = version {
-            baseURIValue = baseURIValue.replacingOccurrences(of: "{version}", with: version)
-        }
-        return baseURIValue
-    }
-    
 }
 
 
@@ -92,35 +81,41 @@ extension RAML {
         self.description = yaml["description"].string
         self.version = yaml["version"].string
         
+        // Parse BaseURI
         if let baseURIString = yaml["baseUri"].string {
             self.baseURI = try parseBaseURI(string: baseURIString)
         } else if let baseURIDictionary = yaml["baseUri"].dictionary {
             self.baseURI = try parseBaseURI(yaml: baseURIDictionary)
         }
         
-        
+        // Parse BaseURI Paramters
         if let baseURIParameters = yaml["baseUriParameters"].dictionary {
             self.baseURIParameters = try parseURIParameters(baseURIParameters)
         }
         
+        // Parse Protocols
         if let protocolsYaml = yaml["protocols"].array {
             self.protocols = try parseProtocols(protocolsYaml)
         }
         
+        // Parse MediaType
         if let mediaTypesYaml = yaml["mediaType"].array {
             self.mediaTypes = try parseMediaTypes(mediaTypesYaml)
         } else if let mediaTypeString = yaml["mediaType"].string {
             self.mediaTypes = [parseMediaType(mediaTypeString)]
         }
         
+        // Parse Documentation Entries
         if let documentationEntriesYaml = yaml["documentation"].array {
             self.documentation = try parseDocumentation(documentationEntriesYaml)
-        }
+        } // TODO: Consider Includes
         
+        // Parse Types
         if let typesYaml = yaml["types"].dictionary {
             self.types = try parseTypes(typesYaml)
-        }
+        } // TODO: Consider Includes
         
+        // Parse Traits
         if let traitsYaml = yaml["traits"].dictionary {
             self.traitDefinitions = try parseTraitDefinitions(traitsYaml)
         } else if let traitIncludeString = yaml["traits"].string {
@@ -131,24 +126,17 @@ extension RAML {
             self.traitDefinitions = try parseTraitDefinitions(traitsYaml)
         }
         
+        // Parse Annotation Types
         if let annotationTypesYaml = yaml["annotationTypes"].dictionary {
             self.annotationTypes = try parseAnnotationTypes(annotationTypesYaml)
-        }
+        } // TODO: Consider Includes
         
+        // Parse Security Schemes
         if let securitySchemesYaml = yaml["securitySchemes"].dictionary {
             self.securitySchemes = try parseSecuritySchemes(securitySchemesYaml)
-        }
+        } // TODO: Consider Includes
         
-        self.resources = try parseResources(yaml, parent: self)
-    }
-    
-}
-
-
-extension RAML: ResourceParent {
-    
-    public func absolutePath() -> String {
-        return baseURI?.value ?? ""
+        self.resources = try parseResources(yaml)
     }
     
 }

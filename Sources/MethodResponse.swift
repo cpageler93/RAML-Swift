@@ -41,9 +41,7 @@ internal extension RAML {
     private func parseResponse(code: Int, yaml: Yaml) throws -> MethodResponse {
         let response = MethodResponse(code: code)
         
-        if let descriptionString = yaml["description"].string {
-            response.description = descriptionString
-        }
+        response.description = yaml["description"].string
         
         if let yamlDictionary = yaml.dictionary {
             response.annotations = try parseAnnotations(yamlDictionary)
