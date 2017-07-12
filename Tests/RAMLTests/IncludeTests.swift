@@ -25,6 +25,9 @@ class IncludeTests: XCTestCase {
         
         XCTAssertTrue(raml.hasTraitDefinitionWith(name: "chargeable"))
         XCTAssertTrue(raml.hasTraitDefinitionWith(name: "paged"))
+        
+        XCTAssertTrue(raml.hasResourceTypeWith(identifier: "collection"))
+        XCTAssertTrue(raml.hasResourceTypeWith(identifier: "member"))
     }
     
     func testValueIncludes() {
@@ -41,5 +44,8 @@ class IncludeTests: XCTestCase {
         
         XCTAssertTrue(raml.hasTraitDefinitionWith(name: "chargeable"))
         XCTAssertTrue(raml.hasTraitDefinitionWith(name: "paged"))
+        
+        XCTAssertTrue(raml.hasResourceTypeWith(identifier: "collection"))
+        XCTAssertTrue(raml.hasResourceTypeWith(identifier: "member"))
     }
 }

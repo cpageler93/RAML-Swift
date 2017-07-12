@@ -2,7 +2,7 @@ import Foundation
 import Yaml
 import PathKit
 
-public class RAML : HasBaseURIParameters, HasProtocols, HasMediaTypes, HasDocumentationEntries, HasTypes, HasTraitDefinitions, /* HasResourceTypes, */ HasAnnotationTypes, HasSecuritySchemes, /* HasUses, */ HasResources {
+public class RAML : HasBaseURIParameters, HasProtocols, HasMediaTypes, HasDocumentationEntries, HasTypes, HasTraitDefinitions, HasResourceTypes, HasAnnotationTypes, HasSecuritySchemes, /* HasUses, */ HasResources {
     
     // MARK: meta (not raml related)
     
@@ -30,7 +30,7 @@ public class RAML : HasBaseURIParameters, HasProtocols, HasMediaTypes, HasDocume
     public var documentation: [DocumentationEntry]?
     public var types: [Type]?
     public var traitDefinitions: [TraitDefinition]?
-//    resourceTypes
+    public var resourceTypes: [ResourceType]?
     public var annotationTypes: [AnnotationType]?
     public var securitySchemes: [SecurityScheme]?
 //    securedBy
@@ -129,6 +129,17 @@ extension RAML {
                 throw RAMLError.ramlParsingError(.invalidInclude)
             }
             self.traitDefinitions = try parseTraitDefinitions(traitsYaml)
+        }
+        
+        // Parse Resource Types
+        if let resourceTypesYaml = yaml["resourceTypes"].dictionary {
+            self.resourceTypes = try parseResourceTypes(resourceTypesYaml)
+        } else if let resourceTypesString = yaml["resourceTypes"].string {
+            let yaml = try parseResourceTypesFromIncludeString(resourceTypesString)
+            guard let resourceTypesYaml = yaml.dictionary else {
+                throw RAMLError.ramlParsingError(.invalidInclude)
+            }
+            self.resourceTypes = try parseResourceTypes(resourceTypesYaml)
         }
         
         // Parse Annotation Types
