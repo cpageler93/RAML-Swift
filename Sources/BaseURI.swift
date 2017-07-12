@@ -24,16 +24,30 @@ public class BaseURI: HasAnnotations {
 // MARK: BaseURI Parsing
 internal extension RAML {
     
+    internal func parseBaseURI(yaml: Yaml?) throws -> BaseURI? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .string(let yamlString):
+            return try parseBaseURI(string: yamlString)
+        case .dictionary(let yamlDict):
+            return try parseBaseURI(dict: yamlDict)
+        default:
+            return nil
+        }
+        
+    }
+    
     internal func parseBaseURI(string: String) throws -> BaseURI {
         return BaseURI(value: string)
     }
         
-    internal func parseBaseURI(yaml: [Yaml: Yaml]) throws -> BaseURI {
-        guard let value = yaml["value"]?.string else {
+    internal func parseBaseURI(dict: [Yaml: Yaml]) throws -> BaseURI {
+        guard let value = dict["value"]?.string else {
             throw RAMLError.ramlParsingError(.missingValueFor(key: "value"))
         }
         let baseURI = BaseURI(value: value)
-        baseURI.annotations = try parseAnnotations(yaml)
+        baseURI.annotations = try parseAnnotations(dict: dict)
         return baseURI
     }
 }

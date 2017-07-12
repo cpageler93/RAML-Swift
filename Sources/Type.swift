@@ -43,9 +43,22 @@ public class Type: HasProperties {
 // MARK: Type Parsing
 extension RAML {
     
-    internal func parseTypes(_ yaml: [Yaml: Yaml]) throws -> [Type] {
+    internal func parseTypes(yaml: Yaml?) throws -> [Type]? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .dictionary(let yamlDict):
+            return try parseTypes(dict: yamlDict)
+        default:
+            return nil
+        }
+        
+        // TODO: Consider Includes
+    }
+    
+    internal func parseTypes(dict: [Yaml: Yaml]) throws -> [Type] {
         var types: [Type] = []
-        for (key, value) in yaml {
+        for (key, value) in dict {
             guard let keyString = key.string else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "type key",
                                                                   mustBeKindOf: "String"))
@@ -59,20 +72,8 @@ extension RAML {
     private func parseType(name: String, yaml: Yaml) throws -> Type {
         let type = Type(name: name)
         
-        if let yamlString = yaml.string {
-            type.type = DataType.dataTypeEnumFrom(string: yamlString)
-        } else if let yamlDict = yaml.dictionary {
-            if let typeString = yamlDict["type"]?.string {
-                type.type = DataType.dataTypeEnumFrom(string: typeString)
-            }
-            
-            if let yamlProperties = yamlDict["properties"]?.dictionary {
-                type.properties = try parseProperties(yamlProperties)
-            } else if Yaml.hasKeyWith(string: "properties", inDictionary: yamlDict) {
-                type.properties = []
-            }
-        }
-        
+        type.type = try DataType.dataTypeEnumFrom(yaml: yaml, dictKey: "type")
+        type.properties = try parseProperties(yaml: yaml, propertiesKey: "properties")
         type.restrictions = try parseRestrictions(forType: type, yaml: yaml)
         
         return type
@@ -87,7 +88,8 @@ extension RAML {
             case .number: return try parseNumberRestrictions(yaml)
             default: return nil
             }
-        default: return nil
+        default:
+            return nil
         }
     }
     

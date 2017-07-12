@@ -44,9 +44,22 @@ public class AnnotationType: HasAnnotationTypeProperties {
 // MARK: AnnotationTypes Parsing
 internal extension RAML {
     
-    internal func parseAnnotationTypes(_ yaml: [Yaml: Yaml]) throws -> [AnnotationType] {
+    internal func parseAnnotationTypes(yaml: Yaml?) throws -> [AnnotationType]? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .dictionary(let yamlDict):
+            return try parseAnnotationTypes(dict: yamlDict)
+        default:
+            return nil
+        }
+        
+        // TODO: Consider Includes
+    }
+    
+    internal func parseAnnotationTypes(dict: [Yaml: Yaml]) throws -> [AnnotationType] {
         var annotationTypes: [AnnotationType] = []
-        for (key, value) in yaml {
+        for (key, value) in dict {
             guard let keyString = key.string else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "AnnotationType Key",
                                                                   mustBeKindOf: "String"))
@@ -60,22 +73,24 @@ internal extension RAML {
     private func parseAnnotationType(name: String, yaml: Yaml) throws -> AnnotationType {
         let annotationType = AnnotationType(name: name)
         
-        if let yamlString = yaml.string {
+        switch yaml {
+        case .string(let yamlString):
             annotationType.type = try typeFromString(yamlString)
-        } else if let yamlDictionary = yaml.dictionary {
-            if let typeString = yamlDictionary["type"]?.string {
-                annotationType.type = try typeFromString(typeString)
-            }
-            
-            if let yamlPropertiesDictionary = yamlDictionary["properties"]?.dictionary {
-                annotationType.properties = try parseAnnotationTypeProperties(yamlPropertiesDictionary)
-            }
+        case .dictionary(let yamlDict):
+            annotationType.type = try typeFromString(yamlDict["type"]?.string)
+            annotationType.properties = try parseAnnotationTypeProperties(yaml: yamlDict["properties"])
+        case .null:
+            break
+        default:
+            throw RAMLError.ramlParsingError(.failedParsingAnnotationType)
         }
         
         return annotationType
     }
     
-    private func typeFromString(_ string: String) throws -> AnnotationTypeEnum {
+    private func typeFromString(_ string: String?) throws -> AnnotationTypeEnum? {
+        guard let string = string else { return nil }
+        
         if string == "nil" {
             return .nil
         } else if string == "string" {
@@ -87,7 +102,8 @@ internal extension RAML {
             let stringTypes = string.replacingOccurrences(of: " ", with: "").components(separatedBy: "|")
             var types: [AnnotationTypeEnum] = []
             for stringType in stringTypes {
-                types.append(try typeFromString(stringType))
+                guard let type = try typeFromString(stringType) else { continue }
+                types.append(type)
             }
             return .multiple(of: types)
         }

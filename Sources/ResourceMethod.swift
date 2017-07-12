@@ -46,7 +46,9 @@ public class ResourceMethod: HasHeaders, HasAnnotations, HasTraitUsages, HasMeth
 // MARK: ResourceMethod Parsing
 internal extension RAML {
     
-    internal func parseResourceMethods(_ yaml: Yaml) throws -> [ResourceMethod]? {
+    internal func parseResourceMethods(yaml: Yaml?) throws -> [ResourceMethod]? {
+        guard let yaml = yaml else { return nil }
+        
         var resourceMethods: [ResourceMethod] = []
         
         let availableMethods = [
@@ -78,23 +80,11 @@ internal extension RAML {
         guard let methodType = ResourceMethodType(rawValue: method) else { return nil }
         let resourceMethod = ResourceMethod(type: methodType)
         
-        if let headersYaml = yaml["headers"].dictionary {
-            resourceMethod.headers = try parseHeaders(headersYaml)
-        }
-        
+        resourceMethod.headers = try parseHeaders(yaml: yaml["headers"])
         resourceMethod.description = yaml["description"].string
-        
-        if let responsesYaml = yaml["responses"].dictionary {
-            resourceMethod.responses = try parseResponses(responsesYaml)
-        }
-        
-        if let singleTraitString = yaml["is"].string {
-            resourceMethod.traitUsages = [TraitUsage(name: singleTraitString)]
-        } else if let traitsYamlArray = yaml["is"].array {
-            resourceMethod.traitUsages = try parseTraitUsages(yamlArray: traitsYamlArray)
-        }
-        
-        resourceMethod.body = try parseResponseBody(yaml["body"])
+        resourceMethod.responses = try parseResponses(yaml: yaml["responses"])
+        resourceMethod.traitUsages = try parseTraitUsages(yaml: yaml["is"])
+        resourceMethod.body = try parseResponseBody(yaml: yaml["body"])
         
         return resourceMethod
     }

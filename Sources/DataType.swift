@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Yaml
 
 public indirect enum DataType: Equatable {
     
@@ -28,6 +29,28 @@ public indirect enum DataType: Equatable {
     case union(types: [DataType])
     case scalar(type: ScalarType)
     case custom(type: String)
+    
+    public static func dataTypeEnumFrom(yaml: Yaml, dictKey: String? = nil) throws -> DataType? {
+        
+        switch yaml {
+        case .dictionary(let yamlDict):
+            guard let dictKey = dictKey else { throw RAMLError.unknown }
+            for (key, value) in yamlDict {
+                if let keyString = key.string, keyString == dictKey {
+                    return try dataTypeEnumFrom(yaml: value)
+                }
+            }
+            return nil
+        case .string(let yamlString):
+            return DataType.dataTypeEnumFrom(string: yamlString)
+        case .null:
+            return nil
+        default:
+            break
+        }
+        
+        throw RAMLError.unknown
+    }
     
     public static func dataTypeEnumFrom(string: String) -> DataType {
         if string == "object" {

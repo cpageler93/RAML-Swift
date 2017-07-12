@@ -24,10 +24,23 @@ public class DocumentationEntry {
 // MARK: Documentation Parsing
 internal extension RAML {
     
-    internal func parseDocumentation(_ yaml: [Yaml]) throws -> [DocumentationEntry] {
+    internal func parseDocumentation(yaml: Yaml?) throws -> [DocumentationEntry]? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .array(let yamlArray):
+            return try parseDocumentation(array: yamlArray)
+        default: return nil
+        }
+        // TODO: Consider Includes
+        
+        return nil
+    }
+    
+    internal func parseDocumentation(array: [Yaml]) throws -> [DocumentationEntry] {
         var documentation: [DocumentationEntry] = []
         
-        for (_, yamlDocumentationEntry) in yaml.enumerated() {
+        for yamlDocumentationEntry in array {
             guard let title = yamlDocumentationEntry["title"].string else {
                 throw RAMLError.ramlParsingError(.missingValueFor(key: "title"))
             }

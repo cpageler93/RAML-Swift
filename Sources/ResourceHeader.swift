@@ -13,6 +13,14 @@ public enum HeaderType: String {
     case string
     case array
     
+    public static func fromOptional(_ string: String?) throws -> HeaderType? {
+        guard let string = string else { return nil }
+        guard let headerType = HeaderType(rawValue: string) else {
+            throw RAMLError.ramlParsingError(.invalidHeaderType(string))
+        }
+        return headerType
+    }
+    
 }
 
 
@@ -41,9 +49,19 @@ public class Header {
 // MARK: Parsing Headers
 internal extension RAML {
     
-    internal func parseHeaders(_ yaml: [Yaml: Yaml]) throws -> [Header] {
+    internal func parseHeaders(yaml: Yaml?) throws -> [Header]? {
+        guard let yaml = yaml else { return nil }
+        
+        if let headerDict = yaml.dictionary {
+            return try parseHeaders(dict: headerDict)
+        }
+        
+        return nil
+    }
+    
+    internal func parseHeaders(dict: [Yaml: Yaml]) throws -> [Header] {
         var headers: [Header] = []
-        for (key, value) in yaml {
+        for (key, value) in dict {
             guard let keyString = key.string else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "Header Key",
                                                                   mustBeKindOf: "Sring"))
@@ -61,28 +79,27 @@ internal extension RAML {
         header.pattern = yaml["pattern"].string
         header.example = yaml["example"].string
         header.required = yaml["required"].bool
-        
-        if let typeString = yaml["type"].string {
-            guard let resourceHeaderType = HeaderType(rawValue: typeString) else {
-                throw RAMLError.ramlParsingError(.invalidHeaderType(typeString))
-            }
-            header.type = resourceHeaderType
-        }
-        
-        if let itemsYaml = yaml["items"].dictionary {
-            header.items = try parseResourceHeaderItems(itemsYaml)
-        }
+        header.type = try HeaderType.fromOptional(yaml["type"].string)
+        header.items = try parseResourceHeaderItems(yaml: yaml["items"])
         
         return header
     }
     
-    private func parseResourceHeaderItems(_ yaml: [Yaml: Yaml]) throws -> Header.Items {
-        let items = Header.Items()
+    private func parseResourceHeaderItems(yaml: Yaml?) throws -> Header.Items? {
+        guard let yaml = yaml else { return nil }
         
-        items.pattern = yaml["pattern"]?.string
-        items.example = yaml["example"]?.string
+        switch yaml {
+        case .dictionary(let yamlDict):
+            let items = Header.Items()
+            
+            items.pattern = yamlDict["pattern"]?.string
+            items.example = yamlDict["example"]?.string
+            
+            return items
+        default:
+            return nil
+        }
         
-        return items
     }
     
 }

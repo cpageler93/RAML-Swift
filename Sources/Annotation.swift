@@ -22,10 +22,22 @@ public class Annotation {
 // MARK: Annotation Parsing
 extension RAML {
     
-    internal func parseAnnotations(_ yaml: [Yaml: Yaml]) throws -> [Annotation]? {
+    internal func parseAnnotations(yaml: Yaml?) throws -> [Annotation]? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .dictionary(let yamlDict):
+            return try parseAnnotations(dict: yamlDict)
+        default:
+            return nil
+        }
+        
+    }
+    
+    internal func parseAnnotations(dict: [Yaml: Yaml]) throws -> [Annotation]? {
         var annotations: [Annotation] = []
         
-        for (key, value) in yaml {
+        for (key, value) in dict {
             guard let keyString = key.string else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "Annotation Key",
                                                                   mustBeKindOf: "String"))

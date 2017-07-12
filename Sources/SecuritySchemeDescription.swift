@@ -22,16 +22,23 @@ public class SecuritySchemeDescription: HasHeaders, HasMethodResponses, HasAnnot
 // MARK: Parsing Security Scheme Description
 internal extension RAML {
     
-    internal func parseSecuritySchemeDescription(_ yaml: [Yaml: Yaml]) throws -> SecuritySchemeDescription {
+    internal func parseSecuritySchemeDescription(yaml: Yaml?) throws -> SecuritySchemeDescription? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .dictionary(let yamlDict):
+            return try parseSecuritySchemeDescription(dict: yamlDict)
+        default:
+            return nil
+        }
+        
+    }
+    
+    internal func parseSecuritySchemeDescription(dict: [Yaml: Yaml]) throws -> SecuritySchemeDescription {
         let securitySchemeDescription = SecuritySchemeDescription()
         
-        if let yamlHeaders = yaml["headers"]?.dictionary {
-            securitySchemeDescription.headers = try parseHeaders(yamlHeaders)
-        }
-        
-        if let yamlResponses = yaml["responses"]?.dictionary {
-            securitySchemeDescription.responses = try parseResponses(yamlResponses)
-        }
+        securitySchemeDescription.headers   = try parseHeaders(yaml: dict["headers"])
+        securitySchemeDescription.responses = try parseResponses(yaml: dict["responses"])
         
         return securitySchemeDescription
     }

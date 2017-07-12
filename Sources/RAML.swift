@@ -82,77 +82,22 @@ extension RAML {
             throw RAMLError.ramlParsingError(.missingValueFor(key: "title"))
         }
         
-        self.title = yamlTitle
-        self.description = yaml["description"].string
-        self.version = yaml["version"].string
-        
-        // Parse BaseURI
-        if let baseURIString = yaml["baseUri"].string {
-            self.baseURI = try parseBaseURI(string: baseURIString)
-        } else if let baseURIDictionary = yaml["baseUri"].dictionary {
-            self.baseURI = try parseBaseURI(yaml: baseURIDictionary)
-        }
-        
-        // Parse BaseURI Paramters
-        if let baseURIParameters = yaml["baseUriParameters"].dictionary {
-            self.baseURIParameters = try parseURIParameters(baseURIParameters)
-        }
-        
-        // Parse Protocols
-        if let protocolsYaml = yaml["protocols"].array {
-            self.protocols = try parseProtocols(protocolsYaml)
-        }
-        
-        // Parse MediaType
-        if let mediaTypesYaml = yaml["mediaType"].array {
-            self.mediaTypes = try parseMediaTypes(mediaTypesYaml)
-        } else if let mediaTypeString = yaml["mediaType"].string {
-            self.mediaTypes = [parseMediaType(mediaTypeString)]
-        }
-        
-        // Parse Documentation Entries
-        if let documentationEntriesYaml = yaml["documentation"].array {
-            self.documentation = try parseDocumentation(documentationEntriesYaml)
-        } // TODO: Consider Includes
-        
-        // Parse Types
-        if let typesYaml = yaml["types"].dictionary {
-            self.types = try parseTypes(typesYaml)
-        } // TODO: Consider Includes
-        
-        // Parse Traits
-        if let traitsYaml = yaml["traits"].dictionary {
-            self.traitDefinitions = try parseTraitDefinitions(traitsYaml)
-        } else if let traitIncludeString = yaml["traits"].string {
-            let yaml = try parseTraitFromIncludeString(traitIncludeString)
-            guard let traitsYaml = yaml.dictionary else {
-                throw RAMLError.ramlParsingError(.invalidInclude)
-            }
-            self.traitDefinitions = try parseTraitDefinitions(traitsYaml)
-        }
-        
-        // Parse Resource Types
-        if let resourceTypesYaml = yaml["resourceTypes"].dictionary {
-            self.resourceTypes = try parseResourceTypes(resourceTypesYaml)
-        } else if let resourceTypesString = yaml["resourceTypes"].string {
-            let yaml = try parseResourceTypesFromIncludeString(resourceTypesString)
-            guard let resourceTypesYaml = yaml.dictionary else {
-                throw RAMLError.ramlParsingError(.invalidInclude)
-            }
-            self.resourceTypes = try parseResourceTypes(resourceTypesYaml)
-        }
-        
-        // Parse Annotation Types
-        if let annotationTypesYaml = yaml["annotationTypes"].dictionary {
-            self.annotationTypes = try parseAnnotationTypes(annotationTypesYaml)
-        } // TODO: Consider Includes
-        
-        // Parse Security Schemes
-        if let securitySchemesYaml = yaml["securitySchemes"].dictionary {
-            self.securitySchemes = try parseSecuritySchemes(securitySchemesYaml)
-        } // TODO: Consider Includes
-        
-        self.resources = try parseResources(yaml)
+        self.title              = yamlTitle
+        self.description        = yaml["description"].string
+        self.version            = yaml["version"].string
+        self.baseURI            = try parseBaseURI(yaml: yaml["baseUri"])
+        self.baseURIParameters  = try parseURIParameters(yaml: yaml["baseUriParameters"])
+        self.protocols          = try parseProtocols(yaml: yaml["protocols"])
+        self.mediaTypes         = try parseMediaTypes(yaml: yaml["mediaType"])
+        self.documentation      = try parseDocumentation(yaml: yaml["documentation"])
+        self.types              = try parseTypes(yaml: yaml["types"])
+        self.traitDefinitions   = try parseTraitDefinitions(yaml: yaml["traits"])
+        self.resourceTypes      = try parseResourceTypes(yaml: yaml["resourceTypes"])
+        self.annotationTypes    = try parseAnnotationTypes(yaml: yaml["annotationTypes"])
+        self.securitySchemes    = try parseSecuritySchemes(yaml: yaml["securitySchemes"])
+        // securedBy
+        // uses
+        self.resources          = try parseResources(yaml: yaml)
     }
     
 }

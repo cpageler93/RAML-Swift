@@ -25,9 +25,21 @@ public class AnnotationTypeProperty {
 // MARK: AnnotationTypeProperty Parsing
 internal extension RAML {
     
-    internal func parseAnnotationTypeProperties(_ yaml: [Yaml: Yaml]) throws -> [AnnotationTypeProperty] {
+    internal func parseAnnotationTypeProperties(yaml: Yaml?) throws -> [AnnotationTypeProperty]? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .dictionary(let yamlDict):
+            return try parseAnnotationTypeProperties(dict: yamlDict)
+        default:
+            return nil
+        }
+        
+    }
+    
+    internal func parseAnnotationTypeProperties(dict: [Yaml: Yaml]) throws -> [AnnotationTypeProperty] {
         var annotationTypeProperties: [AnnotationTypeProperty] = []
-        for (key, value) in yaml {
+        for (key, value) in dict {
             guard let keyString = key.string else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "Property Key Of AnnotationType",
                                                                   mustBeKindOf: "String"))

@@ -26,10 +26,28 @@ public class TraitDefinition: HasHeaders {
 // MARK: Trait Parsing
 internal extension RAML {
     
-    internal func parseTraitDefinitions(_ yaml: [Yaml: Yaml]) throws -> [TraitDefinition] {
+    internal func parseTraitDefinitions(yaml: Yaml?) throws -> [TraitDefinition]? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .dictionary(let yamlDict):
+            return try parseTraitDefinitions(dict: yamlDict)
+        case .string(let yamlString):
+            let yaml = try parseTraitFromIncludeString(yamlString)
+            guard let traitsDict = yaml.dictionary else {
+                throw RAMLError.ramlParsingError(.invalidInclude)
+            }
+            return try parseTraitDefinitions(dict: traitsDict)
+        default:
+            return nil
+        }
+        
+    }
+    
+    internal func parseTraitDefinitions(dict: [Yaml: Yaml]) throws -> [TraitDefinition] {
         var traitDefinitions: [TraitDefinition] = []
         
-        for (key, value) in yaml {
+        for (key, value) in dict {
             guard let keyString = key.string else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "Trait Key",
                                                                   mustBeKindOf: "String"))
@@ -44,14 +62,15 @@ internal extension RAML {
     private func parseTraitDefinition(name: String, yaml: Yaml) throws -> TraitDefinition {
         let traitDefinition = TraitDefinition(name: name)
         
-        if let yamlDict = yaml.dictionary {
-            if let headersYaml = yamlDict["headers"]?.dictionary {
-                traitDefinition.headers = try parseHeaders(headersYaml)
-            }
-        } else if let yamlString = yaml.string {
+        switch yaml {
+        case .dictionary(let yamlDict):
+            traitDefinition.headers = try parseHeaders(yaml: yamlDict["headers"])
+        case .string(let yamlString):
             let yamlFromInclude = try parseTraitFromIncludeString(yamlString)
             return try parseTraitDefinition(name: name,
                                             yaml: yamlFromInclude)
+        default:
+            throw RAMLError.ramlParsingError(.failedParsingTraitDefinition)
         }
         
         return traitDefinition

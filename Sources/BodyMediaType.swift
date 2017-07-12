@@ -18,9 +18,21 @@ public class BodyMediaType: MediaType {
 // MARK: BodyMediaType Parsing
 public extension RAML {
     
-    internal func parseBodyMediaTypes(_ yaml: [Yaml: Yaml]) throws -> [BodyMediaType]? {
+    internal func parseBodyMediaTypes(yaml: Yaml?) throws -> [BodyMediaType]? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .dictionary(let yamlDict):
+            return try parseBodyMediaTypes(dict: yamlDict)
+        default:
+            return nil
+        }
+        
+    }
+    
+    internal func parseBodyMediaTypes(dict: [Yaml: Yaml]) throws -> [BodyMediaType]? {
         var bodyMediaTypes: [BodyMediaType] = []
-        for (key, value) in yaml {
+        for (key, value) in dict {
             guard let keyString = key.string else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "MediaType in Response Body",
                                                                   mustBeKindOf: "String"))
@@ -38,11 +50,7 @@ public extension RAML {
     
     private func parseBodyMediaType(identifier: String, yaml: Yaml) throws -> BodyMediaType {
         let bodyMediaType = BodyMediaType(identifier: identifier)
-        
-        if let typeString = yaml["type"].string {
-            bodyMediaType.type = DataType.dataTypeEnumFrom(string: typeString)
-        }
-        
+        bodyMediaType.type = try DataType.dataTypeEnumFrom(yaml: yaml, dictKey: "type")
         return bodyMediaType
     }
     

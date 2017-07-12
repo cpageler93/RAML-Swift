@@ -25,9 +25,27 @@ public class ResourceType: HasResourceMethods {
 // MARK: Parsing Resource Types
 internal extension RAML {
     
-    internal func parseResourceTypes(_ yaml: [Yaml: Yaml]) throws -> [ResourceType] {
+    internal func parseResourceTypes(yaml: Yaml?) throws -> [ResourceType]? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .dictionary(let yamlDict):
+            return try parseResourceTypes(dict: yamlDict)
+        case .string(let yamlString):
+            let yaml = try parseResourceTypesFromIncludeString(yamlString)
+            guard let resourceTypesDict = yaml.dictionary else {
+                throw RAMLError.ramlParsingError(.invalidInclude)
+            }
+            return try parseResourceTypes(dict: resourceTypesDict)
+        default:
+            return nil
+        }
+        
+    }
+    
+    internal func parseResourceTypes(dict: [Yaml: Yaml]) throws -> [ResourceType] {
         var resourceTypes: [ResourceType] = []
-        for (key, value) in yaml {
+        for (key, value) in dict {
             guard let keyString = key.string else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "ResourceType Key",
                                                                   mustBeKindOf: "String"))
@@ -41,16 +59,18 @@ internal extension RAML {
     private func parseResourceType(identifier: String, yaml: Yaml) throws -> ResourceType {
         let resourceType = ResourceType(identifier: identifier)
         
-        if let yamlDict = yaml.dictionary {
-            
+        
+        switch yaml {
+        case .dictionary(let yamlDict):
             resourceType.usage = yamlDict["usage"]?.string
             resourceType.description = yamlDict["description"]?.string
-            resourceType.methods = try parseResourceMethods(yaml)
-            
-        } else if let yamlString = yaml.string {
+            resourceType.methods = try parseResourceMethods(yaml: yaml)
+        case .string(let yamlString):
             let yamlFromInclude = try parseResourceTypesFromIncludeString(yamlString)
             return try parseResourceType(identifier: identifier,
                                          yaml: yamlFromInclude)
+        default:
+            throw RAMLError.ramlParsingError(.failedParsingResourceType)
         }
         
         return resourceType

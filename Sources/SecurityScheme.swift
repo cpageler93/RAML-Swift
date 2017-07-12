@@ -53,9 +53,22 @@ public class SecurityScheme {
 // MARK: Parsing Security Schemes
 internal extension RAML {
     
-    func parseSecuritySchemes(_ yaml: [Yaml: Yaml]) throws -> [SecurityScheme] {
+    internal func parseSecuritySchemes(yaml: Yaml?) throws -> [SecurityScheme]? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .dictionary(let yamlDict):
+            return try parseSecuritySchemes(dict: yamlDict)
+        default:
+            return nil
+        }
+        
+        // TODO: Consider Includes
+    }
+        
+    internal func parseSecuritySchemes(dict: [Yaml: Yaml]) throws -> [SecurityScheme] {
         var securitySchemes: [SecurityScheme] = []
-        for (key, value) in yaml {
+        for (key, value) in dict {
             guard let keyString = key.string else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "Security Scheme Key",
                                                                   mustBeKindOf: "String"))
@@ -74,14 +87,9 @@ internal extension RAML {
             let type = try SecuritySchemeType.fromString(typeString)
             let securityScheme = SecurityScheme(identifier: identifier, type: type)
             
-            if let settingsYaml = yaml["settings"].dictionary {
-                securityScheme.settings = try parseSecuritySchemeSettings(settingsYaml,
-                                                                          forType: type)
-            }
-            
-            if let describedByYaml = yaml["describedBy"].dictionary {
-                securityScheme.describedBy = try parseSecuritySchemeDescription(describedByYaml)
-            }
+            securityScheme.settings = try parseSecuritySchemeSettings(yaml: yaml["settings"],
+                                                                      forType: type)
+            securityScheme.describedBy = try parseSecuritySchemeDescription(yaml: yaml["describedBy"])
             
             return securityScheme
         } else if let yamlString = yaml.string {

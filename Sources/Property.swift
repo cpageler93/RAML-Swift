@@ -26,9 +26,29 @@ public class Property {
 // MARK: Property Parsing
 internal extension RAML {
     
-    internal func parseProperties(_ yaml: [Yaml: Yaml]) throws -> [Property] {
+    internal func parseProperties(yaml: Yaml?, propertiesKey: String = "properties") throws -> [Property]? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .dictionary(let yamlDict):
+            for (key, value) in yamlDict {
+                if let keyString = key.string, keyString == propertiesKey {
+                    if let valueDict = value.dictionary {
+                        return try parseProperties(dict: valueDict)
+                    } else {
+                        return []
+                    }
+                }
+            }
+            return nil
+        default: return nil
+        }
+        
+    }
+    
+    internal func parseProperties(dict: [Yaml: Yaml]) throws -> [Property] {
         var properties: [Property] = []
-        for (key, value) in yaml {
+        for (key, value) in dict {
             guard let keyString = key.string else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "Property Key",
                                                                   mustBeKindOf: "String"))
@@ -43,14 +63,7 @@ internal extension RAML {
         let property = Property(name: name)
         
         property.required = yaml["required"].bool
-        
-        // parse type
-        if let yamlTypeString = yaml["type"].string {
-            property.type = DataType.dataTypeEnumFrom(string: yamlTypeString)
-        } else if let yamlString = yaml.string {
-            // if type is not explicitly set, check for type in value
-            property.type = DataType.dataTypeEnumFrom(string: yamlString)
-        }
+        property.type = try DataType.dataTypeEnumFrom(yaml: yaml, dictKey: "type")
         
         // parse enum
         if let yamlEnumArray = yaml["enum"].array {

@@ -25,9 +25,21 @@ public class MethodResponse: HasAnnotations, HasHeaders {
 // MARK: Response Parsing
 internal extension RAML {
     
-    internal func parseResponses(_ yaml: [Yaml: Yaml]) throws -> [MethodResponse] {
+    internal func parseResponses(yaml: Yaml?) throws -> [MethodResponse]? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .dictionary(let yamlDict):
+            return try parseResponses(dict: yamlDict)
+        default:
+            return nil
+        }
+        
+    }
+    
+    internal func parseResponses(dict: [Yaml: Yaml]) throws -> [MethodResponse] {
         var responses: [MethodResponse] = []
-        for (key, value) in yaml {
+        for (key, value) in dict {
             guard let keyString = key.string, let keyInt = Int(keyString) else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "Response Key",
                                                                   mustBeKindOf: "Int"))
@@ -41,17 +53,10 @@ internal extension RAML {
     private func parseResponse(code: Int, yaml: Yaml) throws -> MethodResponse {
         let response = MethodResponse(code: code)
         
-        response.description = yaml["description"].string
-        
-        if let yamlDictionary = yaml.dictionary {
-            response.annotations = try parseAnnotations(yamlDictionary)
-        }
-        
-        if let headerYaml = yaml["headers"].dictionary {
-            response.headers = try parseHeaders(headerYaml)
-        }
-        
-        response.body = try parseResponseBody(yaml["body"])
+        response.description    = yaml["description"].string
+        response.annotations    = try parseAnnotations(yaml: yaml)
+        response.headers        = try parseHeaders(yaml: yaml["headers"])
+        response.body           = try parseResponseBody(yaml: yaml["body"])
         
         return response
     }

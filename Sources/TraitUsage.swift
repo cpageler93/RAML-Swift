@@ -30,9 +30,23 @@ public class TraitUsage {
 // MARK: Trait Usage Parsing
 internal extension RAML {
     
-    internal func parseTraitUsages(yamlArray: [Yaml]) throws -> [TraitUsage] {
+    internal func parseTraitUsages(yaml: Yaml?) throws -> [TraitUsage]? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .string(let yamlString):
+            return [TraitUsage(name: yamlString)]
+        case .array(let yamlArray):
+            return try parseTraitUsages(array: yamlArray)
+        default:
+            return nil
+        }
+        
+    }
+    
+    internal func parseTraitUsages(array: [Yaml]) throws -> [TraitUsage] {
         var traitUsages: [TraitUsage] = []
-        for traitYaml in yamlArray {
+        for traitYaml in array {
             let traitUsage = try parseTraitUsage(traitYaml)
             traitUsages.append(traitUsage)
         }

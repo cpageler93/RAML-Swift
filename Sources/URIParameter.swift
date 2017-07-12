@@ -13,6 +13,11 @@ public class URIParameter {
     public enum ParameterType: String {
         case array
         case integer
+        
+        static func fromOptional(_ string: String?) -> ParameterType? {
+            guard let string = string else { return nil }
+            return ParameterType(rawValue: string)
+        }
     }
     
     public class URIParameterItem {
@@ -51,24 +56,33 @@ public class URIParameter {
 // MARK: URIParameters Parsing
 internal extension RAML {
     
-    internal func parseURIParameters(_ yaml: [Yaml: Yaml]) throws -> [URIParameter] {
+    internal func parseURIParameters(yaml: Yaml?) throws -> [URIParameter]? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .dictionary(let yamlDict):
+            return try parseURIParameters(dict: yamlDict)
+        default:
+            return nil
+        }
+        
+    }
+    
+    internal func parseURIParameters(dict: [Yaml: Yaml]) throws -> [URIParameter] {
         var uriParameters: [URIParameter] = []
         
-        for (key, value) in yaml {
+        for (key, value) in dict {
             guard let keyString = key.string else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "URIParameter Key",
                                                                   mustBeKindOf: "String"))
             }
             
-            var type: URIParameter.ParameterType? = nil
-            if let typeString = value["type"].string {
-                type = URIParameter.ParameterType(rawValue: typeString)
-            }
-            
             let uriParameter = URIParameter(identifier: keyString,
                                             description: value["description"].string,
-                                            type: type,
+                                            type: URIParameter.ParameterType.fromOptional(value["type"].string),
                                             items: nil)
+            // TODO: handle items
+            
             uriParameters.append(uriParameter)
         }
         

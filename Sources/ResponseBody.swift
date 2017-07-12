@@ -22,20 +22,21 @@ public class ResponseBody: HasBodyMediaTypes {
 // MARK: Response Body Parsing
 internal extension RAML {
     
-    internal func parseResponseBody(_ yaml: Yaml) throws -> ResponseBody? {
-        if let bodyString = yaml.string {
+    internal func parseResponseBody(yaml: Yaml?) throws -> ResponseBody? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .string(let yamlString):
             let body = ResponseBody()
-            body.type = DataType.dataTypeEnumFrom(string: bodyString)
+            body.type = DataType.dataTypeEnumFrom(string: yamlString)
             return body
-        } else if let bodyYamlDict = yaml.dictionary {
+        case .dictionary:
             let body = ResponseBody()
-            
-            if let mediaTypes = try parseBodyMediaTypes(bodyYamlDict) {
-                body.mediaTypes = mediaTypes
-            }
-            
+            body.mediaTypes = try parseBodyMediaTypes(yaml: yaml)
             return body
+        default:
+            return nil
         }
-        return nil
+        
     }
 }

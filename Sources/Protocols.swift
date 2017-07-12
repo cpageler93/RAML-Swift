@@ -24,9 +24,20 @@ public struct Protocols: OptionSet {
 // MARK: Protocols Parsing
 internal extension RAML {
     
-    internal func parseProtocols(_ yaml: [Yaml]) throws -> Protocols {
+    internal func parseProtocols(yaml: Yaml?) throws -> Protocols? {
+        guard let yaml = yaml else { return nil }
+        
+        switch yaml {
+        case .array(let yamlArray):
+            return try parseProtocols(array: yamlArray)
+        default:
+            return nil
+        }
+    }
+    
+    internal func parseProtocols(array: [Yaml]) throws -> Protocols {
         var protocols: Protocols = []
-        for protocolYaml in yaml {
+        for protocolYaml in array {
             guard let protocolString = protocolYaml.string else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "Protocol",
                                                                   mustBeKindOf: "String"))
