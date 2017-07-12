@@ -8,7 +8,7 @@
 import Foundation
 import Yaml
 
-public class Resource: HasResources, HasResourceMethods {
+public class Resource: HasResources, HasResourceMethods, HasSecuritySchemeUsages {
     
     public var path: String
     public var displayName: String?
@@ -17,7 +17,7 @@ public class Resource: HasResources, HasResourceMethods {
     public var methods: [ResourceMethod]?
     // traits
     // type
-    // securedBy
+    public var securedBy: [SecuritySchemeUsage]?
     // uriParameters
     public var resources: [Resource]?
     
@@ -52,6 +52,7 @@ internal extension RAML {
         let resource = Resource(path: path)
         resource.methods = try parseResourceMethods(yaml: yaml)
         resource.resources = try parseResources(yaml: yaml)
+        resource.securedBy = try parseSecuritySchemeUsages(yaml: yaml["securedBy"])
         return resource
     }
     

@@ -52,6 +52,7 @@ public enum RAMLParsingError: Error {
     case failedParsingTraitUsage
     case failedParsingTraitDefinition
     case failedParsingSecurityScheme
+    case failedParsingSecuritySchemeUsage
     case failedParsingAnnotationType
     case failedParsingResourceType
     
@@ -90,6 +91,7 @@ public func ==(lhs: RAMLParsingError, rhs: RAMLParsingError) -> Bool {
     case (.failedParsingTraitUsage, .failedParsingTraitUsage): return true
     case (.failedParsingTraitDefinition, .failedParsingTraitDefinition): return true
     case (.failedParsingSecurityScheme, .failedParsingSecurityScheme): return true
+    case (.failedParsingSecuritySchemeUsage, .failedParsingSecuritySchemeUsage): return true
     case (.failedParsingAnnotationType, .failedParsingAnnotationType): return true
     case (.failedParsingResourceType, .failedParsingResourceType): return true
     

@@ -21,7 +21,7 @@ public enum ResourceMethodType: String {
 }
 
 
-public class ResourceMethod: HasHeaders, HasAnnotations, HasTraitUsages, HasMethodResponses {
+public class ResourceMethod: HasHeaders, HasAnnotations, HasTraitUsages, HasMethodResponses, HasSecuritySchemeUsages {
     
     public var type: ResourceMethodType
     public var displayName: String?
@@ -34,7 +34,7 @@ public class ResourceMethod: HasHeaders, HasAnnotations, HasTraitUsages, HasMeth
     public var body: ResponseBody?
     // protocols
     public var traitUsages: [TraitUsage]?
-    // securedBy
+    public var securedBy: [SecuritySchemeUsage]?
     
     public init(type: ResourceMethodType) {
         self.type = type
@@ -85,6 +85,7 @@ internal extension RAML {
         resourceMethod.responses = try parseResponses(yaml: yaml["responses"])
         resourceMethod.traitUsages = try parseTraitUsages(yaml: yaml["is"])
         resourceMethod.body = try parseResponseBody(yaml: yaml["body"])
+        resourceMethod.securedBy = try parseSecuritySchemeUsages(yaml: yaml["securedBy"])
         
         return resourceMethod
     }
