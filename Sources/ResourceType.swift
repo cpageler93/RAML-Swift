@@ -8,12 +8,13 @@
 import Foundation
 import Yaml
 
-public class ResourceType: HasResourceMethods {
+public class ResourceType: HasResourceMethods, HasLibraries {
     
     public var identifier: String
     public var usage: String?
     public var description: String?
     public var methods: [ResourceMethod]?
+    public var uses: [Library]?
     
     public init(identifier: String) {
         self.identifier = identifier
@@ -65,6 +66,7 @@ internal extension RAML {
             resourceType.usage = yamlDict["usage"]?.string
             resourceType.description = yamlDict["description"]?.string
             resourceType.methods = try parseResourceMethods(yaml: yaml)
+            resourceType.uses = try parseLibraries(yaml: yaml["uses"])
         case .string(let yamlString):
             let yamlFromInclude = try parseResourceTypesFromIncludeString(yamlString)
             return try parseResourceType(identifier: identifier,

@@ -2,7 +2,7 @@ import Foundation
 import Yaml
 import PathKit
 
-public class RAML : HasBaseURIParameters, HasProtocols, HasMediaTypes, HasDocumentationEntries, HasTypes, HasTraitDefinitions, HasResourceTypes, HasAnnotationTypes, HasSecuritySchemes, HasSecuritySchemeUsages, /* HasUses, */ HasResources {
+public class RAML : HasBaseURIParameters, HasProtocols, HasMediaTypes, HasDocumentationEntries, HasTypes, HasTraitDefinitions, HasResourceTypes, HasAnnotationTypes, HasSecuritySchemes, HasSecuritySchemeUsages,  HasLibraries, HasResources {
     
     // MARK: meta (not raml related)
     
@@ -34,7 +34,7 @@ public class RAML : HasBaseURIParameters, HasProtocols, HasMediaTypes, HasDocume
     public var annotationTypes: [AnnotationType]?
     public var securitySchemes: [SecurityScheme]?
     public var securedBy: [SecuritySchemeUsage]?
-//    uses
+	public var uses: [Library]?
     public var resources: [Resource]?
     
     // we need this static constant because our yaml parser doesnt work well
@@ -96,7 +96,7 @@ extension RAML {
         self.annotationTypes    = try parseAnnotationTypes(yaml: yaml["annotationTypes"])
         self.securitySchemes    = try parseSecuritySchemes(yaml: yaml["securitySchemes"])
         self.securedBy          = try parseSecuritySchemeUsages(yaml: yaml["securedBy"])
-        // uses
+        self.uses               = try parseLibraries(yaml: yaml["uses"])
         self.resources          = try parseResources(yaml: yaml)
     }
     

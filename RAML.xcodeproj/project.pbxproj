@@ -18,6 +18,8 @@
 		59558E7F1F069E1400EEF042 /* ResourceMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59558E7E1F069E1400EEF042 /* ResourceMethod.swift */; };
 		597E55361F15FEAE0046A608 /* ResourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597E55351F15FEAE0046A608 /* ResourceType.swift */; };
 		597E55381F1600470046A608 /* ResourceTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597E55371F1600470046A608 /* ResourceTypeTests.swift */; };
+		5990964A1F16A687009B918E /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599096491F16A687009B918E /* Library.swift */; };
+		5990964C1F16A9BF009B918E /* LibraryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5990964B1F16A9BF009B918E /* LibraryTests.swift */; };
 		59ADB3521F0658D80003B348 /* AnnotationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59ADB3511F0658D80003B348 /* AnnotationType.swift */; };
 		59ADB3541F0661C00003B348 /* AnnotationTypeProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59ADB3531F0661C00003B348 /* AnnotationTypeProperty.swift */; };
 		59D3579E1F112E44003B6CE7 /* SecurityScheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D3579D1F112E44003B6CE7 /* SecurityScheme.swift */; };
@@ -151,6 +153,8 @@
 		59558E7E1F069E1400EEF042 /* ResourceMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceMethod.swift; sourceTree = "<group>"; };
 		597E55351F15FEAE0046A608 /* ResourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceType.swift; sourceTree = "<group>"; };
 		597E55371F1600470046A608 /* ResourceTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceTypeTests.swift; sourceTree = "<group>"; };
+		599096491F16A687009B918E /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
+		5990964B1F16A9BF009B918E /* LibraryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryTests.swift; sourceTree = "<group>"; };
 		59ADB3511F0658D80003B348 /* AnnotationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationType.swift; sourceTree = "<group>"; };
 		59ADB3531F0661C00003B348 /* AnnotationTypeProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationTypeProperty.swift; sourceTree = "<group>"; };
 		59D3579D1F112E44003B6CE7 /* SecurityScheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityScheme.swift; sourceTree = "<group>"; };
@@ -285,6 +289,7 @@
 				5931CA191F165C9200B97672 /* SecuritySchemeUsageTests.swift */,
 				59DF5C221F15225100C81ADF /* DefaultsTests.swift */,
 				597E55371F1600470046A608 /* ResourceTypeTests.swift */,
+				5990964B1F16A9BF009B918E /* LibraryTests.swift */,
 			);
 			name = RAMLTests;
 			path = Tests/RAMLTests;
@@ -405,6 +410,7 @@
 				59D357A11F113043003B6CE7 /* SecuritySchemeSettings.swift */,
 				597E55351F15FEAE0046A608 /* ResourceType.swift */,
 				5931CA171F1657F300B97672 /* SecuritySchemeUsage.swift */,
+				599096491F16A687009B918E /* Library.swift */,
 			);
 			path = Sources;
 			sourceTree = SOURCE_ROOT;
@@ -562,6 +568,7 @@
 				OBJ_127 /* PropertyRestrictionTests.swift in Sources */,
 				59D357A61F11847C003B6CE7 /* SecuritySchemeTests.swift in Sources */,
 				OBJ_128 /* TypeTests.swift in Sources */,
+				5990964C1F16A9BF009B918E /* LibraryTests.swift in Sources */,
 				592FE03D1F14B296005DBF90 /* MediaTypeTests.swift in Sources */,
 				OBJ_129 /* DocumentationTests.swift in Sources */,
 				59D415EC1F09003100247940 /* TraitTests.swift in Sources */,
@@ -630,6 +637,7 @@
 				59D415EE1F09012800247940 /* TraitUsage.swift in Sources */,
 				59D357A01F113021003B6CE7 /* SecuritySchemeDescription.swift in Sources */,
 				591027A41F0E77F600C8A7D0 /* ResponseBody.swift in Sources */,
+				5990964A1F16A687009B918E /* Library.swift in Sources */,
 				OBJ_103 /* Protocols.swift in Sources */,
 				OBJ_104 /* RAML+Include.swift in Sources */,
 				5931CA181F1657F300B97672 /* SecuritySchemeUsage.swift in Sources */,
