@@ -53,8 +53,8 @@ public class SecurityScheme {
 // MARK: Parsing Security Schemes
 internal extension RAML {
     
-    internal func parseSecuritySchemes(yaml: Yaml?) throws -> [SecurityScheme]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseSecuritySchemes(_ input: ParseInput) throws -> [SecurityScheme]? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .dictionary(let yamlDict):
@@ -66,7 +66,7 @@ internal extension RAML {
         // TODO: Consider Includes
     }
         
-    internal func parseSecuritySchemes(dict: [Yaml: Yaml]) throws -> [SecurityScheme] {
+    private func parseSecuritySchemes(dict: [Yaml: Yaml]) throws -> [SecurityScheme] {
         var securitySchemes: [SecurityScheme] = []
         for (key, value) in dict {
             guard let keyString = key.string else {
@@ -100,7 +100,7 @@ internal extension RAML {
         throw RAMLError.ramlParsingError(.failedParsingSecurityScheme)
     }
     
-    internal func parseSecuritySchemeFromIncludeString(_ includeString: String) throws -> Yaml {
+    private func parseSecuritySchemeFromIncludeString(_ includeString: String) throws -> Yaml {
         try testInclude(includeString)
         return try parseYamlFromIncludeString(includeString,
                                               parentFilePath: try directoryOfInitialFilePath(),

@@ -63,14 +63,6 @@ public class RAML : HasBaseURIParameters, HasProtocols, HasMediaTypes, HasDocume
         includesAvailable = false
     }
     
-    // MARK: - Internal Methods
-    
-    internal func directoryOfInitialFilePath() throws -> Path {
-        guard let initialFilePath = initialFilePath else {
-            throw RAMLError.unknown
-        }
-        return initialFilePath.absolute().directory()
-    }
 }
 
 
@@ -82,21 +74,23 @@ extension RAML {
             throw RAMLError.ramlParsingError(.missingValueFor(key: "title"))
         }
         
+        let parentFilePathDirectory = initialFilePath?.absolute().directory()
+        
         self.title              = yamlTitle
         self.description        = yaml["description"].string
         self.version            = yaml["version"].string
-        self.baseURI            = try parseBaseURI(yaml: yaml["baseUri"])
-        self.baseURIParameters  = try parseURIParameters(yaml: yaml["baseUriParameters"])
-        self.protocols          = try parseProtocols(yaml: yaml["protocols"])
-        self.mediaTypes         = try parseMediaTypes(yaml: yaml["mediaType"])
-        self.documentation      = try parseDocumentation(yaml: yaml["documentation"])
-        self.types              = try parseTypes(yaml: yaml["types"])
-        self.traitDefinitions   = try parseTraitDefinitions(yaml: yaml["traits"])
-        self.resourceTypes      = try parseResourceTypes(yaml: yaml["resourceTypes"])
-        self.annotationTypes    = try parseAnnotationTypes(yaml: yaml["annotationTypes"])
-        self.securitySchemes    = try parseSecuritySchemes(yaml: yaml["securitySchemes"])
-        self.securedBy          = try parseSecuritySchemeUsages(yaml: yaml["securedBy"])
-        self.uses               = try parseLibraries(yaml: yaml["uses"])
+        self.baseURI            = try parseBaseURI(ParseInput(yaml["baseUri"], parentFilePathDirectory))
+        self.baseURIParameters  = try parseURIParameters(ParseInput(yaml["baseUriParameters"], parentFilePathDirectory))
+        self.protocols          = try parseProtocols(ParseInput(yaml["protocols"], parentFilePathDirectory))
+        self.mediaTypes         = try parseMediaTypes(ParseInput(yaml["mediaType"], parentFilePathDirectory))
+        self.documentation      = try parseDocumentation(ParseInput(yaml["documentation"], parentFilePathDirectory))
+        self.types              = try parseTypes(ParseInput(yaml["types"], parentFilePathDirectory))
+        self.traitDefinitions   = try parseTraitDefinitions(ParseInput(yaml["traits"], parentFilePathDirectory))
+        self.resourceTypes      = try parseResourceTypes(ParseInput(yaml["resourceTypes"], parentFilePathDirectory))
+        self.annotationTypes    = try parseAnnotationTypes(ParseInput(yaml["annotationTypes"], parentFilePathDirectory))
+        self.securitySchemes    = try parseSecuritySchemes(ParseInput(yaml["securitySchemes"], parentFilePathDirectory))
+        self.securedBy          = try parseSecuritySchemeUsages(ParseInput(yaml["securedBy"], parentFilePathDirectory))
+        self.uses               = try parseLibraries(ParseInput(yaml["uses"], parentFilePathDirectory))
         self.resources          = try parseResources(yaml: yaml)
     }
     

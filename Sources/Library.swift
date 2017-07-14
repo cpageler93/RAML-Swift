@@ -31,8 +31,8 @@ public class Library: HasTypes, HasResourceTypes, HasTraitDefinitions, HasSecuri
 // MARK: Parsing Libraries
 internal extension RAML {
     
-    internal func parseLibraries(yaml: Yaml?) throws -> [Library]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseLibraries(_ input: ParseInput) throws -> [Library]? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .dictionary(let yamlDict):
@@ -80,7 +80,7 @@ internal extension RAML {
         return library
     }
     
-    internal func parseLibraryFromIncludeString(_ includeString: String) throws -> Yaml {
+    private func parseLibraryFromIncludeString(_ includeString: String) throws -> Yaml {
         try testInclude(includeString)
         return try parseYamlFromIncludeString(includeString,
                                               parentFilePath: try directoryOfInitialFilePath(),

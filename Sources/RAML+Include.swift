@@ -55,3 +55,14 @@ internal extension Path {
     
 }
 
+internal struct ParseInput {
+    
+    let yaml: Yaml?
+    let parentFilePath: Path?
+    
+    internal init(_ yaml: Yaml?, _ parentFilePath: Path?) {
+        self.yaml = yaml
+        self.parentFilePath = parentFilePath
+    }
+    
+}

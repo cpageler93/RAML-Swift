@@ -22,8 +22,8 @@ public class MediaType {
 // MARK: MediaType Parsing
 internal extension RAML {
     
-    internal func parseMediaTypes(yaml: Yaml?) throws -> [MediaType]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseMediaTypes(_ input: ParseInput) throws -> [MediaType]? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .array(let yamlArray):
@@ -36,7 +36,7 @@ internal extension RAML {
         // TODO: Consider Includes
     }
     
-    internal func parseMediaTypes(array: [Yaml]) throws -> [MediaType] {
+    private func parseMediaTypes(array: [Yaml]) throws -> [MediaType] {
         var mediaTypes: [MediaType] = []
         for yamlMediaType in array {
             guard let mediaTypeString = yamlMediaType.string else {
@@ -49,7 +49,7 @@ internal extension RAML {
         return mediaTypes
     }
     
-    internal func parseMediaType(string: String) -> MediaType {
+    private func parseMediaType(string: String) -> MediaType {
         return MediaType(identifier: string)
     }
     

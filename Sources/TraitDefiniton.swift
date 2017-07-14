@@ -26,8 +26,8 @@ public class TraitDefinition: HasHeaders {
 // MARK: Trait Parsing
 internal extension RAML {
     
-    internal func parseTraitDefinitions(yaml: Yaml?) throws -> [TraitDefinition]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseTraitDefinitions(_ input: ParseInput) throws -> [TraitDefinition]? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .dictionary(let yamlDict):
@@ -44,7 +44,7 @@ internal extension RAML {
         
     }
     
-    internal func parseTraitDefinitions(dict: [Yaml: Yaml]) throws -> [TraitDefinition] {
+    private func parseTraitDefinitions(dict: [Yaml: Yaml]) throws -> [TraitDefinition] {
         var traitDefinitions: [TraitDefinition] = []
         
         for (key, value) in dict {
@@ -76,7 +76,7 @@ internal extension RAML {
         return traitDefinition
     }
     
-    internal func parseTraitFromIncludeString(_ includeString: String) throws -> Yaml {
+    private func parseTraitFromIncludeString(_ includeString: String) throws -> Yaml {
         try testInclude(includeString)
         return try parseYamlFromIncludeString(includeString,
                                               parentFilePath: try directoryOfInitialFilePath(),

@@ -30,8 +30,8 @@ public class Resource: HasResources, HasResourceMethods, HasSecuritySchemeUsages
 // MARK: Resources Parsing
 internal extension RAML {
     
-    internal func parseResources(yaml: Yaml?) throws -> [Resource]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseResources(_ input: ParseInput) throws -> [Resource]? {
+        guard let yaml = input.yaml else { return nil }
         
         var resources: [Resource] = []
         for (key, value) in yaml.dictionary ?? [:] {
@@ -48,7 +48,7 @@ internal extension RAML {
         }
     }
     
-    internal func parseResource(path: String, yaml: Yaml) throws -> Resource {
+    private func parseResource(path: String, yaml: Yaml) throws -> Resource {
         let resource = Resource(path: path)
         resource.methods = try parseResourceMethods(yaml: yaml)
         resource.resources = try parseResources(yaml: yaml)

@@ -24,8 +24,8 @@ public class BaseURI: HasAnnotations {
 // MARK: BaseURI Parsing
 internal extension RAML {
     
-    internal func parseBaseURI(yaml: Yaml?) throws -> BaseURI? {
-        guard let yaml = yaml else { return nil }
+    internal func parseBaseURI(_ input: ParseInput) throws -> BaseURI? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .string(let yamlString):
@@ -38,11 +38,11 @@ internal extension RAML {
         
     }
     
-    internal func parseBaseURI(string: String) throws -> BaseURI {
+    private func parseBaseURI(string: String) throws -> BaseURI {
         return BaseURI(value: string)
     }
         
-    internal func parseBaseURI(dict: [Yaml: Yaml]) throws -> BaseURI {
+    private func parseBaseURI(dict: [Yaml: Yaml]) throws -> BaseURI {
         guard let value = dict["value"]?.string else {
             throw RAMLError.ramlParsingError(.missingValueFor(key: "value"))
         }

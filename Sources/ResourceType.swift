@@ -26,8 +26,8 @@ public class ResourceType: HasResourceMethods, HasLibraries {
 // MARK: Parsing Resource Types
 internal extension RAML {
     
-    internal func parseResourceTypes(yaml: Yaml?) throws -> [ResourceType]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseResourceTypes(_ input: ParseInput) throws -> [ResourceType]? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .dictionary(let yamlDict):
@@ -44,7 +44,7 @@ internal extension RAML {
         
     }
     
-    internal func parseResourceTypes(dict: [Yaml: Yaml]) throws -> [ResourceType] {
+    private func parseResourceTypes(dict: [Yaml: Yaml]) throws -> [ResourceType] {
         var resourceTypes: [ResourceType] = []
         for (key, value) in dict {
             guard let keyString = key.string else {
@@ -78,7 +78,7 @@ internal extension RAML {
         return resourceType
     }
     
-    internal func parseResourceTypesFromIncludeString(_ includeString: String) throws -> Yaml {
+    private func parseResourceTypesFromIncludeString(_ includeString: String) throws -> Yaml {
         try testInclude(includeString)
         return try parseYamlFromIncludeString(includeString,
                                               parentFilePath: try directoryOfInitialFilePath(),

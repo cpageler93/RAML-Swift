@@ -56,8 +56,8 @@ public class URIParameter {
 // MARK: URIParameters Parsing
 internal extension RAML {
     
-    internal func parseURIParameters(yaml: Yaml?) throws -> [URIParameter]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseURIParameters(_ input: ParseInput) throws -> [URIParameter]? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .dictionary(let yamlDict):
@@ -68,7 +68,7 @@ internal extension RAML {
         
     }
     
-    internal func parseURIParameters(dict: [Yaml: Yaml]) throws -> [URIParameter] {
+    private func parseURIParameters(dict: [Yaml: Yaml]) throws -> [URIParameter] {
         var uriParameters: [URIParameter] = []
         
         for (key, value) in dict {

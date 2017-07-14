@@ -24,8 +24,8 @@ public class DocumentationEntry {
 // MARK: Documentation Parsing
 internal extension RAML {
     
-    internal func parseDocumentation(yaml: Yaml?) throws -> [DocumentationEntry]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseDocumentation(_ input: ParseInput) throws -> [DocumentationEntry]? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .array(let yamlArray):
@@ -37,7 +37,7 @@ internal extension RAML {
         return nil
     }
     
-    internal func parseDocumentation(array: [Yaml]) throws -> [DocumentationEntry] {
+    private func parseDocumentation(array: [Yaml]) throws -> [DocumentationEntry] {
         var documentation: [DocumentationEntry] = []
         
         for yamlDocumentationEntry in array {

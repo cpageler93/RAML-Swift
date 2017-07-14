@@ -22,8 +22,8 @@ public class SecuritySchemeUsage {
 // MARK: Parsing Security Scheme Usages
 internal extension RAML {
     
-    internal func parseSecuritySchemeUsages(yaml: Yaml?) throws -> [SecuritySchemeUsage]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseSecuritySchemeUsages(_ input: ParseInput) throws -> [SecuritySchemeUsage]? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .array(let yamlArray):

@@ -24,8 +24,8 @@ public struct Protocols: OptionSet {
 // MARK: Protocols Parsing
 internal extension RAML {
     
-    internal func parseProtocols(yaml: Yaml?) throws -> Protocols? {
-        guard let yaml = yaml else { return nil }
+    internal func parseProtocols(_ input: ParseInput) throws -> Protocols? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .array(let yamlArray):
@@ -35,7 +35,7 @@ internal extension RAML {
         }
     }
     
-    internal func parseProtocols(array: [Yaml]) throws -> Protocols {
+    private func parseProtocols(array: [Yaml]) throws -> Protocols {
         var protocols: Protocols = []
         for protocolYaml in array {
             guard let protocolString = protocolYaml.string else {

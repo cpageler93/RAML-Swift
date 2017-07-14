@@ -43,8 +43,8 @@ public class Type: HasProperties {
 // MARK: Type Parsing
 extension RAML {
     
-    internal func parseTypes(yaml: Yaml?) throws -> [Type]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseTypes(_ input: ParseInput) throws -> [Type]? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .dictionary(let yamlDict):
@@ -56,7 +56,7 @@ extension RAML {
         // TODO: Consider Includes
     }
     
-    internal func parseTypes(dict: [Yaml: Yaml]) throws -> [Type] {
+    private func parseTypes(dict: [Yaml: Yaml]) throws -> [Type] {
         var types: [Type] = []
         for (key, value) in dict {
             guard let keyString = key.string else {

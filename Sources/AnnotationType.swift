@@ -44,8 +44,8 @@ public class AnnotationType: HasAnnotationTypeProperties {
 // MARK: AnnotationTypes Parsing
 internal extension RAML {
     
-    internal func parseAnnotationTypes(yaml: Yaml?) throws -> [AnnotationType]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseAnnotationTypes(_ input: ParseInput) throws -> [AnnotationType]? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .dictionary(let yamlDict):
@@ -57,7 +57,7 @@ internal extension RAML {
         // TODO: Consider Includes
     }
     
-    internal func parseAnnotationTypes(dict: [Yaml: Yaml]) throws -> [AnnotationType] {
+    private func parseAnnotationTypes(dict: [Yaml: Yaml]) throws -> [AnnotationType] {
         var annotationTypes: [AnnotationType] = []
         for (key, value) in dict {
             guard let keyString = key.string else {
