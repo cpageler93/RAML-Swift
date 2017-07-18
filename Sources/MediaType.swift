@@ -56,17 +56,11 @@ internal extension RAML {
 }
 
 
-public protocol HasMediaTypes {
-    
-    var mediaTypes: [MediaType]? { get set }
-    
-}
+public protocol HasXXXTypes { }
 
-
-public extension HasMediaTypes {
-    
-    public func mediaTypeWith(identifier: String) -> MediaType? {
-        for mediaType in mediaTypes ?? [] {
+public extension HasXXXTypes {
+    public func __TypeWith(array: [MediaType]?, identifier: String) -> MediaType? {
+        for mediaType in array ?? [] {
             if mediaType.identifier == identifier {
                 return mediaType
             }
@@ -74,8 +68,46 @@ public extension HasMediaTypes {
         return nil
     }
     
+    public func has__TypeWith(array: [MediaType]?, identifier: String) -> Bool {
+        return __TypeWith(array: array, identifier: identifier) != nil
+    }
+}
+
+
+public protocol HasMediaTypes: HasXXXTypes {
+    
+    var mediaTypes: [MediaType]? { get set }
+    
+}
+
+
+public protocol HasFileTypes: HasXXXTypes {
+    
+    var fileTypes: [MediaType]? { get set }
+    
+}
+
+
+public extension HasMediaTypes {
+    
+    public func mediaTypeWith(identifier: String) -> MediaType? {
+        return __TypeWith(array: mediaTypes, identifier: identifier)
+    }
+    
     public func hasMediaTypeWith(identifier: String) -> Bool {
-        return mediaTypeWith(identifier: identifier) != nil
+        return has__TypeWith(array: mediaTypes, identifier: identifier)
+    }
+
+}
+
+public extension HasFileTypes {
+    
+    public func fileTypeWith(identifier: String) -> MediaType? {
+        return __TypeWith(array: fileTypes, identifier: identifier)
+    }
+    
+    public func hasFileTypeWith(identifier: String) -> Bool {
+        return has__TypeWith(array: fileTypes, identifier: identifier)
     }
     
 }

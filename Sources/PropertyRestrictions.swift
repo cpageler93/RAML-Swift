@@ -40,7 +40,7 @@ public class NumberRestrictions: PropertyRestrictions {
 }
 
 
-public class FileRestrictions: PropertyRestrictions {
+public class FileRestrictions: PropertyRestrictions, HasFileTypes {
     
     public var fileTypes: [MediaType]?
     public var minLength: Int?

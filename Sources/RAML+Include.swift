@@ -74,4 +74,9 @@ internal struct ParseInput {
         self.parentFilePath = parentFilePath
     }
     
+    internal init(_ yaml: Yaml?) {
+        self.yaml = yaml
+        self.parentFilePath = nil
+    }
+    
 }

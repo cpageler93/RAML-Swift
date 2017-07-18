@@ -319,4 +319,97 @@ class TypeTests: XCTestCase {
         XCTAssertEqual(stringOrPerson.type, .union(types: [.scalar(type: .string), .custom(type: "Person")]))
         XCTAssertEqual(arrayOfstringsOrPersons.type, .array(ofType: .union(types: [.scalar(type: .string), .custom(type: "Person")])))
     }
+    
+    func testDiscriminator() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: My API With Types
+        types:
+          Person:
+            type: object
+            discriminator: kind
+            properties:
+              name: string
+              kind: string
+          Employee:
+            type: Person
+            discriminatorValue: employee
+            properties:
+              employeeId: string
+          User:
+            type: Person
+            discriminatorValue: user
+            properties:
+              userId: string
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let personType = raml.typeWith(name: "Person") else {
+            XCTFail("No Person Type")
+            return
+        }
+        XCTAssertEqual(personType.type, DataType.object)
+        XCTAssertEqual(personType.discriminator, "kind")
+        XCTAssertEqual(personType.properties?.count, 2)
+        
+        guard let employeeType = raml.typeWith(name: "Employee") else {
+            XCTFail("No Employee Type")
+            return
+        }
+        XCTAssertEqual(employeeType.type, DataType.custom(type: "Person"))
+        XCTAssertEqual(employeeType.discriminatorValue, "employee")
+        XCTAssertEqual(employeeType.properties?.count, 1)
+        
+        guard let userType = raml.typeWith(name: "User") else {
+            XCTFail("No User Type")
+            return
+        }
+        XCTAssertEqual(userType.type, DataType.custom(type: "Person"))
+        XCTAssertEqual(userType.discriminatorValue, "user")
+        XCTAssertEqual(userType.properties?.count, 1)
+        
+    }
+    
+    func testArrayType() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: My API With Types
+        types:
+          Email:
+            type: object
+            properties:
+              subject: string
+              body: string
+          Emails:
+            type: Email[]
+            minItems: 1
+            uniqueItems: true
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let emailType = raml.typeWith(name: "Email") else {
+            XCTFail("No Email Type")
+            return
+        }
+        XCTAssertEqual(emailType.type, DataType.object)
+        XCTAssertEqual(emailType.properties?.count, 2)
+        
+        guard let emailsType = raml.typeWith(name: "Emails") else {
+            XCTFail("No Emails Type")
+            return
+        }
+        XCTAssertEqual(emailsType.type, DataType.array(ofType: DataType.custom(type: "Email")))
+        XCTAssertEqual(emailsType.minItems, 1)
+        XCTAssertEqual(emailsType.uniqueItems, true)
+    }
 }

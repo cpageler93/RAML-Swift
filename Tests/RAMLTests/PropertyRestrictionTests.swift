@@ -80,4 +80,54 @@ class PropertyRestrictionTests: XCTestCase {
         XCTAssertEqual(numberRestrictions.multipleOf, 4)
     }
     
+    func testFileRestrictions() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: File Tests
+        types:
+          userPicture:
+            type: file
+            fileTypes: ['image/jpeg', 'image/png']
+            maxLength: 307200
+          customFile:
+            type: file
+            fileTypes: ['*/*']
+            maxLength: 1048576
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let userPictureType = raml.typeWith(name: "userPicture") else {
+            XCTFail("No userPicture type")
+            return
+        }
+        XCTAssertEqual(userPictureType.type, DataType.scalar(type: .file))
+        
+        guard let userPictureFileRestrictions = userPictureType.restrictions as? FileRestrictions else {
+            XCTFail("No userPicture Property Restrictions")
+            return
+        }
+        XCTAssertTrue(userPictureFileRestrictions.hasFileTypeWith(identifier: "image/jpeg"))
+        XCTAssertTrue(userPictureFileRestrictions.hasFileTypeWith(identifier: "image/png"))
+        XCTAssertEqual(userPictureFileRestrictions.maxLength, 307200)
+        
+        
+        guard let customFileType = raml.typeWith(name: "customFile") else {
+            XCTFail("No customFile Type")
+            return
+        }
+        XCTAssertEqual(customFileType.type, DataType.scalar(type: .file))
+        
+        guard let customFileRestrictions = customFileType.restrictions as? FileRestrictions else {
+            XCTFail("No customFile Property Restrictions")
+            return
+        }
+        XCTAssertTrue(customFileRestrictions.hasFileTypeWith(identifier: "*/*"))
+        XCTAssertEqual(customFileRestrictions.maxLength, 1048576)
+    }
+    
 }
