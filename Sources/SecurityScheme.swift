@@ -7,6 +7,7 @@
 
 import Foundation
 import Yaml
+import PathKit
 
 public enum SecuritySchemeType {
     
@@ -58,7 +59,7 @@ internal extension RAML {
         
         switch yaml {
         case .dictionary(let yamlDict):
-            return try parseSecuritySchemes(dict: yamlDict)
+            return try parseSecuritySchemes(dict: yamlDict, parentFilePath: input.parentFilePath)
         default:
             return nil
         }
@@ -66,20 +67,22 @@ internal extension RAML {
         // TODO: Consider Includes
     }
         
-    private func parseSecuritySchemes(dict: [Yaml: Yaml]) throws -> [SecurityScheme] {
+    private func parseSecuritySchemes(dict: [Yaml: Yaml], parentFilePath: Path?) throws -> [SecurityScheme] {
         var securitySchemes: [SecurityScheme] = []
         for (key, value) in dict {
             guard let keyString = key.string else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "Security Scheme Key",
                                                                   mustBeKindOf: "String"))
             }
-            let securityScheme = try parseSecurityScheme(identifier: keyString, yaml: value)
+            let securityScheme = try parseSecurityScheme(identifier: keyString,
+                                                         yaml: value,
+                                                         parentFilePath: parentFilePath)
             securitySchemes.append(securityScheme)
         }
         return securitySchemes
     }
     
-    private func parseSecurityScheme(identifier: String, yaml: Yaml) throws -> SecurityScheme {
+    private func parseSecurityScheme(identifier: String, yaml: Yaml, parentFilePath: Path?) throws -> SecurityScheme {
         if let yamlDict = yaml.dictionary {
             guard let typeString = yamlDict["type"]?.string else {
                 throw RAMLError.ramlParsingError(.missingValueFor(key: "type"))
@@ -87,23 +90,25 @@ internal extension RAML {
             let type = try SecuritySchemeType.fromString(typeString)
             let securityScheme = SecurityScheme(identifier: identifier, type: type)
             
-            securityScheme.settings = try parseSecuritySchemeSettings(yaml: yaml["settings"],
-                                                                      forType: type)
-            securityScheme.describedBy = try parseSecuritySchemeDescription(yaml: yaml["describedBy"])
+            securityScheme.settings     = try parseSecuritySchemeSettings(ParseInput(yaml["settings"], parentFilePath), forType: type)
+            securityScheme.describedBy  = try parseSecuritySchemeDescription(ParseInput(yaml["describedBy"], parentFilePath))
             
             return securityScheme
         } else if let yamlString = yaml.string {
-            let yamlFromInclude = try parseSecuritySchemeFromIncludeString(yamlString)
-            return try parseSecurityScheme(identifier: identifier, yaml: yamlFromInclude)
+            let yamlFromInclude = try parseSecuritySchemeFromIncludeString(yamlString, parentFilePath: parentFilePath)
+            return try parseSecurityScheme(identifier: identifier, yaml: yamlFromInclude, parentFilePath: parentFilePath)
         }
         
         throw RAMLError.ramlParsingError(.failedParsingSecurityScheme)
     }
     
-    private func parseSecuritySchemeFromIncludeString(_ includeString: String) throws -> Yaml {
+    private func parseSecuritySchemeFromIncludeString(_ includeString: String, parentFilePath: Path?) throws -> Yaml {
         try testInclude(includeString)
+        guard let parentFilePath = parentFilePath else {
+            throw RAMLError.ramlParsingError(.invalidInclude)
+        }
         return try parseYamlFromIncludeString(includeString,
-                                              parentFilePath: try directoryOfInitialFilePath(),
+                                              parentFilePath: parentFilePath,
                                               permittedFragmentIdentifier: "SecurityScheme")
     }
     

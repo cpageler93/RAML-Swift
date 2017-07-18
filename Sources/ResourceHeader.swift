@@ -49,8 +49,8 @@ public class Header {
 // MARK: Parsing Headers
 internal extension RAML {
     
-    internal func parseHeaders(yaml: Yaml?) throws -> [Header]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseHeaders(_ input: ParseInput) throws -> [Header]? {
+        guard let yaml = input.yaml else { return nil }
         
         if let headerDict = yaml.dictionary {
             return try parseHeaders(dict: headerDict)

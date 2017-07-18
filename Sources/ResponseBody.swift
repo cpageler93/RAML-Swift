@@ -22,8 +22,8 @@ public class ResponseBody: HasBodyMediaTypes {
 // MARK: Response Body Parsing
 internal extension RAML {
     
-    internal func parseResponseBody(yaml: Yaml?) throws -> ResponseBody? {
-        guard let yaml = yaml else { return nil }
+    internal func parseResponseBody(_ input: ParseInput) throws -> ResponseBody? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .string(let yamlString):
@@ -32,7 +32,7 @@ internal extension RAML {
             return body
         case .dictionary:
             let body = ResponseBody()
-            body.mediaTypes = try parseBodyMediaTypes(yaml: yaml)
+            body.mediaTypes = try parseBodyMediaTypes(input)
             return body
         default:
             return nil

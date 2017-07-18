@@ -7,6 +7,7 @@
 
 import Foundation
 import Yaml
+import PathKit
 
 public class MethodResponse: HasAnnotations, HasHeaders {
     
@@ -25,38 +26,38 @@ public class MethodResponse: HasAnnotations, HasHeaders {
 // MARK: Response Parsing
 internal extension RAML {
     
-    internal func parseResponses(yaml: Yaml?) throws -> [MethodResponse]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseResponses(_ input: ParseInput) throws -> [MethodResponse]? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .dictionary(let yamlDict):
-            return try parseResponses(dict: yamlDict)
+            return try parseResponses(dict: yamlDict, parentFilePath: input.parentFilePath)
         default:
             return nil
         }
         
     }
     
-    internal func parseResponses(dict: [Yaml: Yaml]) throws -> [MethodResponse] {
+    internal func parseResponses(dict: [Yaml: Yaml], parentFilePath: Path?) throws -> [MethodResponse] {
         var responses: [MethodResponse] = []
         for (key, value) in dict {
             guard let keyString = key.string, let keyInt = Int(keyString) else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "Response Key",
                                                                   mustBeKindOf: "Int"))
             }
-            let response = try parseResponse(code: keyInt, yaml: value)
+            let response = try parseResponse(code: keyInt, yaml: value, parentFilePath: parentFilePath)
             responses.append(response)
         }
         return responses
     }
     
-    private func parseResponse(code: Int, yaml: Yaml) throws -> MethodResponse {
+    private func parseResponse(code: Int, yaml: Yaml, parentFilePath: Path?) throws -> MethodResponse {
         let response = MethodResponse(code: code)
         
         response.description    = yaml["description"].string
-        response.annotations    = try parseAnnotations(yaml: yaml)
-        response.headers        = try parseHeaders(yaml: yaml["headers"])
-        response.body           = try parseResponseBody(yaml: yaml["body"])
+        response.annotations    = try parseAnnotations(ParseInput(yaml, parentFilePath))
+        response.headers        = try parseHeaders(ParseInput(yaml["headers"], parentFilePath))
+        response.body           = try parseResponseBody(ParseInput(yaml["body"], parentFilePath))
         
         return response
     }

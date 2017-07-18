@@ -35,9 +35,9 @@ public class SecuritySchemeSettingsOAuth2: SecuritySchemeSettings {
 // MARK: Parsing Security Scheme Settings
 internal extension RAML {
     
-    internal func parseSecuritySchemeSettings(yaml: Yaml?,
+    internal func parseSecuritySchemeSettings(_ input: ParseInput,
                                               forType type: SecuritySchemeType) throws -> SecuritySchemeSettings? {
-        guard let yaml = yaml else { return nil }
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .dictionary(let yamlDict):
@@ -48,7 +48,7 @@ internal extension RAML {
         
     }
     
-    internal func parseSecuritySchemeSettings(dict: [Yaml: Yaml],
+    private func parseSecuritySchemeSettings(dict: [Yaml: Yaml],
                                               forType type: SecuritySchemeType) throws -> SecuritySchemeSettings {
         switch type {
         case .oAuth1: return try parseSecuritySchemeSettingsOauth1(dict: dict)

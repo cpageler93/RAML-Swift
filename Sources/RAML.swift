@@ -91,7 +91,7 @@ extension RAML {
         self.securitySchemes    = try parseSecuritySchemes(ParseInput(yaml["securitySchemes"], parentFilePathDirectory))
         self.securedBy          = try parseSecuritySchemeUsages(ParseInput(yaml["securedBy"], parentFilePathDirectory))
         self.uses               = try parseLibraries(ParseInput(yaml["uses"], parentFilePathDirectory))
-        self.resources          = try parseResources(yaml: yaml)
+        self.resources          = try parseResources(ParseInput(yaml, parentFilePathDirectory))
     }
     
 }

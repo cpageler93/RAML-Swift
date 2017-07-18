@@ -7,6 +7,7 @@
 
 import Foundation
 import Yaml
+import PathKit
 
 public enum AnnotationTypeEnum: Equatable {
     
@@ -49,7 +50,7 @@ internal extension RAML {
         
         switch yaml {
         case .dictionary(let yamlDict):
-            return try parseAnnotationTypes(dict: yamlDict)
+            return try parseAnnotationTypes(dict: yamlDict, parentFilePath: input.parentFilePath)
         default:
             return nil
         }
@@ -57,28 +58,28 @@ internal extension RAML {
         // TODO: Consider Includes
     }
     
-    private func parseAnnotationTypes(dict: [Yaml: Yaml]) throws -> [AnnotationType] {
+    private func parseAnnotationTypes(dict: [Yaml: Yaml], parentFilePath: Path?) throws -> [AnnotationType] {
         var annotationTypes: [AnnotationType] = []
         for (key, value) in dict {
             guard let keyString = key.string else {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "AnnotationType Key",
                                                                   mustBeKindOf: "String"))
             }
-            let annotationType = try parseAnnotationType(name: keyString, yaml: value)
+            let annotationType = try parseAnnotationType(name: keyString, yaml: value, parentFilePath: parentFilePath)
             annotationTypes.append(annotationType)
         }
         return annotationTypes
     }
     
-    private func parseAnnotationType(name: String, yaml: Yaml) throws -> AnnotationType {
+    private func parseAnnotationType(name: String, yaml: Yaml, parentFilePath: Path?) throws -> AnnotationType {
         let annotationType = AnnotationType(name: name)
         
         switch yaml {
         case .string(let yamlString):
-            annotationType.type = try typeFromString(yamlString)
+            annotationType.type         = try typeFromString(yamlString)
         case .dictionary(let yamlDict):
-            annotationType.type = try typeFromString(yamlDict["type"]?.string)
-            annotationType.properties = try parseAnnotationTypeProperties(yaml: yamlDict["properties"])
+            annotationType.type         = try typeFromString(yamlDict["type"]?.string)
+            annotationType.properties   = try parseAnnotationTypeProperties(ParseInput(yamlDict["properties"], parentFilePath))
         case .null:
             break
         default:

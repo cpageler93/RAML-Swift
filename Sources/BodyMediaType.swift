@@ -18,8 +18,8 @@ public class BodyMediaType: MediaType {
 // MARK: BodyMediaType Parsing
 public extension RAML {
     
-    internal func parseBodyMediaTypes(yaml: Yaml?) throws -> [BodyMediaType]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseBodyMediaTypes(_ input: ParseInput) throws -> [BodyMediaType]? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .dictionary(let yamlDict):

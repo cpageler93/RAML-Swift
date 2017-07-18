@@ -7,6 +7,7 @@
 
 import Foundation
 import Yaml
+import PathKit
 
 public enum ResourceMethodType: String {
     
@@ -46,8 +47,8 @@ public class ResourceMethod: HasHeaders, HasAnnotations, HasTraitUsages, HasMeth
 // MARK: ResourceMethod Parsing
 internal extension RAML {
     
-    internal func parseResourceMethods(yaml: Yaml?) throws -> [ResourceMethod]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseResourceMethods(_ input: ParseInput) throws -> [ResourceMethod]? {
+        guard let yaml = input.yaml else { return nil }
         
         var resourceMethods: [ResourceMethod] = []
         
@@ -64,7 +65,7 @@ internal extension RAML {
         for (key, value) in yaml.dictionary ?? [:] {
             if let keyString = key.string,
                    availableMethods.contains(keyString),
-               let resourceMethod = try parseResourceMethod(keyString, fromYaml: value) {
+                let resourceMethod = try parseResourceMethod(keyString, fromYaml: value, parentFilePath: input.parentFilePath) {
                 resourceMethods.append(resourceMethod)
             }
         }
@@ -76,16 +77,16 @@ internal extension RAML {
         }
     }
     
-    private func parseResourceMethod(_ method: String, fromYaml yaml: Yaml) throws -> ResourceMethod? {
+    private func parseResourceMethod(_ method: String, fromYaml yaml: Yaml, parentFilePath: Path?) throws -> ResourceMethod? {
         guard let methodType = ResourceMethodType(rawValue: method) else { return nil }
         let resourceMethod = ResourceMethod(type: methodType)
         
-        resourceMethod.headers = try parseHeaders(yaml: yaml["headers"])
-        resourceMethod.description = yaml["description"].string
-        resourceMethod.responses = try parseResponses(yaml: yaml["responses"])
-        resourceMethod.traitUsages = try parseTraitUsages(yaml: yaml["is"])
-        resourceMethod.body = try parseResponseBody(yaml: yaml["body"])
-        resourceMethod.securedBy = try parseSecuritySchemeUsages(yaml: yaml["securedBy"])
+        resourceMethod.headers      = try parseHeaders(ParseInput(yaml["headers"], parentFilePath))
+        resourceMethod.description  = yaml["description"].string
+        resourceMethod.responses    = try parseResponses(ParseInput(yaml["responses"], parentFilePath))
+        resourceMethod.traitUsages  = try parseTraitUsages(ParseInput(yaml["is"], parentFilePath))
+        resourceMethod.body         = try parseResponseBody(ParseInput(yaml["body"], parentFilePath))
+        resourceMethod.securedBy    = try parseSecuritySchemeUsages(ParseInput(yaml["securedBy"], parentFilePath))
         
         return resourceMethod
     }

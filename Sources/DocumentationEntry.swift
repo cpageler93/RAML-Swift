@@ -7,6 +7,7 @@
 
 import Foundation
 import Yaml
+import PathKit
 
 public class DocumentationEntry {
     
@@ -29,7 +30,7 @@ internal extension RAML {
         
         switch yaml {
         case .array(let yamlArray):
-            return try parseDocumentation(array: yamlArray)
+            return try parseDocumentation(array: yamlArray, parentFilePath: input.parentFilePath)
         default: return nil
         }
         // TODO: Consider Includes
@@ -37,7 +38,7 @@ internal extension RAML {
         return nil
     }
     
-    private func parseDocumentation(array: [Yaml]) throws -> [DocumentationEntry] {
+    private func parseDocumentation(array: [Yaml], parentFilePath: Path?) throws -> [DocumentationEntry] {
         var documentation: [DocumentationEntry] = []
         
         for yamlDocumentationEntry in array {
@@ -50,7 +51,10 @@ internal extension RAML {
             
             if isInclude(content) {
                 try testInclude(content)
-                content = try contentFromIncludeString(content, parentFilePath: try directoryOfInitialFilePath())
+                guard let parentFilePath = parentFilePath else {
+                    throw RAMLError.ramlParsingError(.invalidInclude)
+                }
+                content = try contentFromIncludeString(content, parentFilePath: parentFilePath)
             }
             
             let documentationEntry = DocumentationEntry(title: title, content: content)

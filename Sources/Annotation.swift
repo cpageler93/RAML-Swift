@@ -22,8 +22,8 @@ public class Annotation {
 // MARK: Annotation Parsing
 extension RAML {
     
-    internal func parseAnnotations(yaml: Yaml?) throws -> [Annotation]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseAnnotations(_ input: ParseInput) throws -> [Annotation]? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .dictionary(let yamlDict):

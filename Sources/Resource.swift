@@ -7,6 +7,7 @@
 
 import Foundation
 import Yaml
+import PathKit
 
 public class Resource: HasResources, HasResourceMethods, HasSecuritySchemeUsages {
     
@@ -36,7 +37,7 @@ internal extension RAML {
         var resources: [Resource] = []
         for (key, value) in yaml.dictionary ?? [:] {
             if let keyString = key.string, keyString.hasPrefix("/") {
-                let resource = try parseResource(path: keyString, yaml: value)
+                let resource = try parseResource(path: keyString, yaml: value, parentFilePath: input.parentFilePath)
                 resources.append(resource)
             }
         }
@@ -48,11 +49,11 @@ internal extension RAML {
         }
     }
     
-    private func parseResource(path: String, yaml: Yaml) throws -> Resource {
+    private func parseResource(path: String, yaml: Yaml, parentFilePath: Path?) throws -> Resource {
         let resource = Resource(path: path)
-        resource.methods = try parseResourceMethods(yaml: yaml)
-        resource.resources = try parseResources(yaml: yaml)
-        resource.securedBy = try parseSecuritySchemeUsages(yaml: yaml["securedBy"])
+        resource.methods    = try parseResourceMethods(ParseInput(yaml, parentFilePath))
+        resource.resources  = try parseResources(ParseInput(yaml, parentFilePath))
+        resource.securedBy  = try parseSecuritySchemeUsages(ParseInput(yaml["securedBy"], parentFilePath))
         return resource
     }
     

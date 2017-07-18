@@ -7,6 +7,7 @@
 
 import Foundation
 import Yaml
+import PathKit
 
 public class TraitDefinition: HasHeaders {
     
@@ -31,20 +32,20 @@ internal extension RAML {
         
         switch yaml {
         case .dictionary(let yamlDict):
-            return try parseTraitDefinitions(dict: yamlDict)
+            return try parseTraitDefinitions(dict: yamlDict, parentFilePath: input.parentFilePath)
         case .string(let yamlString):
-            let yaml = try parseTraitFromIncludeString(yamlString)
+            let yaml = try parseTraitFromIncludeString(yamlString, parentFilePath: input.parentFilePath)
             guard let traitsDict = yaml.dictionary else {
                 throw RAMLError.ramlParsingError(.invalidInclude)
             }
-            return try parseTraitDefinitions(dict: traitsDict)
+            return try parseTraitDefinitions(dict: traitsDict, parentFilePath: input.parentFilePath)
         default:
             return nil
         }
         
     }
     
-    private func parseTraitDefinitions(dict: [Yaml: Yaml]) throws -> [TraitDefinition] {
+    private func parseTraitDefinitions(dict: [Yaml: Yaml], parentFilePath: Path?) throws -> [TraitDefinition] {
         var traitDefinitions: [TraitDefinition] = []
         
         for (key, value) in dict {
@@ -52,23 +53,24 @@ internal extension RAML {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "Trait Key",
                                                                   mustBeKindOf: "String"))
             }
-            let traitDefinition = try parseTraitDefinition(name: keyString, yaml: value)
+            let traitDefinition = try parseTraitDefinition(name: keyString, yaml: value, parentFilePath: parentFilePath)
             traitDefinitions.append(traitDefinition)
         }
         
         return traitDefinitions
     }
     
-    private func parseTraitDefinition(name: String, yaml: Yaml) throws -> TraitDefinition {
+    private func parseTraitDefinition(name: String, yaml: Yaml, parentFilePath: Path?) throws -> TraitDefinition {
         let traitDefinition = TraitDefinition(name: name)
         
         switch yaml {
         case .dictionary(let yamlDict):
-            traitDefinition.headers = try parseHeaders(yaml: yamlDict["headers"])
+            traitDefinition.headers = try parseHeaders(ParseInput(yamlDict["headers"], parentFilePath))
         case .string(let yamlString):
-            let yamlFromInclude = try parseTraitFromIncludeString(yamlString)
+            let yamlFromInclude = try parseTraitFromIncludeString(yamlString, parentFilePath: parentFilePath)
             return try parseTraitDefinition(name: name,
-                                            yaml: yamlFromInclude)
+                                            yaml: yamlFromInclude,
+                                            parentFilePath: parentFilePath)
         default:
             throw RAMLError.ramlParsingError(.failedParsingTraitDefinition)
         }
@@ -76,10 +78,13 @@ internal extension RAML {
         return traitDefinition
     }
     
-    private func parseTraitFromIncludeString(_ includeString: String) throws -> Yaml {
+    private func parseTraitFromIncludeString(_ includeString: String, parentFilePath: Path?) throws -> Yaml {
         try testInclude(includeString)
+        guard let parentFilePath = parentFilePath else {
+            throw RAMLError.ramlParsingError(.invalidInclude)
+        }
         return try parseYamlFromIncludeString(includeString,
-                                              parentFilePath: try directoryOfInitialFilePath(),
+                                              parentFilePath: parentFilePath,
                                               permittedFragmentIdentifier: "Trait")
     }
     

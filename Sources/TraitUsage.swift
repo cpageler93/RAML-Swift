@@ -30,8 +30,8 @@ public class TraitUsage {
 // MARK: Trait Usage Parsing
 internal extension RAML {
     
-    internal func parseTraitUsages(yaml: Yaml?) throws -> [TraitUsage]? {
-        guard let yaml = yaml else { return nil }
+    internal func parseTraitUsages(_ input: ParseInput) throws -> [TraitUsage]? {
+        guard let yaml = input.yaml else { return nil }
         
         switch yaml {
         case .string(let yamlString):
