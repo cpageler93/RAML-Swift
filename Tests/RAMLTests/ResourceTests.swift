@@ -231,7 +231,37 @@ class ResourceTests: XCTestCase {
         }
         
         XCTAssertEqual(xTrackerHeader.example, "gfr456d03ygh38s2")
+    }
+    
+    func testNestedResources() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: GitHub API
+        version: v3
+        baseUri: https://api.github.com
+        /gists:
+          displayName: Gists
+          /public:
+            displayName: Public Gists
+        """
         
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let gistsResource = raml.resourceWith(path: "/gists") else {
+            XCTFail("No /gists Resource")
+            return
+        }
+        XCTAssertEqual(gistsResource.displayName, "Gists")
+        
+        guard let publicResource = gistsResource.resourceWith(path: "/public") else {
+            XCTFail("No /gists/public Resource")
+            return
+        }
+        XCTAssertEqual(publicResource.displayName, "Public Gists")
         
     }
 }

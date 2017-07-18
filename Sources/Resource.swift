@@ -9,7 +9,7 @@ import Foundation
 import Yaml
 import PathKit
 
-public class Resource: HasResources, HasResourceMethods, HasSecuritySchemeUsages {
+public class Resource: HasAnnotations, HasResources, HasResourceMethods, HasSecuritySchemeUsages {
     
     public var path: String
     public var displayName: String?
@@ -51,9 +51,14 @@ internal extension RAML {
     
     private func parseResource(path: String, yaml: Yaml, parentFilePath: Path?) throws -> Resource {
         let resource = Resource(path: path)
-        resource.methods    = try parseResourceMethods(ParseInput(yaml, parentFilePath))
-        resource.resources  = try parseResources(ParseInput(yaml, parentFilePath))
-        resource.securedBy  = try parseSecuritySchemeUsages(ParseInput(yaml["securedBy"], parentFilePath))
+        
+        resource.displayName    = yaml["displayName"].string
+        resource.description    = yaml["displayName"].string
+        resource.annotations    = try parseAnnotations(ParseInput(yaml, parentFilePath))
+        resource.methods        = try parseResourceMethods(ParseInput(yaml, parentFilePath))
+        resource.resources      = try parseResources(ParseInput(yaml, parentFilePath))
+        resource.securedBy      = try parseSecuritySchemeUsages(ParseInput(yaml["securedBy"], parentFilePath))
+        
         return resource
     }
     
