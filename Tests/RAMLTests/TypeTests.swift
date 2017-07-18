@@ -443,4 +443,44 @@ class TypeTests: XCTestCase {
         
         XCTAssertEqual(teacherType.type, DataType.union(types: [DataType.custom(type: "Person"), DataType.custom(type: "Employee")]))
     }
+    
+    func testInlineDeclarations() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: My API With Types
+        /users/{id}:
+          get:
+            responses:
+              200:
+                body:
+                  application/json:
+                    type: object
+                    properties:
+                      firstname:
+                        type: string
+                      lastname:
+                        type: string
+                      age:
+                        type: number
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let resource = raml.resourceWith(path: "/users/{id}")?
+            .methodWith(type: .get)?
+            .responseWith(code: 200)?
+            .body?
+            .mediaTypeWith(identifier: "application/json") else {
+                XCTFail("No Resource to /users/{id} GET 200 body application/json")
+                return
+        }
+        
+        XCTAssertTrue(resource.hasPropertyWith(name: "firstname"))
+        XCTAssertTrue(resource.hasPropertyWith(name: "lastname"))
+        XCTAssertTrue(resource.hasPropertyWith(name: "age"))
+    }
 }

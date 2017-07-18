@@ -102,4 +102,8 @@ public extension HasProperties {
         return nil
     }
     
+    public func hasPropertyWith(name: String) -> Bool {
+        return propertyWith(name: name) != nil
+    }
+    
 }

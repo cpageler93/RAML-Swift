@@ -8,9 +8,10 @@
 import Foundation
 import Yaml
 
-public class BodyMediaType: MediaType {
+public class BodyMediaType: MediaType, HasProperties {
     
     public var type: DataType?
+    public var properties: [Property]?
     
 }
 
@@ -50,7 +51,10 @@ public extension RAML {
     
     private func parseBodyMediaType(identifier: String, yaml: Yaml) throws -> BodyMediaType {
         let bodyMediaType = BodyMediaType(identifier: identifier)
-        bodyMediaType.type = try DataType.dataTypeEnumFrom(yaml: yaml, dictKey: "type")
+        
+        bodyMediaType.type          = try DataType.dataTypeEnumFrom(yaml: yaml, dictKey: "type")
+        bodyMediaType.properties    = try parseProperties(yaml: yaml)
+        
         return bodyMediaType
     }
     
