@@ -68,4 +68,102 @@ class BaseURITests: XCTestCase {
         }
     }
     
+    func testBaseURIWithURIParameters() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: GitHub API
+        version: v3
+        baseUri: https://api.github.com
+        /user:
+          description: The currently authenticated User
+        /users:
+          description: All users
+          /{userId}:
+           description: A specific user
+           uriParameters:
+             userId:
+               description: The id of the user
+               type: integer
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let usersUserIdResource = raml.resourceWith(path: "/users")?.resourceWith(path: "/{userId}") else {
+            XCTFail("No /users Resource")
+            return
+        }
+        
+        XCTAssertTrue(usersUserIdResource.hasUriParameterWith(identifier: "userId"))
+    }
+    
+    func testBaseURIWithURIParametersWithArray() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: Serialization API
+        /users:
+          description: All users
+          /{userIds}:
+            description: A specific user
+            uriParameters:
+              userIds:
+                description: A list of userIds
+                type: array
+                items:
+                  type: string
+                  minLength: 1
+                uniqueItems: true
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let userIdsResource = raml.resourceWith(path: "/users")?.resourceWith(path: "/{userIds}") else {
+            XCTFail("No Resource to /users/{userIds}")
+            return
+        }
+        
+        guard let userIdsParameter = userIdsResource.uriParameterWith(identifier: "userIds") else {
+            XCTFail("No userIds Parameter")
+            return
+        }
+        XCTAssertEqual(userIdsParameter.description, "A list of userIds")
+        XCTAssertEqual(userIdsParameter.type, URIParameter.ParameterType.array)
+        XCTAssertEqual(userIdsParameter.uniqueItems, true)
+        guard let userIdsParameterItems = userIdsParameter.items else {
+            XCTFail("No Items for userIds parameter")
+            return
+        }
+        XCTAssertEqual(userIdsParameterItems.type, URIParameter.URIParameterItems.ParameterItemType.string)
+        XCTAssertEqual(userIdsParameterItems.minLength, 1)
+    }
+    
+    func testUriParametersWithExt() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: API Using media type in the URL
+        version: v1
+        /users{ext}:
+          uriParameters:
+            ext:
+              enum: [ .json, .xml ]
+              description: Use .json to specify application/json or .xml to specify text/xml
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        XCTFail("Not implemented")
+    }
+    
 }
+

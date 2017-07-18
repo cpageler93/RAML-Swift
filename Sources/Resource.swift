@@ -9,7 +9,7 @@ import Foundation
 import Yaml
 import PathKit
 
-public class Resource: HasAnnotations, HasResources, HasResourceMethods, HasSecuritySchemeUsages {
+public class Resource: HasAnnotations, HasResources, HasResourceMethods, HasSecuritySchemeUsages, HasURIParameters {
     
     public var path: String
     public var displayName: String?
@@ -19,7 +19,7 @@ public class Resource: HasAnnotations, HasResources, HasResourceMethods, HasSecu
     // traits
     // type
     public var securedBy: [SecuritySchemeUsage]?
-    // uriParameters
+    public var uriParameters: [URIParameter]?
     public var resources: [Resource]?
     
     public init(path: String) {
@@ -58,6 +58,7 @@ internal extension RAML {
         resource.methods        = try parseResourceMethods(ParseInput(yaml, parentFilePath))
         resource.resources      = try parseResources(ParseInput(yaml, parentFilePath))
         resource.securedBy      = try parseSecuritySchemeUsages(ParseInput(yaml["securedBy"], parentFilePath))
+        resource.uriParameters  = try parseURIParameters(ParseInput(yaml["uriParameters"], parentFilePath))
         
         return resource
     }

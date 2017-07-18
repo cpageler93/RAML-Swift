@@ -20,34 +20,26 @@ public class URIParameter {
         }
     }
     
-    public class URIParameterItem {
+    public class URIParameterItems {
         
         public enum ParameterItemType: String {
             case string
             case integer
         }
         
-        public var type: ParameterItemType
+        public var type: ParameterItemType?
         public var minLength: Int?
         
-        init(type: ParameterItemType) {
-            self.type = type
-        }
     }
     
-    public var identifier: String?
+    public var identifier: String
     public var description: String?
     public var type: ParameterType?
-    public var items: [URIParameterItem]?
+    public var items: URIParameterItems?
+    public var uniqueItems: Bool?
     
-    public init(identifier: String? = nil,
-                description: String? = nil,
-                type: ParameterType? = nil,
-                items: [URIParameterItem]? = nil) {
+    public init(identifier: String) {
         self.identifier = identifier
-        self.description = description
-        self.type = type
-        self.items = items
     }
     
 }
@@ -77,11 +69,21 @@ internal extension RAML {
                                                                   mustBeKindOf: "String"))
             }
             
-            let uriParameter = URIParameter(identifier: keyString,
-                                            description: value["description"].string,
-                                            type: URIParameter.ParameterType.fromOptional(value["type"].string),
-                                            items: nil)
-            // TODO: handle items
+            let uriParameter = URIParameter(identifier: keyString)
+            
+            uriParameter.description    = value["description"].string
+            uriParameter.type           = URIParameter.ParameterType.fromOptional(value["type"].string)
+            uriParameter.uniqueItems    = value["uniqueItems"].bool
+            if let yamlItems = value["items"].dictionary {
+                let items = URIParameter.URIParameterItems()
+                
+                if let itemsTypeString = yamlItems["type"]?.string {
+                    items.type = URIParameter.URIParameterItems.ParameterItemType(rawValue: itemsTypeString)
+                }
+                items.minLength = yamlItems["minLength"]?.int
+                
+                uriParameter.items = items
+            }
             
             uriParameters.append(uriParameter)
         }
@@ -91,9 +93,48 @@ internal extension RAML {
     
 }
 
+public protocol Has__URIParameters { }
 
 
-public protocol HasBaseURIParameters {
+public extension Has__URIParameters {
+    
+    public func __URIParameterWith(array: [URIParameter]?, identifier: String) -> URIParameter? {
+        for baseURIParameter in array ?? [] {
+            if baseURIParameter.identifier == identifier {
+                return baseURIParameter
+            }
+        }
+        return nil
+    }
+    
+    public func has__URIParameterWith(array: [URIParameter]?, identifier: String) -> Bool {
+        return __URIParameterWith(array: array, identifier: identifier) != nil
+    }
+    
+}
+
+
+public protocol HasURIParameters: Has__URIParameters {
+    
+    var uriParameters: [URIParameter]? { get set }
+    
+}
+
+
+public extension HasURIParameters {
+    
+    public func uriParameterWith(identifier: String) -> URIParameter? {
+        return __URIParameterWith(array: uriParameters, identifier: identifier)
+    }
+    
+    public func hasUriParameterWith(identifier: String) -> Bool {
+        return has__URIParameterWith(array: uriParameters, identifier: identifier)
+    }
+    
+}
+
+    
+public protocol HasBaseURIParameters: Has__URIParameters {
     
     var baseURIParameters: [URIParameter]? { get set }
     
@@ -103,16 +144,11 @@ public protocol HasBaseURIParameters {
 public extension HasBaseURIParameters {
     
     public func baseURIParameterWith(identifier: String) -> URIParameter? {
-        for baseURIParameter in baseURIParameters ?? [] {
-            if baseURIParameter.identifier == identifier {
-                return baseURIParameter
-            }
-        }
-        return nil
+        return __URIParameterWith(array: baseURIParameters, identifier: identifier)
     }
     
     public func hasBaseURIParameterWith(identifier: String) -> Bool {
-        return baseURIParameterWith(identifier: identifier) != nil
+        return has__URIParameterWith(array: baseURIParameters, identifier: identifier)
     }
     
 }
