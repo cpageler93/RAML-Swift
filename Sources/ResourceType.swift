@@ -34,11 +34,11 @@ internal extension RAML {
         case .dictionary(let yamlDict):
             return try parseResourceTypes(dict: yamlDict, parentFilePath: input.parentFilePath)
         case .string(let yamlString):
-            let yaml = try parseResourceTypesFromIncludeString(yamlString, parentFilePath: input.parentFilePath)
+            let (yaml, path) = try parseResourceTypesFromIncludeString(yamlString, parentFilePath: input.parentFilePath)
             guard let resourceTypesDict = yaml.dictionary else {
                 throw RAMLError.ramlParsingError(.invalidInclude)
             }
-            return try parseResourceTypes(dict: resourceTypesDict, parentFilePath: input.parentFilePath)
+            return try parseResourceTypes(dict: resourceTypesDict, parentFilePath: path)
         default:
             return nil
         }
@@ -70,10 +70,10 @@ internal extension RAML {
             resourceType.methods = try parseResourceMethods(ParseInput(yaml, parentFilePath))
             resourceType.uses = try parseLibraries(ParseInput(yaml["uses"], parentFilePath))
         case .string(let yamlString):
-            let yamlFromInclude = try parseResourceTypesFromIncludeString(yamlString, parentFilePath: parentFilePath)
+            let (yamlFromInclude, path) = try parseResourceTypesFromIncludeString(yamlString, parentFilePath: parentFilePath)
             return try parseResourceType(identifier: identifier,
                                          yaml: yamlFromInclude,
-                                         parentFilePath: parentFilePath)
+                                         parentFilePath: path)
         default:
             throw RAMLError.ramlParsingError(.failedParsingResourceType)
         }
@@ -81,14 +81,8 @@ internal extension RAML {
         return resourceType
     }
     
-    private func parseResourceTypesFromIncludeString(_ includeString: String, parentFilePath: Path?) throws -> Yaml {
-        try testInclude(includeString)
-        guard let parentFilePath = parentFilePath else {
-            throw RAMLError.ramlParsingError(.invalidInclude)
-        }
-        return try parseYamlFromIncludeString(includeString,
-                                              parentFilePath: parentFilePath,
-                                              permittedFragmentIdentifier: "ResourceType")
+    private func parseResourceTypesFromIncludeString(_ includeString: String, parentFilePath: Path?) throws -> (Yaml, Path) {
+        return try parseYamlFromIncludeString(includeString, parentFilePath: parentFilePath, permittedFragmentIdentifier: "ResourceType")
     }
     
 }

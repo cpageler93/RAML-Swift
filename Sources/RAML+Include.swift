@@ -22,12 +22,22 @@ internal extension RAML {
     }
     
     internal func parseYamlFromIncludeString(_ string: String,
-                                             parentFilePath: Path,
-                                             permittedFragmentIdentifier: String) throws -> Yaml {
+                                             parentFilePath: Path?,
+                                             permittedFragmentIdentifier: String) throws -> (Yaml, Path) {
+        guard let parentFilePath = parentFilePath else {
+            throw RAMLError.ramlParsingError(.invalidInclude)
+        }
+        
+        let absolutePath = absolutePathFromIncludeString(string, parentFilePath: parentFilePath)
         let content = try contentFromIncludeString(string, parentFilePath: parentFilePath)
         try validateRamlFragmentIdentifier(permittedFragmentIdentifier, inString: content)
         
-        return try yamlFromString(content)
+        return try (yamlFromString(content), absolutePath)
+    }
+    
+    internal func absolutePathFromIncludeString(_ string: String, parentFilePath: Path) -> Path {
+        let pathString = string.replacingOccurrences(of: "!include ", with: "")
+        return parentFilePath.directory() + Path(pathString)
     }
     
     internal func contentFromIncludeString(_ string: String,
@@ -35,8 +45,7 @@ internal extension RAML {
         guard isInclude(string) else { throw RAMLError.ramlParsingError(.stringWhichIsParsedAsIncludeIsNotInclude) }
         try testInclude(string)
         
-        let pathString = string.replacingOccurrences(of: "!include ", with: "")
-        let absolutePath = parentFilePath.directory() + Path(pathString)
+        let absolutePath = absolutePathFromIncludeString(string, parentFilePath: parentFilePath)
         
         return try contentFromFile(path: absolutePath)
     }

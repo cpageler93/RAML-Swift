@@ -34,11 +34,11 @@ internal extension RAML {
         case .dictionary(let yamlDict):
             return try parseTraitDefinitions(dict: yamlDict, parentFilePath: input.parentFilePath)
         case .string(let yamlString):
-            let yaml = try parseTraitFromIncludeString(yamlString, parentFilePath: input.parentFilePath)
+            let (yaml, path) = try parseTraitFromIncludeString(yamlString, parentFilePath: input.parentFilePath)
             guard let traitsDict = yaml.dictionary else {
                 throw RAMLError.ramlParsingError(.invalidInclude)
             }
-            return try parseTraitDefinitions(dict: traitsDict, parentFilePath: input.parentFilePath)
+            return try parseTraitDefinitions(dict: traitsDict, parentFilePath: path)
         default:
             return nil
         }
@@ -67,10 +67,8 @@ internal extension RAML {
         case .dictionary(let yamlDict):
             traitDefinition.headers = try parseHeaders(ParseInput(yamlDict["headers"], parentFilePath))
         case .string(let yamlString):
-            let yamlFromInclude = try parseTraitFromIncludeString(yamlString, parentFilePath: parentFilePath)
-            return try parseTraitDefinition(name: name,
-                                            yaml: yamlFromInclude,
-                                            parentFilePath: parentFilePath)
+            let (yamlFromInclude, path) = try parseTraitFromIncludeString(yamlString, parentFilePath: parentFilePath)
+            return try parseTraitDefinition(name: name, yaml: yamlFromInclude, parentFilePath: path)
         default:
             throw RAMLError.ramlParsingError(.failedParsingTraitDefinition)
         }
@@ -78,14 +76,8 @@ internal extension RAML {
         return traitDefinition
     }
     
-    private func parseTraitFromIncludeString(_ includeString: String, parentFilePath: Path?) throws -> Yaml {
-        try testInclude(includeString)
-        guard let parentFilePath = parentFilePath else {
-            throw RAMLError.ramlParsingError(.invalidInclude)
-        }
-        return try parseYamlFromIncludeString(includeString,
-                                              parentFilePath: parentFilePath,
-                                              permittedFragmentIdentifier: "Trait")
+    private func parseTraitFromIncludeString(_ includeString: String, parentFilePath: Path?) throws -> (Yaml, Path) {
+        return try parseYamlFromIncludeString(includeString, parentFilePath: parentFilePath, permittedFragmentIdentifier: "Trait")
     }
     
 }

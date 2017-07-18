@@ -71,10 +71,8 @@ internal extension RAML {
             library.annotations         = try parseAnnotations(ParseInput(yaml, parentFilePath))
             library.uses                = try parseLibraries(ParseInput(yamlDict["uses"], parentFilePath))
         case .string(let yamlString):
-            let yamlFromInclude = try parseLibraryFromIncludeString("!include \(yamlString)", parentFilePath: parentFilePath)
-            return try parseLibrary(identifier: identifier,
-                                    yaml: yamlFromInclude,
-                                    parentFilePath: parentFilePath)
+            let (yamlFromInclude, path) = try parseLibraryFromIncludeString("!include \(yamlString)", parentFilePath: parentFilePath)
+            return try parseLibrary(identifier: identifier, yaml: yamlFromInclude, parentFilePath: path)
         default:
             throw RAMLError.ramlParsingError(.failedParsingLibrary)
         }
@@ -82,14 +80,8 @@ internal extension RAML {
         return library
     }
     
-    private func parseLibraryFromIncludeString(_ includeString: String, parentFilePath: Path?) throws -> Yaml {
-        try testInclude(includeString)
-        guard let parentFilePath = parentFilePath else {
-            throw RAMLError.ramlParsingError(.invalidInclude)
-        }
-        return try parseYamlFromIncludeString(includeString,
-                                              parentFilePath: parentFilePath,
-                                              permittedFragmentIdentifier: "Library")
+    private func parseLibraryFromIncludeString(_ includeString: String, parentFilePath: Path?) throws -> (Yaml, Path) {
+        return try parseYamlFromIncludeString(includeString, parentFilePath: parentFilePath, permittedFragmentIdentifier: "Library")
     }
     
 }
