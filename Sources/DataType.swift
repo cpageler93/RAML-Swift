@@ -43,6 +43,16 @@ public indirect enum DataType: Equatable {
             return nil
         case .string(let yamlString):
             return DataType.dataTypeEnumFrom(string: yamlString)
+        case .array(let yamlArray):
+            var types: [DataType] = []
+            for yamlType in yamlArray {
+                guard let stringType = yamlType.string else {
+                    throw RAMLError.ramlParsingError(.invalidDataType(for: "Data Type",
+                                                                      mustBeKindOf: "String"))
+                }
+                types.append(dataTypeEnumFrom(string: stringType))
+            }
+            return .union(types: types)
         case .null:
             return nil
         default:

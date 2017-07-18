@@ -412,4 +412,35 @@ class TypeTests: XCTestCase {
         XCTAssertEqual(emailsType.minItems, 1)
         XCTAssertEqual(emailsType.uniqueItems, true)
     }
+    
+    func testMultipleInheritance() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: My API With Types
+        types:
+          Person:
+            type: object
+            properties:
+              name: string
+          Employee:
+            type: object
+            properties:
+              employeeNr: integer
+          Teacher:
+            type: [ Person, Employee ]
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let teacherType = raml.typeWith(name: "Teacher") else {
+            XCTFail("No Teacher Type")
+            return
+        }
+        
+        XCTAssertEqual(teacherType.type, DataType.union(types: [DataType.custom(type: "Person"), DataType.custom(type: "Employee")]))
+    }
 }
