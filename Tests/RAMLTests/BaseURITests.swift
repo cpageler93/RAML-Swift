@@ -162,7 +162,20 @@ class BaseURITests: XCTestCase {
             return
         }
         
-        XCTFail("Not implemented")
+        guard let usersResource = raml.resourceWith(path: "/users{ext}") else {
+            XCTFail("No /users{ext} Resource")
+            return
+        }
+        
+        guard let extParameter = usersResource.uriParameterWith(identifier: "ext") else {
+            XCTFail("No ext URI Parameter")
+            return
+        }
+        XCTAssertEqual(extParameter.description, "Use .json to specify application/json or .xml to specify text/xml")
+        XCTAssertEqual(extParameter.enum?.count(), 2)
+        XCTAssertTrue(extParameter.enum?.contains(".json") ?? false)
+        XCTAssertTrue(extParameter.enum?.contains(".xml") ?? false)
+        
     }
     
 }

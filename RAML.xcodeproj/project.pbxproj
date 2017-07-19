@@ -36,6 +36,7 @@
 		59D415EC1F09003100247940 /* TraitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415EB1F09003100247940 /* TraitTests.swift */; };
 		59D415EE1F09012800247940 /* TraitUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415ED1F09012800247940 /* TraitUsage.swift */; };
 		59DF5C231F15225100C81ADF /* DefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DF5C221F15225100C81ADF /* DefaultsTests.swift */; };
+		59F7CC761F1F64F9003DFBAF /* StringEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F7CC751F1F64F9003DFBAF /* StringEnum.swift */; };
 		59F928A31F0F88AD003EE112 /* BodyMediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F928A21F0F88AD003EE112 /* BodyMediaType.swift */; };
 		OBJ_100 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* MediaType.swift */; };
 		OBJ_101 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Property.swift */; };
@@ -171,6 +172,7 @@
 		59D415EB1F09003100247940 /* TraitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitTests.swift; sourceTree = "<group>"; };
 		59D415ED1F09012800247940 /* TraitUsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitUsage.swift; sourceTree = "<group>"; };
 		59DF5C221F15225100C81ADF /* DefaultsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsTests.swift; sourceTree = "<group>"; };
+		59F7CC751F1F64F9003DFBAF /* StringEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringEnum.swift; sourceTree = "<group>"; };
 		59F928A21F0F88AD003EE112 /* BodyMediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyMediaType.swift; sourceTree = "<group>"; };
 		OBJ_10 /* DocumentationEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentationEntry.swift; sourceTree = "<group>"; };
 		OBJ_11 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
@@ -411,6 +413,7 @@
 				597E55351F15FEAE0046A608 /* ResourceType.swift */,
 				5931CA171F1657F300B97672 /* SecuritySchemeUsage.swift */,
 				599096491F16A687009B918E /* Library.swift */,
+				59F7CC751F1F64F9003DFBAF /* StringEnum.swift */,
 			);
 			path = Sources;
 			sourceTree = SOURCE_ROOT;
@@ -630,6 +633,7 @@
 				59ADB3521F0658D80003B348 /* AnnotationType.swift in Sources */,
 				OBJ_100 /* MediaType.swift in Sources */,
 				597E55361F15FEAE0046A608 /* ResourceType.swift in Sources */,
+				59F7CC761F1F64F9003DFBAF /* StringEnum.swift in Sources */,
 				OBJ_101 /* Property.swift in Sources */,
 				59D415E81F06DE7800247940 /* TraitDefiniton.swift in Sources */,
 				5902527D1F0647DD004C9AB6 /* Annotation.swift in Sources */,

@@ -11,7 +11,7 @@ import Yaml
 public class AnnotationTypeProperty {
     
     public var name: String
-    public var `enum`: [String]?
+    public var `enum`: StringEnum?
     public var required: Bool?
     public var pattern: String?
     
@@ -53,18 +53,7 @@ internal extension RAML {
     private func parseAnnotationTypeProperty(name: String, yaml: Yaml) throws -> AnnotationTypeProperty {
         let annotationType = AnnotationTypeProperty(name: name)
         
-        if let enumArrayYaml = yaml["enum"].array {
-            var enumValues: [String] = []
-            for enumYaml in enumArrayYaml {
-                guard let enumYamlString = enumYaml.string else {
-                    throw RAMLError.ramlParsingError(.invalidDataType(for: "Enum Value in Annotation Type Property",
-                                                                      mustBeKindOf: "String"))
-                }
-                enumValues.append(enumYamlString)
-            }
-            annotationType.enum = enumValues
-        }
-        
+        annotationType.enum = try parseStringEnum(ParseInput(yaml["enum"]))
         annotationType.required = yaml["required"].bool
         annotationType.pattern = yaml["pattern"].string
         

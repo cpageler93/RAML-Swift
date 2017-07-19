@@ -37,6 +37,7 @@ public class URIParameter {
     public var type: ParameterType?
     public var items: URIParameterItems?
     public var uniqueItems: Bool?
+    public var `enum`: StringEnum?
     
     public init(identifier: String) {
         self.identifier = identifier
@@ -84,6 +85,7 @@ internal extension RAML {
                 
                 uriParameter.items = items
             }
+            uriParameter.enum = try parseStringEnum(ParseInput(value["enum"]))
             
             uriParameters.append(uriParameter)
         }
