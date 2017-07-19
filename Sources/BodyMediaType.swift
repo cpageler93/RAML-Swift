@@ -39,6 +39,9 @@ public extension RAML {
                 throw RAMLError.ramlParsingError(.invalidDataType(for: "MediaType in Response Body",
                                                                   mustBeKindOf: "String"))
             }
+            guard BodyMediaType.isMediaType(string: keyString) else {
+                continue
+            }
             let mediaType = try parseBodyMediaType(identifier: keyString, yaml: value)
             bodyMediaTypes.append(mediaType)
         }

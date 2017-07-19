@@ -16,6 +16,12 @@ public class MediaType {
         self.identifier = identifier
     }
     
+    public static func isMediaType(string: String) -> Bool {
+        guard let regex = try? NSRegularExpression(pattern: ".*/.*") else { return false }
+        let matches = regex.matches(in: string, options: [], range: NSMakeRange(0, string.characters.count))
+        return matches.count == 1
+    }
+    
 }
 
 

@@ -31,6 +31,7 @@ internal extension RAML {
             return body
         case .dictionary:
             let body = ResponseBody()
+            body.type       = try DataType.dataTypeEnumFrom(yaml: yaml, dictKey: "type")
             body.properties = try parseProperties(yaml: yaml)
             body.examples   = try parseExampleOrExamples(yamlDict: yaml.dictionary)
             body.mediaTypes = try parseBodyMediaTypes(input)
