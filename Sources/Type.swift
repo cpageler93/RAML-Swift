@@ -9,13 +9,13 @@ import Foundation
 import Yaml
 import PathKit
 
-public class Type: HasProperties, HasAnnotations {
+public class Type: HasProperties, HasAnnotations, HasExamples {
     
     public var name: String
     // default?
     public var type: DataType?
-    public var example: TypeExample?
-    public var examples: [TypeExample]?
+    public var example: Example?
+    public var examples: [Example]?
     public var displayName: String?
     public var description: String?
     public var annotations: [Annotation]?
@@ -80,6 +80,7 @@ extension RAML {
         
         type.type                   = try DataType.dataTypeEnumFrom(yaml: yaml, dictKey: "type")
         type.annotations            = try parseAnnotations(ParseInput(yaml, parentFilePath))
+        type.examples               = try parseExamples(ParseInput(yaml["examples"], parentFilePath))
         
         // Object Type
         type.properties             = try parseProperties(yaml: yaml, propertiesKey: "properties")

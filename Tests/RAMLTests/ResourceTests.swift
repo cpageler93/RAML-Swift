@@ -264,4 +264,148 @@ class ResourceTests: XCTestCase {
         XCTAssertEqual(publicResource.displayName, "Public Gists")
         
     }
+    
+    func testQueryParameters() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: GitHub API
+        version: v3
+        baseUri: https://api.github.com/{version}
+        /users:
+          get:
+            description: Get a list of users
+            queryParameters:
+              page:
+                description: Specify the page that you want to retrieve
+                type:        integer
+                required:    true
+                example:     1
+              per_page:
+                description: Specify the amount of items that will be retrieved per page
+                type:        integer
+                minimum:     10
+                maximum:     200
+                default:     30
+                example:     50
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let usersRoute = raml.resourceWith(path: "/users")?.methodWith(type: .get) else {
+            XCTFail("No /users GET Resource")
+            return
+        }
+        XCTAssertEqual(usersRoute.description, "Get a list of users")
+        guard let queryParameters = usersRoute.queryParameters else {
+            XCTFail("No Query Parameters for users resource")
+            return
+        }
+        XCTAssertEqual(queryParameters.count, 2)
+        
+        guard let pageParameter = usersRoute.queryParameterWith(identifier: "page") else {
+            XCTFail("No page Parameter")
+            return
+        }
+        XCTAssertEqual(pageParameter.description, "Specify the page that you want to retrieve")
+        XCTAssertEqual(pageParameter.type, URIParameter.ParameterType.integer)
+        XCTAssertEqual(pageParameter.required, true)
+        XCTAssertEqual(pageParameter.example, 1)
+        XCTAssertNil(pageParameter.minimum)
+        XCTAssertNil(pageParameter.maximum)
+        XCTAssertNil(pageParameter.default)
+        
+        guard let perPageParameter = usersRoute.queryParameterWith(identifier: "per_page") else {
+            XCTFail("No per_page Parameter")
+            return
+        }
+        XCTAssertEqual(perPageParameter.description, "Specify the amount of items that will be retrieved per page")
+        XCTAssertEqual(perPageParameter.type, URIParameter.ParameterType.integer)
+        XCTAssertNil(perPageParameter.required)
+        XCTAssertEqual(perPageParameter.example, 50)
+        XCTAssertEqual(perPageParameter.minimum, 10)
+        XCTAssertEqual(perPageParameter.maximum, 200)
+        XCTAssertEqual(perPageParameter.default, 30)
+    }
+    
+    func testQueryString() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: Illustrate query parameter variations
+        types:
+          lat-long:
+            properties:
+              lat: number
+              long: number
+          loc:
+            properties:
+              location:
+          paging:
+            properties:
+              start?: number
+              page-size?: number
+        /locations:
+          get:
+            queryString:
+              type: [paging, lat-long | loc ]
+              examples:
+                first:
+                  value:
+                    start: 2
+                    lat: 12
+                    long: 13
+                second:
+                  value:
+                    start: 2
+                    page-size: 20
+                    location: "1,2"
+                third:
+                  value:
+                    lat: 12
+                    location: 2
+                  strict: false
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let locationsResource = raml.resourceWith(path: "/locations")?.methodWith(type: .get) else {
+            XCTFail("No /locations GET Resource")
+            return
+        }
+        
+        guard let queryString = locationsResource.queryString else {
+            XCTFail("No Query String for locations Resource")
+            return
+        }
+        XCTAssertEqual(queryString.type, DataType.union(types: [DataType.custom(type: "paging"), DataType.union(types: [DataType.custom(type: "lat-long"), DataType.custom(type: "loc")])]))
+        
+        guard let examples = queryString.examples else {
+            XCTFail("No Examples")
+            return
+        }
+        XCTAssertEqual(examples.count, 3)
+        
+        guard let firstExample = queryString.exampleWith(identifier: "first") else {
+            XCTFail("No first exampe")
+            return
+        }
+        XCTAssertNotNil(firstExample.value)
+        XCTAssertNil(firstExample.strict)
+        XCTAssertNil(firstExample.description)
+        XCTAssertNil(firstExample.displayName)
+        XCTAssertNil(firstExample.annotations)
+        
+        guard let thirdExample = queryString.exampleWith(identifier: "third") else {
+            XCTFail("No third example")
+            return
+        }
+        XCTAssertFalse(thirdExample.strict ?? true)
+    }
 }

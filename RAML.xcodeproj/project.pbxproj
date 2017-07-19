@@ -37,6 +37,7 @@
 		59D415EE1F09012800247940 /* TraitUsage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59D415ED1F09012800247940 /* TraitUsage.swift */; };
 		59DF5C231F15225100C81ADF /* DefaultsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59DF5C221F15225100C81ADF /* DefaultsTests.swift */; };
 		59F7CC761F1F64F9003DFBAF /* StringEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F7CC751F1F64F9003DFBAF /* StringEnum.swift */; };
+		59F7CC781F1F6E83003DFBAF /* QueryString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F7CC771F1F6E83003DFBAF /* QueryString.swift */; };
 		59F928A31F0F88AD003EE112 /* BodyMediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59F928A21F0F88AD003EE112 /* BodyMediaType.swift */; };
 		OBJ_100 /* MediaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* MediaType.swift */; };
 		OBJ_101 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* Property.swift */; };
@@ -47,7 +48,7 @@
 		OBJ_106 /* RAML.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_17 /* RAML.swift */; };
 		OBJ_107 /* RAMLError.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_18 /* RAMLError.swift */; };
 		OBJ_108 /* Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_19 /* Type.swift */; };
-		OBJ_109 /* TypeExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* TypeExample.swift */; };
+		OBJ_109 /* Example.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_20 /* Example.swift */; };
 		OBJ_110 /* URIParameter.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_21 /* URIParameter.swift */; };
 		OBJ_112 /* Yaml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_52 /* Yaml.framework */; };
 		OBJ_113 /* Spectre.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJ_53 /* Spectre.framework */; };
@@ -173,6 +174,7 @@
 		59D415ED1F09012800247940 /* TraitUsage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraitUsage.swift; sourceTree = "<group>"; };
 		59DF5C221F15225100C81ADF /* DefaultsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultsTests.swift; sourceTree = "<group>"; };
 		59F7CC751F1F64F9003DFBAF /* StringEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringEnum.swift; sourceTree = "<group>"; };
+		59F7CC771F1F6E83003DFBAF /* QueryString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryString.swift; sourceTree = "<group>"; };
 		59F928A21F0F88AD003EE112 /* BodyMediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyMediaType.swift; sourceTree = "<group>"; };
 		OBJ_10 /* DocumentationEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentationEntry.swift; sourceTree = "<group>"; };
 		OBJ_11 /* MediaType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaType.swift; sourceTree = "<group>"; };
@@ -184,7 +186,7 @@
 		OBJ_17 /* RAML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAML.swift; sourceTree = "<group>"; };
 		OBJ_18 /* RAMLError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAMLError.swift; sourceTree = "<group>"; };
 		OBJ_19 /* Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Type.swift; sourceTree = "<group>"; };
-		OBJ_20 /* TypeExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeExample.swift; sourceTree = "<group>"; };
+		OBJ_20 /* Example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Example.swift; sourceTree = "<group>"; };
 		OBJ_21 /* URIParameter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URIParameter.swift; sourceTree = "<group>"; };
 		OBJ_24 /* AnnotationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationTests.swift; sourceTree = "<group>"; };
 		OBJ_25 /* RAMLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAMLTests.swift; sourceTree = "<group>"; };
@@ -393,7 +395,7 @@
 				OBJ_17 /* RAML.swift */,
 				OBJ_18 /* RAMLError.swift */,
 				OBJ_19 /* Type.swift */,
-				OBJ_20 /* TypeExample.swift */,
+				OBJ_20 /* Example.swift */,
 				OBJ_21 /* URIParameter.swift */,
 				5902527A1F0645B9004C9AB6 /* BaseURI.swift */,
 				5902527C1F0647DD004C9AB6 /* Annotation.swift */,
@@ -414,6 +416,7 @@
 				5931CA171F1657F300B97672 /* SecuritySchemeUsage.swift */,
 				599096491F16A687009B918E /* Library.swift */,
 				59F7CC751F1F64F9003DFBAF /* StringEnum.swift */,
+				59F7CC771F1F6E83003DFBAF /* QueryString.swift */,
 			);
 			path = Sources;
 			sourceTree = SOURCE_ROOT;
@@ -646,13 +649,14 @@
 				OBJ_104 /* RAML+Include.swift in Sources */,
 				5931CA181F1657F300B97672 /* SecuritySchemeUsage.swift in Sources */,
 				OBJ_105 /* RAML+LoadFromString.swift in Sources */,
+				59F7CC781F1F6E83003DFBAF /* QueryString.swift in Sources */,
 				59558E7D1F0687D300EEF042 /* Resource.swift in Sources */,
 				OBJ_106 /* RAML.swift in Sources */,
 				OBJ_107 /* RAMLError.swift in Sources */,
 				59D415E61F06D97500247940 /* ResourceHeader.swift in Sources */,
 				OBJ_108 /* Type.swift in Sources */,
 				59ADB3541F0661C00003B348 /* AnnotationTypeProperty.swift in Sources */,
-				OBJ_109 /* TypeExample.swift in Sources */,
+				OBJ_109 /* Example.swift in Sources */,
 				OBJ_110 /* URIParameter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -22,18 +22,18 @@ public enum ResourceMethodType: String {
 }
 
 
-public class ResourceMethod: HasHeaders, HasAnnotations, HasTraitUsages, HasMethodResponses, HasSecuritySchemeUsages {
+public class ResourceMethod: HasHeaders, HasAnnotations, HasTraitUsages, HasMethodResponses, HasSecuritySchemeUsages, HasQueryParameters {
     
     public var type: ResourceMethodType
     public var displayName: String?
     public var description: String?
     public var annotations: [Annotation]?
-    // queryParameters
+    public var queryParameters: [URIParameter]?
     public var headers: [Header]?
-    // queryString
+    public var queryString: QueryString?
     public var responses: [MethodResponse]?
     public var body: ResponseBody?
-    // protocols
+    public var protocols: Protocols?
     public var traitUsages: [TraitUsage]?
     public var securedBy: [SecuritySchemeUsage]?
     
@@ -81,12 +81,18 @@ internal extension RAML {
         guard let methodType = ResourceMethodType(rawValue: method) else { return nil }
         let resourceMethod = ResourceMethod(type: methodType)
         
-        resourceMethod.headers      = try parseHeaders(ParseInput(yaml["headers"], parentFilePath))
-        resourceMethod.description  = yaml["description"].string
-        resourceMethod.responses    = try parseResponses(ParseInput(yaml["responses"], parentFilePath))
-        resourceMethod.traitUsages  = try parseTraitUsages(ParseInput(yaml["is"], parentFilePath))
-        resourceMethod.body         = try parseResponseBody(ParseInput(yaml["body"], parentFilePath))
-        resourceMethod.securedBy    = try parseSecuritySchemeUsages(ParseInput(yaml["securedBy"], parentFilePath))
+        
+        resourceMethod.displayName      = yaml["displayName"].string
+        resourceMethod.description      = yaml["description"].string
+        resourceMethod.annotations      = try parseAnnotations(ParseInput(yaml, parentFilePath))
+        resourceMethod.queryParameters  = try parseURIParameters(ParseInput(yaml["queryParameters"], parentFilePath))
+        resourceMethod.headers          = try parseHeaders(ParseInput(yaml["headers"], parentFilePath))
+        resourceMethod.queryString      = try parseQueryString(ParseInput(yaml["queryString"], parentFilePath))
+        resourceMethod.responses        = try parseResponses(ParseInput(yaml["responses"], parentFilePath))
+        resourceMethod.body             = try parseResponseBody(ParseInput(yaml["body"], parentFilePath))
+        resourceMethod.protocols        = try parseProtocols(ParseInput(yaml["protocols"], parentFilePath))
+        resourceMethod.traitUsages      = try parseTraitUsages(ParseInput(yaml["is"], parentFilePath))
+        resourceMethod.securedBy        = try parseSecuritySchemeUsages(ParseInput(yaml["securedBy"], parentFilePath))
         
         return resourceMethod
     }

@@ -38,6 +38,11 @@ public class URIParameter {
     public var items: URIParameterItems?
     public var uniqueItems: Bool?
     public var `enum`: StringEnum?
+    public var required: Bool?
+    public var example: Int?
+    public var minimum: Int?
+    public var maximum: Int?
+    public var `default`: Int?
     
     public init(identifier: String) {
         self.identifier = identifier
@@ -86,6 +91,11 @@ internal extension RAML {
                 uriParameter.items = items
             }
             uriParameter.enum = try parseStringEnum(ParseInput(value["enum"]))
+            uriParameter.required = value["required"].bool
+            uriParameter.example = value["example"].int
+            uriParameter.minimum = value["minimum"].int
+            uriParameter.maximum = value["maximum"].int
+            uriParameter.default = value["default"].int
             
             uriParameters.append(uriParameter)
         }
@@ -151,6 +161,26 @@ public extension HasBaseURIParameters {
     
     public func hasBaseURIParameterWith(identifier: String) -> Bool {
         return has__URIParameterWith(array: baseURIParameters, identifier: identifier)
+    }
+    
+}
+
+
+public protocol HasQueryParameters: Has__URIParameters {
+    
+    var queryParameters: [URIParameter]? { get set }
+    
+}
+
+
+public extension HasQueryParameters {
+    
+    public func queryParameterWith(identifier: String) -> URIParameter? {
+        return __URIParameterWith(array: queryParameters, identifier: identifier)
+    }
+    
+    public func hasQueryURIParameterWith(identifier: String) -> Bool {
+        return has__URIParameterWith(array: queryParameters, identifier: identifier)
     }
     
 }
