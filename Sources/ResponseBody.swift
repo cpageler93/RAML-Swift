@@ -12,9 +12,8 @@ public class ResponseBody: HasBodyMediaTypes {
     
     public var type: DataType?
     public var properties: [Property]?
+    public var examples: [Example]?
     public var mediaTypes: [BodyMediaType]?
-    
-//    public var example
     
 }
 
@@ -32,6 +31,8 @@ internal extension RAML {
             return body
         case .dictionary:
             let body = ResponseBody()
+            body.properties = try parseProperties(yaml: yaml)
+            body.examples   = try parseExampleOrExamples(yamlDict: yaml.dictionary)
             body.mediaTypes = try parseBodyMediaTypes(input)
             return body
         default:

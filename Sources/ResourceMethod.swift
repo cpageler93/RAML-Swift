@@ -81,7 +81,6 @@ internal extension RAML {
         guard let methodType = ResourceMethodType(rawValue: method) else { return nil }
         let resourceMethod = ResourceMethod(type: methodType)
         
-        
         resourceMethod.displayName      = yaml["displayName"].string
         resourceMethod.description      = yaml["description"].string
         resourceMethod.annotations      = try parseAnnotations(ParseInput(yaml, parentFilePath))

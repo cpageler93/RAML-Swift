@@ -36,7 +36,7 @@ internal extension RAML {
         if let typeYaml = dict["type"] {
             queryString.type = try DataType.dataTypeEnumFrom(yaml: typeYaml)
         }
-        queryString.examples = try parseExamples(ParseInput(dict["examples"]))
+        queryString.examples = try parseExampleOrExamples(yamlDict: dict)
         
         return queryString
     }

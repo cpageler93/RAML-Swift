@@ -27,15 +27,17 @@ public class Example {
 // MARK: Parsing Example
 internal extension RAML {
     
-    internal func parseExamples(_ input: ParseInput) throws -> [Example]? {
-        guard let yaml = input.yaml else { return nil }
-        
-        switch yaml {
-        case .dictionary(let yamlDict):
-            return try parseExamples(dict: yamlDict)
-        default:
-            return nil
+    internal func parseExampleOrExamples(yamlDict: [Yaml: Yaml]?) throws -> [Example]? {
+        guard let yamlDict = yamlDict else { return nil }
+        if let examplesYaml = yamlDict["examples"]?.dictionary {
+            return try parseExamples(dict: examplesYaml)
         }
+        
+        if let yamlDict = yamlDict["example"], yamlDict.dictionary != nil {
+            return try [parseExample(identifier: "unnamed", yaml: yamlDict)]
+        }
+        
+        return nil
     }
     
     private func parseExamples(dict: [Yaml: Yaml]) throws -> [Example] {

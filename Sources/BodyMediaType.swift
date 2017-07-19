@@ -12,6 +12,7 @@ public class BodyMediaType: MediaType, HasProperties {
     
     public var type: DataType?
     public var properties: [Property]?
+    public var examples: [Example]?
     
 }
 
@@ -54,6 +55,7 @@ public extension RAML {
         
         bodyMediaType.type          = try DataType.dataTypeEnumFrom(yaml: yaml, dictKey: "type")
         bodyMediaType.properties    = try parseProperties(yaml: yaml)
+        bodyMediaType.examples      = try parseExampleOrExamples(yamlDict: yaml.dictionary)
         
         return bodyMediaType
     }
