@@ -8,7 +8,7 @@
 import Foundation
 import Yaml
 
-public class BodyMediaType: MediaType, HasProperties {
+public class BodyMediaType: MediaType, HasProperties, HasExamples {
     
     public var type: DataType?
     public var properties: [Property]?

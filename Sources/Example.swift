@@ -33,11 +33,31 @@ internal extension RAML {
             return try parseExamples(dict: examplesYaml)
         }
         
-        if let yamlDict = yamlDict["example"], yamlDict.dictionary != nil {
-            return try [parseExample(identifier: "unnamed", yaml: yamlDict)]
+        if let yamlDict = yamlDict["example"] {
+            return try parseExample(yaml: yamlDict)
         }
         
         return nil
+    }
+    
+    private func parseExample(yaml: Yaml) throws -> [Example]? {
+        switch yaml {
+        case .array(let yamlArray):
+            return try parseExamples(array: yamlArray)
+        case .dictionary:
+            return try [parseExample(identifier: "Example 1", yaml: yaml)]
+        default:
+            return nil
+        }
+    }
+    
+    private func parseExamples(array: [Yaml]) throws -> [Example] {
+        var examples: [Example] = []
+        for (index, exampleYaml) in array.enumerated() {
+            let example = try parseExample(identifier: "Example \(index+1)", yaml: exampleYaml)
+            examples.append(example)
+        }
+        return examples
     }
     
     private func parseExamples(dict: [Yaml: Yaml]) throws -> [Example] {
@@ -55,11 +75,15 @@ internal extension RAML {
     private func parseExample(identifier: String, yaml: Yaml) throws -> Example {
         let example = Example(identifier: identifier)
         
-        example.displayName = yaml["displayName"].string
-        example.description = yaml["description"].string
-        example.annotations = try parseAnnotations(ParseInput(yaml))
-        example.value       = yaml["value"].dictionary
-        example.strict      = yaml["strict"].bool
+        if let valueDict = yaml["value"].dictionary {
+            example.displayName = yaml["displayName"].string
+            example.description = yaml["description"].string
+            example.annotations = try parseAnnotations(ParseInput(yaml))
+            example.strict      = yaml["strict"].bool
+            example.value = valueDict
+        } else {
+            example.value = yaml.dictionary
+        }
         
         return example
     }
