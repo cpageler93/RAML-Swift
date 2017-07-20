@@ -178,5 +178,33 @@ class BaseURITests: XCTestCase {
         
     }
     
+    func testUriParameterWithEnumAsArray() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: Example API
+        version: v1
+        traits:
+          withQueryParameters:
+            queryParameters:
+              platform:
+                enum:
+                  - win
+                  - mac
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let platformQueryParameter = raml.traitDefinitionWith(name: "withQueryParameters")?.queryParameterWith(identifier: "platform") else {
+            XCTFail("No platform query parameter in tait definiton")
+            return
+        }
+        XCTAssertTrue(platformQueryParameter.enum?.contains("win") ?? false)
+        XCTAssertTrue(platformQueryParameter.enum?.contains("mac") ?? false)
+    }
+    
 }
 
