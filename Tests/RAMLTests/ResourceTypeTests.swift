@@ -123,4 +123,38 @@ class ResourceTypeTests: XCTestCase {
         XCTAssertEqual(searchableCollectionType.parameterFor(key: "fallbackParamName")?.string, "digest_all_fields")
     }
     
+    func testMinimalUsageImplementation() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: Example API
+        version: v1
+        /users:
+          type: collection
+          is: [ secured ]
+          get:
+            is: [ paged, rateLimited ]
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let usersResource = raml.resourceWith(path: "/users") else {
+            XCTFail("No /users Resource")
+            return
+        }
+        XCTAssertTrue(usersResource.hasResourceTypeUsageWith(name: "collection"))
+        XCTAssertTrue(usersResource.hasTraitUsageWith(name: "secured"))
+        
+        guard let usersGet = usersResource.methodWith(type: .get) else {
+            XCTFail("No GET method for /users")
+            return
+        }
+        XCTAssertTrue(usersGet.hasTraitUsageWith(name: "paged"))
+        XCTAssertTrue(usersGet.hasTraitUsageWith(name: "rateLimited"))
+        
+    }
+    
 }
