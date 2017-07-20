@@ -2,7 +2,7 @@ import Foundation
 import Yaml
 import PathKit
 
-public class RAML : HasBaseURIParameters, HasProtocols, HasMediaTypes, HasDocumentationEntries, HasTypes, HasTraitDefinitions, HasResourceTypes, HasAnnotationTypes, HasSecuritySchemes, HasSecuritySchemeUsages,  HasLibraries, HasResources {
+public class RAML : HasBaseURIParameters, HasProtocols, HasMediaTypes, HasDocumentationEntries, HasTypes, HasTraitDefinitions, HasResourceTypes, HasAnnotationTypes, HasSecuritySchemes, HasSecuritySchemeUsages,  HasLibraries, HasResources, HasAnnotations {
     
     // MARK: meta (not raml related)
     
@@ -36,6 +36,7 @@ public class RAML : HasBaseURIParameters, HasProtocols, HasMediaTypes, HasDocume
     public var securedBy: [SecuritySchemeUsage]?
 	public var uses: [Library]?
     public var resources: [Resource]?
+    public var annotations: [Annotation]?
     
     // we need this static constant because our yaml parser doesnt work well
     // the value from `keyWithEmptyValueFix` will be inserted in the yaml string
@@ -92,6 +93,7 @@ extension RAML {
         self.securedBy          = try parseSecuritySchemeUsages(ParseInput(yaml["securedBy"], parentFilePathDirectory))
         self.uses               = try parseLibraries(ParseInput(yaml["uses"], parentFilePathDirectory))
         self.resources          = try parseResources(ParseInput(yaml, parentFilePathDirectory))
+        self.annotations        = try parseAnnotations(ParseInput(yaml, parentFilePathDirectory))
     }
     
 }

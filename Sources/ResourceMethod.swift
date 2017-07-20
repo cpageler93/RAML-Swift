@@ -32,7 +32,7 @@ public class ResourceMethod: HasHeaders, HasAnnotations, HasTraitUsages, HasMeth
     public var headers: [Header]?
     public var queryString: QueryString?
     public var responses: [MethodResponse]?
-    public var body: ResponseBody?
+    public var body: Body?
     public var protocols: Protocols?
     public var traitUsages: [TraitUsage]?
     public var securedBy: [SecuritySchemeUsage]?
@@ -88,7 +88,7 @@ internal extension RAML {
         resourceMethod.headers          = try parseHeaders(ParseInput(yaml["headers"], parentFilePath))
         resourceMethod.queryString      = try parseQueryString(ParseInput(yaml["queryString"], parentFilePath))
         resourceMethod.responses        = try parseResponses(ParseInput(yaml["responses"], parentFilePath))
-        resourceMethod.body             = try parseResponseBody(ParseInput(yaml["body"], parentFilePath))
+        resourceMethod.body             = try parseBody(ParseInput(yaml["body"], parentFilePath))
         resourceMethod.protocols        = try parseProtocols(ParseInput(yaml["protocols"], parentFilePath))
         resourceMethod.traitUsages      = try parseTraitUsages(ParseInput(yaml["is"], parentFilePath))
         resourceMethod.securedBy        = try parseSecuritySchemeUsages(ParseInput(yaml["securedBy"], parentFilePath))

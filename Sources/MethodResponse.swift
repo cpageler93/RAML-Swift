@@ -15,7 +15,7 @@ public class MethodResponse: HasAnnotations, HasHeaders {
     public var description: String?
     public var annotations: [Annotation]?
     public var headers: [Header]?
-    public var body: ResponseBody?
+    public var body: Body?
     
     public init(code: Int) {
         self.code = code
@@ -57,7 +57,7 @@ internal extension RAML {
         response.description    = yaml["description"].string
         response.annotations    = try parseAnnotations(ParseInput(yaml, parentFilePath))
         response.headers        = try parseHeaders(ParseInput(yaml["headers"], parentFilePath))
-        response.body           = try parseResponseBody(ParseInput(yaml["body"], parentFilePath))
+        response.body           = try parseBody(ParseInput(yaml["body"], parentFilePath))
         
         return response
     }

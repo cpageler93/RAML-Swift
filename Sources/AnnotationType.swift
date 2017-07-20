@@ -29,11 +29,12 @@ public func ==(lhs: AnnotationTypeEnum, rhs: AnnotationTypeEnum) -> Bool {
 }
 
 
-public class AnnotationType: HasAnnotationTypeProperties {
+public class AnnotationType: HasAnnotationTypeProperties, HasAnnotations {
     
     public var name: String
     public var type: AnnotationTypeEnum?
     public var properties: [AnnotationTypeProperty]?
+    public var annotations: [Annotation]?
     
     public init(name: String) {
         self.name = name
@@ -80,6 +81,7 @@ internal extension RAML {
         case .dictionary(let yamlDict):
             annotationType.type         = try typeFromString(yamlDict["type"]?.string)
             annotationType.properties   = try parseAnnotationTypeProperties(ParseInput(yamlDict["properties"], parentFilePath))
+            annotationType.annotations  = try parseAnnotations(ParseInput(yaml, parentFilePath))
         case .null:
             break
         default:

@@ -34,7 +34,7 @@ public enum SecuritySchemeType {
 }
 
 
-public class SecurityScheme {
+public class SecurityScheme: HasAnnotations {
     
     public var identifier: String
     public var type: SecuritySchemeType
@@ -42,6 +42,7 @@ public class SecurityScheme {
     public var description: String?
     public var describedBy: SecuritySchemeDescription?
     public var settings: SecuritySchemeSettings?
+    public var annotations: [Annotation]?
     
     public init(identifier: String, type: SecuritySchemeType) {
         self.identifier = identifier
@@ -92,6 +93,7 @@ internal extension RAML {
             
             securityScheme.settings     = try parseSecuritySchemeSettings(ParseInput(yaml["settings"], parentFilePath), forType: type)
             securityScheme.describedBy  = try parseSecuritySchemeDescription(ParseInput(yaml["describedBy"], parentFilePath))
+            securityScheme.annotations  = try parseAnnotations(ParseInput(yaml, parentFilePath))
             
             return securityScheme
         } else if let yamlString = yaml.string {

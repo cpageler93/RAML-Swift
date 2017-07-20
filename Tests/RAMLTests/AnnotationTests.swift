@@ -42,7 +42,6 @@ class AnnotationTests: XCTestCase {
         }
         
         XCTAssertEqual(redirectableAnnotation.name, "redirectable")
-        // TODO: Add Missing Value
     }
     
     func testAnnotationsFromFile() {
@@ -148,6 +147,47 @@ class AnnotationTests: XCTestCase {
         
         XCTAssertTrue(signatureRequired)
         XCTAssertEqual(signatureProperty.pattern, "\\\\d{3}-\\\\w{12}")
+    }
+    
+    func testAnnotationValuesFromFile() {
+        let bundle = Bundle(for: type(of: self))
+        guard let path = bundle.path(forResource: "Annotations", ofType: "raml", inDirectory: "TestData") else {
+            XCTFail("No Annotatons.raml File found in TestData")
+            return
+        }
+        
+        guard let raml = try? RAML(file: path) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let groupsResource = raml.resourceWith(path: "/groups") else {
+            XCTFail("No /groups resource")
+            return
+        }
+        XCTAssertTrue(groupsResource.hasAnnotationWith(name: "experimental"))
+        XCTAssertTrue(groupsResource.hasAnnotationWith(name: "feedbackRequested"))
+        
+        guard let usersResource = raml.resourceWith(path: "/users") else {
+            XCTFail("No /users Resource")
+            return
+        }
+        XCTAssertEqual(usersResource.annotations?.count, 3)
+        
+        guard let testHarnessAnnotation = usersResource.annotationWith(name: "testHarness") else {
+            XCTFail("No testHarness annotation")
+            return
+        }
+        XCTAssertNil(testHarnessAnnotation.parameters)
+        XCTAssertEqual(testHarnessAnnotation.singleValue, "usersTest")
+        
+        guard let clearanceLevelAnnotation = usersResource.annotationWith(name: "clearanceLevel") else {
+            XCTFail("No clearanceLevel annotation")
+            return
+        }
+        XCTAssertNil(clearanceLevelAnnotation.singleValue)
+        XCTAssertEqual(clearanceLevelAnnotation.parameters?["level"]?.string, "high")
+        XCTAssertEqual(clearanceLevelAnnotation.parameters?["signature"]?.string, "230-ghtwvfrs1itr")
     }
     
 }

@@ -8,7 +8,7 @@
 import Foundation
 import Yaml
 
-public class Example {
+public class Example: HasAnnotations {
     
     public var identifier: String
     public var displayName: String?
@@ -80,7 +80,7 @@ internal extension RAML {
             example.description = yaml["description"].string
             example.annotations = try parseAnnotations(ParseInput(yaml))
             example.strict      = yaml["strict"].bool
-            example.value = valueDict
+            example.value       = valueDict
         } else {
             example.value = yaml.dictionary
         }

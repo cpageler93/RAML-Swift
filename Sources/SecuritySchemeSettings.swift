@@ -8,27 +8,29 @@
 import Foundation
 import Yaml
 
-public protocol SecuritySchemeSettings {
+public protocol SecuritySchemeSettings: HasAnnotations {
     
 }
 
 
 public class SecuritySchemeSettingsOAuth1: SecuritySchemeSettings {
     
-    var requestTokenUri: String?
-    var authorizationUri: String?
-    var tokenCredentialsUri: String?
-    var signatures: [String]?
+    public var requestTokenUri: String?
+    public var authorizationUri: String?
+    public var tokenCredentialsUri: String?
+    public var signatures: [String]?
+    public var annotations: [Annotation]?
     
 }
 
 
 public class SecuritySchemeSettingsOAuth2: SecuritySchemeSettings {
     
-    var authorizationUri: String?
-    var accessTokenUri: String?
-    var authorizationGrants: [String]?
-    var scopes: [String]?
+    public var authorizationUri: String?
+    public var accessTokenUri: String?
+    public var authorizationGrants: [String]?
+    public var scopes: [String]?
+    public var annotations: [Annotation]?
 }
 
 
@@ -41,7 +43,11 @@ internal extension RAML {
         
         switch yaml {
         case .dictionary(let yamlDict):
-            return try parseSecuritySchemeSettings(dict: yamlDict, forType: type)
+            
+            var settings = try parseSecuritySchemeSettings(dict: yamlDict, forType: type)
+            settings.annotations = try parseAnnotations(input)
+            return settings
+            
         default:
             return nil
         }
@@ -49,7 +55,7 @@ internal extension RAML {
     }
     
     private func parseSecuritySchemeSettings(dict: [Yaml: Yaml],
-                                              forType type: SecuritySchemeType) throws -> SecuritySchemeSettings {
+                                             forType type: SecuritySchemeType) throws -> SecuritySchemeSettings {
         switch type {
         case .oAuth1: return try parseSecuritySchemeSettingsOauth1(dict: dict)
         case .oAuth2: return try parseSecuritySchemeSettingsOauth2(dict: dict)

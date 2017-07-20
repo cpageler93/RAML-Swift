@@ -9,10 +9,11 @@ import Foundation
 import Yaml
 import PathKit
 
-public class DocumentationEntry {
+public class DocumentationEntry: HasAnnotations {
     
     public var title: String
     public var content: String
+    public var annotations: [Annotation]?
     
     public init(title: String, content: String) {
         self.title = title
@@ -34,8 +35,6 @@ internal extension RAML {
         default: return nil
         }
         // TODO: Consider Includes
-        
-        return nil
     }
     
     private func parseDocumentation(array: [Yaml], parentFilePath: Path?) throws -> [DocumentationEntry] {
@@ -58,6 +57,7 @@ internal extension RAML {
             }
             
             let documentationEntry = DocumentationEntry(title: title, content: content)
+            documentationEntry.annotations = try parseAnnotations(ParseInput(yamlDocumentationEntry, parentFilePath))
             documentation.append(documentationEntry)
         }
         return documentation

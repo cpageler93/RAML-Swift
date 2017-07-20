@@ -9,13 +9,14 @@ import Foundation
 import Yaml
 import PathKit
 
-public class ResourceType: HasResourceMethods, HasLibraries {
+public class ResourceType: HasResourceMethods, HasLibraries, HasAnnotations {
     
     public var identifier: String
     public var usage: String?
     public var description: String?
     public var methods: [ResourceMethod]?
     public var uses: [Library]?
+    public var annotations: [Annotation]?
     
     public init(identifier: String) {
         self.identifier = identifier
@@ -65,10 +66,11 @@ internal extension RAML {
         
         switch yaml {
         case .dictionary(let yamlDict):
-            resourceType.usage = yamlDict["usage"]?.string
-            resourceType.description = yamlDict["description"]?.string
-            resourceType.methods = try parseResourceMethods(ParseInput(yaml, parentFilePath))
-            resourceType.uses = try parseLibraries(ParseInput(yaml["uses"], parentFilePath))
+            resourceType.usage          = yamlDict["usage"]?.string
+            resourceType.description    = yamlDict["description"]?.string
+            resourceType.methods        = try parseResourceMethods(ParseInput(yaml, parentFilePath))
+            resourceType.uses           = try parseLibraries(ParseInput(yaml["uses"], parentFilePath))
+            resourceType.annotations    = try parseAnnotations(ParseInput(yaml, parentFilePath))
         case .string(let yamlString):
             let (yamlFromInclude, path) = try parseResourceTypesFromIncludeString(yamlString, parentFilePath: parentFilePath)
             return try parseResourceType(identifier: identifier,

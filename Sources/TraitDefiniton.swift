@@ -9,7 +9,7 @@ import Foundation
 import Yaml
 import PathKit
 
-public class TraitDefinition: HasHeaders, HasQueryParameters {
+public class TraitDefinition: HasHeaders, HasQueryParameters, HasAnnotations {
     
     public var name: String
     public var usage: String?
@@ -17,6 +17,8 @@ public class TraitDefinition: HasHeaders, HasQueryParameters {
     
     public var headers: [Header]?
     public var queryParameters: [URIParameter]?
+    
+    public var annotations: [Annotation]?
     
     public init(name: String) {
         self.name = name
@@ -69,6 +71,7 @@ internal extension RAML {
             traitDefinition.description     = yamlDict["description"]?.string
             traitDefinition.headers         = try parseHeaders(ParseInput(yamlDict["headers"], parentFilePath))
             traitDefinition.queryParameters = try parseURIParameters(ParseInput(yamlDict["queryParameters"], parentFilePath))
+            traitDefinition.annotations     = try parseAnnotations(ParseInput(yaml, parentFilePath))
         case .string(let yamlString):
             let (yamlFromInclude, path) = try parseTraitFromIncludeString(yamlString, parentFilePath: parentFilePath)
             return try parseTraitDefinition(name: name, yaml: yamlFromInclude, parentFilePath: path)

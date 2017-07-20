@@ -11,6 +11,8 @@ import Yaml
 public class Annotation {
     
     public var name: String
+    public var singleValue: String?
+    public var parameters: [Yaml: Yaml]?
     
     public init(name: String) {
         self.name = name
@@ -57,6 +59,16 @@ extension RAML {
     
     internal func parseAnnotation(name: String, yaml: Yaml) throws -> Annotation{
         let annotation = Annotation(name: name)
+        
+        switch yaml {
+        case .string(let yamlString):
+            annotation.singleValue = yamlString
+        case .dictionary(let yamlDict):
+            annotation.parameters = yamlDict
+        default:
+            break
+        }
+        
         return annotation
     }
     
