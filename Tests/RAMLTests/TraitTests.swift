@@ -136,14 +136,26 @@ class TraitTests: XCTestCase {
             return
         }
         
-        // TODO: TEST TRAIT USAGE AT RESOURCE TYPES
+        guard let apiResourceTypeGet = raml.resourceTypeWith(identifier: "apiResource")?.methodWith(type: .get) else {
+            XCTFail("No GET in apiResource ResourceType")
+            return
+        }
+        guard let securedTraitUsage = apiResourceTypeGet.traitUsageWith(name: "secured") else {
+            XCTFail("No secured trait usage in GET")
+            return
+        }
+        XCTAssertEqual(securedTraitUsage.parameterFor(key: "tokenName")?.string, "access_token")
         
         guard let securedTrait = raml.traitDefinitionWith(name: "secured") else {
             XCTFail("No secured trait")
             return
         }
-        
-        // TODO: TEST QUERY PARAMETERS
+        XCTAssertEqual(securedTrait.queryParameters?.count ?? 0, 1)
+        guard let tokenNameParameter = securedTrait.queryParameterWith(identifier: "<<tokenName>>") else {
+            XCTFail("No <<tokenName>> query Parameter")
+            return
+        }
+        XCTAssertEqual(tokenNameParameter.description, "A valid <<tokenName>> is required")
         
         
         guard let servers1Get = raml.resourceWith(path: "/servers1")?.methodWith(type: .get) else {

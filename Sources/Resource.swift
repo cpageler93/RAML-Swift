@@ -9,15 +9,15 @@ import Foundation
 import Yaml
 import PathKit
 
-public class Resource: HasAnnotations, HasResources, HasResourceMethods, HasSecuritySchemeUsages, HasURIParameters {
+public class Resource: HasAnnotations, HasResources, HasResourceMethods, HasSecuritySchemeUsages, HasURIParameters, HasTraitUsages, HasResourceTypeUsages {
     
     public var path: String
     public var displayName: String?
     public var description: String?
     public var annotations: [Annotation]?
     public var methods: [ResourceMethod]?
-    // traits
-    // type
+    public var traitUsages: [TraitUsage]?
+    public var types: [ResourceTypeUsage]?
     public var securedBy: [SecuritySchemeUsage]?
     public var uriParameters: [URIParameter]?
     public var resources: [Resource]?
@@ -56,9 +56,11 @@ internal extension RAML {
         resource.description    = yaml["displayName"].string
         resource.annotations    = try parseAnnotations(ParseInput(yaml, parentFilePath))
         resource.methods        = try parseResourceMethods(ParseInput(yaml, parentFilePath))
-        resource.resources      = try parseResources(ParseInput(yaml, parentFilePath))
+        resource.types          = try parseResourceTypeUsages(ParseInput(yaml["type"], parentFilePath))
         resource.securedBy      = try parseSecuritySchemeUsages(ParseInput(yaml["securedBy"], parentFilePath))
+        resource.traitUsages    = try parseTraitUsages(ParseInput(yaml["is"], parentFilePath))
         resource.uriParameters  = try parseURIParameters(ParseInput(yaml["uriParameters"], parentFilePath))
+        resource.resources      = try parseResources(ParseInput(yaml, parentFilePath))
         
         return resource
     }

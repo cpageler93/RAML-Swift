@@ -77,4 +77,50 @@ class ResourceTypeTests: XCTestCase {
         
     }
     
+    func testResourceTypeUsages() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: Example API
+        version: v1
+        resourceTypes:
+          searchableCollection:
+           get:
+              queryParameters:
+                <<queryParamName>>:
+                  description: Return <<resourcePathName>> that have their <<queryParamName>> matching the given value
+                <<fallbackParamName>>:
+                  description: If no values match the value given for <<queryParamName>>, use <<fallbackParamName>> instead
+        traits:
+          secured:
+            queryParameters:
+              <<tokenName>>:
+                description: A valid <<tokenName>> is required
+          paged:
+            queryParameters:
+              numPages:
+                description: The number of pages to return, not to exceed <<maxPages>>
+        /books:
+          type: { searchableCollection: { queryParamName: title, fallbackParamName: digest_all_fields } }
+          get:
+            is: [ secured: { tokenName: access_token }, paged: { maxPages: 10 } ]
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let booksResource = raml.resourceWith(path: "/books") else {
+            XCTFail("No /books resource")
+            return
+        }
+        guard let searchableCollectionType = booksResource.resourceTypeUsageWith(name: "searchableCollection") else {
+            XCTFail("No searchableCollection in /books")
+            return
+        }
+        XCTAssertEqual(searchableCollectionType.parameterFor(key: "queryParamName")?.string, "title")
+        XCTAssertEqual(searchableCollectionType.parameterFor(key: "fallbackParamName")?.string, "digest_all_fields")
+    }
+    
 }
