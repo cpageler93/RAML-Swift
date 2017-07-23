@@ -76,67 +76,92 @@ internal extension RAML {
     // MARK: YAML Cleanup
     
     fileprivate func cleanedYamlString(from string: String) -> String {
-        return cleanKeysWithoutValues(from: string)
+        var cleanedString = cleanKeysWithoutValues(from: string)
+        cleanedString     = cleanDecimalValues(from: cleanedString)
+        return cleanedString
     }
     
     /// we need to clean keys without values for our purpose because our yaml parser cannot handle that
     private func cleanKeysWithoutValues(from string: String) -> String {
-        // go line by line
-        do {
-            let lines = string.components(separatedBy: "\n")
-            let keyValueRegularExpression = try NSRegularExpression(pattern: "(.*):( *)$")
-            
-            // create new lines
-            var newLines: [String] = []
-            
-            // enumerate lines
-            for (index, line) in lines.enumerated() {
-                
-                // find all key without explicit value
-                if keyValueRegularExpression.matches(in: line, range: NSMakeRange(0, line.count)).first != nil {
-                    
-                    var addLineWithEmptyValueFix = true
-                    
-                    // lets if the next line contains a possible child
-                    if let nextLine = lines[safe: index+1] {
-                        let indentOfCurrentLine = try indentationOf(line: line)
-                        let indentOfNextLine = try indentationOf(line: nextLine)
-                        let hasChild = indentOfNextLine > indentOfCurrentLine
-                        addLineWithEmptyValueFix = !hasChild
-                    }
-                    
-                    if addLineWithEmptyValueFix {
-                        newLines.append("\(line) \(RAML.keyWithEmptyValueFix)")
-                    } else {
-                        newLines.append(line)
-                    }
-                } else {
-                    // ignore line with value
-                    newLines.append(line)
-                }
-            }
-            
-            // join new string and return
-            let cleanedString = newLines.joined(separator: "\n")
-            return cleanedString
-        } catch {
-            
+        guard let keyValueRegularExpression = try? NSRegularExpression(pattern: "(.*):( *)$") else {
+            return string
         }
         
-        // something went wrong.. just return the original string
-        return string
+        // go line by line
+        let lines = string.components(separatedBy: "\n")
+        
+        // create new lines
+        var newLines: [String] = []
+        
+        // enumerate lines
+        for (index, line) in lines.enumerated() {
+            
+            // find all key without explicit value
+            if keyValueRegularExpression.matches(in: line, range: NSMakeRange(0, line.count)).first != nil {
+                
+                var addLineWithEmptyValueFix = true
+                
+                // lets if the next line contains a possible child
+                if let nextLine = lines[safe: index+1] {
+                    let indentOfCurrentLine = indentationOf(line: line)
+                    let indentOfNextLine = indentationOf(line: nextLine)
+                    let hasChild = indentOfNextLine > indentOfCurrentLine
+                    addLineWithEmptyValueFix = !hasChild
+                }
+                
+                if addLineWithEmptyValueFix {
+                    newLines.append("\(line) \(RAML.keyWithEmptyValueFix)")
+                } else {
+                    newLines.append(line)
+                }
+            } else {
+                // ignore line with value
+                newLines.append(line)
+            }
+        }
+        
+        // join new string and return
+        let cleanedString = newLines.joined(separator: "\n")
+        return cleanedString
     }
     
-    private func indentationOf(line: String) throws -> Int {
-        let expr = try NSRegularExpression(pattern: "( *)(.*)")
-        guard let match = expr.matches(in: line, range: NSMakeRange(0, line.count)).first else { return 0 }
-        return match.rangeAt(1).length
+    private func cleanDecimalValues(from string: String) -> String {
+        guard let keyValueRegularExpression = try? NSRegularExpression(pattern: ": ?([0123456789]*,[0123456789]*)") else {
+            return string
+        }
+        
+        // go line by line
+        let lines = string.components(separatedBy: "\n")
+        
+        // create new lines
+        var newLines: [String] = []
+        
+        // enumerate lines
+        for (index, line) in lines.enumerated() {
+            
+            // find all key without explicit value
+            if let firstMatch = keyValueRegularExpression.matches(in: line, range: NSMakeRange(0, line.count)).first {
+                let lineString = line as NSString
+                let decimalRange = firstMatch.rangeAt(1)
+                let decimalString = lineString.substring(with: decimalRange)
+                let newLine = lineString.replacingCharacters(in: decimalRange, with: "\"\(decimalString)\"")
+                newLines.append(newLine)
+            } else {
+                newLines.append(line)
+            }
+        }
+        
+        // join new string and return
+        let cleanedString = newLines.joined(separator: "\n")
+        return cleanedString
     }
     
+    // Reverts cleanings
     fileprivate func cleanedYaml(_ yaml: Yaml) -> Yaml {
         return cleanYamlFromKeysWithoutValuesFix(yaml)
     }
     
+    /// Reverts "keyWithEmptyValueFix" from `cleanKeysWithoutValues(from string: String)`
     private func cleanYamlFromKeysWithoutValuesFix(_ yaml: Yaml) -> Yaml {
         if let string = yaml.string {
             if string.contains(RAML.keyWithEmptyValueFix) {
@@ -160,5 +185,17 @@ internal extension RAML {
         } else {
             return yaml
         }
+    }
+    
+    /// Gets indentation for single line in spacing
+    ///
+    /// - Parameter line: string line
+    /// - Returns: indentation (number of spaces in front of line)
+    private func indentationOf(line: String) -> Int {
+        guard let expr = try? NSRegularExpression(pattern: "( *)(.*)") else {
+            return 0
+        }
+        guard let match = expr.matches(in: line, range: NSMakeRange(0, line.count)).first else { return 0 }
+        return match.rangeAt(1).length
     }
 }
