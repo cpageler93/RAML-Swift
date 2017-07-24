@@ -16,6 +16,8 @@
 		5931CA1A1F165C9200B97672 /* SecuritySchemeUsageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5931CA191F165C9200B97672 /* SecuritySchemeUsageTests.swift */; };
 		59558E7D1F0687D300EEF042 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59558E7C1F0687D300EEF042 /* Resource.swift */; };
 		59558E7F1F069E1400EEF042 /* ResourceMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59558E7E1F069E1400EEF042 /* ResourceMethod.swift */; };
+		5963622D1F26267F00ACF26D /* RAML+Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5963622C1F26267F00ACF26D /* RAML+Resources.swift */; };
+		5963622F1F2627B400ACF26D /* RAMLResourcesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5963622E1F2627B400ACF26D /* RAMLResourcesTests.swift */; };
 		597E55361F15FEAE0046A608 /* ResourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597E55351F15FEAE0046A608 /* ResourceType.swift */; };
 		597E55381F1600470046A608 /* ResourceTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597E55371F1600470046A608 /* ResourceTypeTests.swift */; };
 		5990964A1F16A687009B918E /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599096491F16A687009B918E /* Library.swift */; };
@@ -156,6 +158,8 @@
 		5931CA191F165C9200B97672 /* SecuritySchemeUsageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySchemeUsageTests.swift; sourceTree = "<group>"; };
 		59558E7C1F0687D300EEF042 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		59558E7E1F069E1400EEF042 /* ResourceMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceMethod.swift; sourceTree = "<group>"; };
+		5963622C1F26267F00ACF26D /* RAML+Resources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RAML+Resources.swift"; sourceTree = "<group>"; };
+		5963622E1F2627B400ACF26D /* RAMLResourcesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAMLResourcesTests.swift; sourceTree = "<group>"; };
 		597E55351F15FEAE0046A608 /* ResourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceType.swift; sourceTree = "<group>"; };
 		597E55371F1600470046A608 /* ResourceTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceTypeTests.swift; sourceTree = "<group>"; };
 		599096491F16A687009B918E /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
@@ -284,6 +288,7 @@
 			isa = PBXGroup;
 			children = (
 				OBJ_25 /* RAMLTests.swift */,
+				5963622E1F2627B400ACF26D /* RAMLResourcesTests.swift */,
 				59D357AD1F1411AB003B6CE7 /* ProtocolTests.swift */,
 				59D357AF1F14121D003B6CE7 /* BaseURITests.swift */,
 				592FE03C1F14B296005DBF90 /* MediaTypeTests.swift */,
@@ -401,6 +406,7 @@
 				OBJ_15 /* RAML+Include.swift */,
 				OBJ_16 /* RAML+LoadFromString.swift */,
 				OBJ_17 /* RAML.swift */,
+				5963622C1F26267F00ACF26D /* RAML+Resources.swift */,
 				OBJ_18 /* RAMLError.swift */,
 				OBJ_19 /* Type.swift */,
 				OBJ_20 /* Example.swift */,
@@ -589,6 +595,7 @@
 				OBJ_129 /* DocumentationTests.swift in Sources */,
 				59D1A0881F1F901100B5BF80 /* ResponseBodyTests.swift in Sources */,
 				59D415EC1F09003100247940 /* TraitTests.swift in Sources */,
+				5963622F1F2627B400ACF26D /* RAMLResourcesTests.swift in Sources */,
 				5931CA1A1F165C9200B97672 /* SecuritySchemeUsageTests.swift in Sources */,
 				590676A01F0A3B770022DFCE /* IncludeTests.swift in Sources */,
 			);
@@ -653,6 +660,7 @@
 				5902527D1F0647DD004C9AB6 /* Annotation.swift in Sources */,
 				OBJ_102 /* PropertyRestrictions.swift in Sources */,
 				59D415EE1F09012800247940 /* TraitUsage.swift in Sources */,
+				5963622D1F26267F00ACF26D /* RAML+Resources.swift in Sources */,
 				59D357A01F113021003B6CE7 /* SecuritySchemeDescription.swift in Sources */,
 				591027A41F0E77F600C8A7D0 /* Body.swift in Sources */,
 				5990964A1F16A687009B918E /* Library.swift in Sources */,
