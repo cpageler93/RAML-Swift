@@ -23,6 +23,10 @@ public class TraitDefinition: HasHeaders, HasQueryParameters, HasAnnotations {
     public init(name: String) {
         self.name = name
     }
+    
+    internal init() {
+        self.name = ""
+    }
 }
 
 
@@ -109,6 +113,27 @@ public extension HasTraitDefinitions {
     
     public func hasTraitDefinitionWith(name: String) -> Bool {
         return traitDefinitionWith(name: name) != nil
+    }
+    
+}
+
+
+// MARK: Default Values
+public extension TraitDefinition {
+    
+    public convenience init(initWithDefaultsBasedOn traitDefinition: TraitDefinition) {
+        self.init()
+        
+        self.name               = traitDefinition.name
+        self.usage              = traitDefinition.usage
+        self.description        = traitDefinition.description
+        
+        self.headers            = traitDefinition.headers?.map { $0.applyDefaults() }
+        self.queryParameters    = traitDefinition.queryParameters?.map { $0.applyDefaults() }
+    }
+    
+    public func applyDefaults() -> TraitDefinition {
+        return TraitDefinition(initWithDefaultsBasedOn: self)
     }
     
 }

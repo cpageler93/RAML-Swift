@@ -25,6 +25,10 @@ public class Resource: HasAnnotations, HasResources, HasResourceMethods, HasSecu
     public init(path: String) {
         self.path = path
     }
+    
+    internal init() {
+        self.path = ""
+    }
 }
 
 
@@ -88,6 +92,31 @@ extension HasResources {
     
     public func hasResourceWith(path: String) -> Bool {
         return resourceWith(path: path) != nil
+    }
+    
+}
+
+
+// MARK: Default Values
+public extension Resource {
+    
+    public convenience init(initWithDefaultsBasedOn resource: Resource, raml: RAML) {
+        self.init()
+        
+        self.path           = resource.path
+        self.displayName    = resource.displayName
+        self.description    = resource.description
+        self.annotations    = resource.annotations?.map { $0.applyDefaults() }
+        self.methods        = resource.methods?.map { $0.applyDefaults(raml: raml) }
+        self.traitUsages    = resource.traitUsages?.map { $0.applyDefaults() }
+        self.types          = resource.types?.map { $0.applyDefaults() }
+        self.securedBy      = resource.securedBy?.map { $0.applyDefaults() }
+        self.uriParameters  = resource.uriParameters?.map { $0.applyDefaults() }
+        self.resources      = resource.resources?.map { $0.applyDefaults(raml: raml) }
+    }
+    
+    public func applyDefaults(raml: RAML) -> Resource {
+        return Resource(initWithDefaultsBasedOn: self, raml: raml)
     }
     
 }

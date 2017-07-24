@@ -41,6 +41,10 @@ public class ResourceMethod: HasHeaders, HasAnnotations, HasTraitUsages, HasMeth
         self.type = type
     }
     
+    internal init() {
+        self.type = .get
+    }
+    
 }
 
 
@@ -122,3 +126,31 @@ public extension HasResourceMethods {
     }
     
 }
+
+
+// MARK: Default Values
+public extension ResourceMethod {
+    
+    public convenience init(initWithDefaultsBasedOn resourceMethod: ResourceMethod, raml: RAML) {
+        self.init()
+        
+        self.type               = resourceMethod.type
+        self.displayName        = resourceMethod.displayName
+        self.description        = resourceMethod.description
+        self.annotations        = resourceMethod.annotations?.map { $0.applyDefaults() }
+        self.queryParameters    = resourceMethod.queryParameters?.map { $0.applyDefaults() }
+        self.headers            = resourceMethod.headers?.map { $0.applyDefaults() }
+        self.queryString        = resourceMethod.queryString?.applyDefaults()
+        self.responses          = resourceMethod.responses?.map { $0.applyDefaults(raml: raml) }
+        self.body               = resourceMethod.body?.applyDefaults(raml: raml)
+        self.protocols          = resourceMethod.protocols ?? Protocols.defaultProtocols()
+        self.traitUsages        = resourceMethod.traitUsages?.map { $0.applyDefaults() }
+        self.securedBy          = resourceMethod.securedBy?.map { $0.applyDefaults() }
+    }
+    
+    public func applyDefaults(raml: RAML) -> ResourceMethod {
+        return ResourceMethod(initWithDefaultsBasedOn: self, raml: raml)
+    }
+    
+}
+

@@ -18,6 +18,10 @@ public class BaseURI: HasAnnotations {
         self.annotations = []
     }
     
+    internal init() {
+        value = ""
+    }
+    
 }
 
 
@@ -50,4 +54,21 @@ internal extension RAML {
         baseURI.annotations = try parseAnnotations(dict: dict)
         return baseURI
     }
+}
+
+
+// MARK: Default Values
+public extension BaseURI {
+    
+    public convenience init(initWithDefaultsBasedOn baseURI: BaseURI) {
+        self.init()
+        
+        self.value          = baseURI.value
+        self.annotations    = baseURI.annotations?.map { $0.applyDefaults() }
+    }
+
+    public func applyDefaults() -> BaseURI {
+        return BaseURI(initWithDefaultsBasedOn: self)
+    }
+    
 }

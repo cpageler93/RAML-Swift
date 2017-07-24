@@ -40,6 +40,10 @@ public class AnnotationType: HasAnnotationTypeProperties, HasAnnotations {
         self.name = name
     }
     
+    internal init() {
+        self.name = ""
+    }
+    
 }
 
 
@@ -136,6 +140,25 @@ public extension HasAnnotationTypes {
     
     public func hasAnnotationTypeWith(name: String) -> Bool {
         return annotationTypeWith(name: name) != nil
+    }
+    
+}
+
+
+// MARK: Default Values
+public extension AnnotationType {
+    
+    public convenience init(initWithDefaultsBasedOn annotationType: AnnotationType) {
+        self.init()
+        
+        self.name           = annotationType.name
+        self.type           = annotationType.type
+        self.properties     = annotationType.properties?.map { $0.applyDefaults() }
+        self.annotations    = annotationType.annotations?.map { $0.applyDefaults() }
+    }
+    
+    public func applyDefaults() -> AnnotationType {
+        return AnnotationType(initWithDefaultsBasedOn: self)
     }
     
 }

@@ -89,3 +89,33 @@ public extension HasBodyMediaTypes {
     }
     
 }
+
+
+// MARK: Default Values
+public extension BodyMediaType {
+    
+    public func typeOrDefault() -> DataType? {
+        if let type = type { return type }
+        
+        if properties == nil {
+            return DataType.any
+        }
+        
+        return nil
+    }
+    
+    public convenience init(initWithDefaultsBasedOn bodyMediaType: BodyMediaType) {
+        self.init()
+        
+        self.identifier = bodyMediaType.identifier
+        self.type       = bodyMediaType.typeOrDefault()
+        self.properties = bodyMediaType.properties?.map { $0.applyDefaults() }
+        self.examples   = bodyMediaType.examples?.map { $0.applyDefaults() }
+    }
+    
+    public func applyDefaultsForBodyMediaType() -> BodyMediaType {
+        return BodyMediaType(initWithDefaultsBasedOn: self)
+    }
+    
+}
+

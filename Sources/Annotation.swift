@@ -18,6 +18,10 @@ public class Annotation {
         self.name = name
     }
     
+    internal init() {
+        self.name = ""
+    }
+    
 }
 
 
@@ -108,6 +112,24 @@ public extension HasAnnotations {
     
     public func hasAnnotationWith(name: String) -> Bool {
         return annotationWith(name: name) != nil
+    }
+    
+}
+
+
+// MARK: Default Values
+public extension Annotation {
+    
+    public convenience init(initWithDefaultsBasedOn annotation: Annotation) {
+        self.init()
+        
+        self.name           = annotation.name
+        self.singleValue    = annotation.singleValue
+        self.parameters     = annotation.parameters
+    }
+    
+    public func applyDefaults() -> Annotation {
+        return Annotation(initWithDefaultsBasedOn: self)
     }
     
 }

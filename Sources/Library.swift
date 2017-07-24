@@ -26,6 +26,10 @@ public class Library: HasTypes, HasResourceTypes, HasTraitDefinitions, HasSecuri
         self.identifier = identifier
     }
     
+    internal init() {
+        self.identifier = ""
+    }
+    
 }
 
 
@@ -107,6 +111,31 @@ public extension HasLibraries {
     
     public func hasLibraryWith(identifier: String) -> Bool {
         return libraryWith(identifier: identifier) != nil
+    }
+    
+}
+
+
+// MARK: Default Values
+public extension Library {
+    
+    public convenience init(initWithDefaultsBasedOn library: Library, raml: RAML) {
+        self.init()
+        
+        self.identifier = library.identifier
+        self.usage = library.usage
+        
+        self.types = library.types?.map { $0.applyDefaults() }
+        self.resourceTypes = library.resourceTypes?.map { $0.applyDefaults(raml: raml) }
+        self.traitDefinitions = library.traitDefinitions?.map { $0.applyDefaults() }
+        self.securitySchemes = library.securitySchemes?.map { $0.applyDefaults(raml: raml) }
+        self.annotationTypes = library.annotationTypes?.map { $0.applyDefaults() }
+        self.annotations = library.annotations?.map { $0.applyDefaults() }
+        self.uses = library.uses?.map { $0.applyDefaults(raml: raml) }
+    }
+    
+    public func applyDefaults(raml: RAML) -> Library {
+        return Library(initWithDefaultsBasedOn: self, raml: raml)
     }
     
 }

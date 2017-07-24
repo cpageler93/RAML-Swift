@@ -20,6 +20,10 @@ public class Property {
         self.name = name
     }
     
+    internal init() {
+        self.name = ""
+    }
+    
 }
 
 
@@ -62,9 +66,12 @@ internal extension RAML {
     private func parseProperty(name: String, yaml: Yaml) throws -> Property {
         let property = Property(name: name)
         
-        property.required = yaml["required"].bool
-        property.type = try DataType.dataTypeEnumFrom(yaml: yaml, dictKey: "type")
-        property.enum = try parseStringEnum(ParseInput(yaml["enum"]))
+        property.required       = yaml["required"].bool
+        property.type           = try DataType.dataTypeEnumFrom(yaml: yaml, dictKey: "type")
+        if let type = property.type {
+            property.restrictions = try parseRestrictions(forType: type, yaml: yaml)
+        }
+        property.enum           = try parseStringEnum(ParseInput(yaml["enum"]))
         
         return property
     }
@@ -92,6 +99,41 @@ public extension HasProperties {
     
     public func hasPropertyWith(name: String) -> Bool {
         return propertyWith(name: name) != nil
+    }
+    
+}
+
+
+// MARK: Default Values
+public extension Property {
+    
+    public func typeOrDefault() -> DataType? {
+        if let type = type { return type }
+        return DataType.scalar(type: .string)
+    }
+    
+    public func restrictionsOrDefault() -> PropertyRestrictions? {
+        if let restrictions = restrictions { return restrictions.applyDefaults() }
+        guard let type = typeOrDefault() else {
+            return nil
+        }
+        
+        let newRestrictions = RAML.propertyRestrictionsFor(type: type)
+        return newRestrictions?.applyDefaults()
+    }
+    
+    public convenience init(initWithDefaultsBasedOn property: Property) {
+        self.init()
+        
+        self.name           = property.name
+        self.required       = property.required ?? true
+        self.type           = property.typeOrDefault()
+        self.restrictions   = property.restrictionsOrDefault()
+        self.enum           = property.enum
+    }
+    
+    public func applyDefaults() -> Property {
+        return Property(initWithDefaultsBasedOn: self)
     }
     
 }

@@ -42,3 +42,20 @@ internal extension RAML {
     }
     
 }
+
+
+// MARK: Default Values
+public extension QueryString {
+    
+    public convenience init(initWithDefaultsBasedOn queryString: QueryString) {
+        self.init()
+        
+        self.type       = queryString.type
+        self.examples   = queryString.examples?.map { $0.applyDefaults() }
+    }
+    
+    public func applyDefaults() -> QueryString {
+        return QueryString(initWithDefaultsBasedOn: self)
+    }
+    
+}

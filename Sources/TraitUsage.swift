@@ -17,6 +17,10 @@ public class TraitUsage {
         self.name = name
     }
     
+    internal init() {
+        self.name = ""
+    }
+    
     public func parameterFor(key: String) -> Yaml? {
         return parameters?[key]
     }
@@ -107,3 +111,21 @@ public extension HasTraitUsages {
     }
     
 }
+
+
+// MARK: Default Values
+public extension TraitUsage {
+    
+    public convenience init(initWithDefaultsBasedOn traitUsage: TraitUsage) {
+        self.init()
+        
+        self.name       = traitUsage.name
+        self.parameters = traitUsage.parameters
+    }
+    
+    public func applyDefaults() -> TraitUsage {
+        return TraitUsage(initWithDefaultsBasedOn: self)
+    }
+    
+}
+

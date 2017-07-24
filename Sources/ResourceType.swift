@@ -22,6 +22,9 @@ public class ResourceType: HasResourceMethods, HasLibraries, HasAnnotations {
         self.identifier = identifier
     }
     
+    internal init() {
+        self.identifier = ""
+    }
 }
 
 
@@ -109,6 +112,27 @@ public extension HasResourceTypes {
     
     public func hasResourceTypeWith(identifier: String) -> Bool {
         return resourceTypeWith(identifier: identifier) != nil
+    }
+    
+}
+
+
+// MARK: Default Values
+public extension ResourceType {
+    
+    public convenience init(initWithDefaultsBasedOn resourceType: ResourceType, raml: RAML) {
+        self.init()
+        
+        self.identifier     = resourceType.identifier
+        self.usage          = resourceType.usage
+        self.description    = resourceType.description
+        self.methods        = resourceType.methods?.map { $0.applyDefaults(raml: raml) }
+        self.uses           = resourceType.uses?.map { $0.applyDefaults(raml: raml) }
+        self.annotations    = resourceType.annotations?.map { $0.applyDefaults() }
+    }
+    
+    public func applyDefaults(raml: RAML) -> ResourceType {
+        return ResourceType(initWithDefaultsBasedOn: self, raml: raml)
     }
     
 }

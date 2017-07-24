@@ -21,6 +21,9 @@ public class Example: HasAnnotations {
         self.identifier = identifier
     }
     
+    internal init() {
+        self.identifier = ""
+    }
 }
 
 
@@ -111,6 +114,28 @@ public extension HasExamples {
     
     public func hasExampleWith(identifier: String) -> Bool {
         return exampleWith(identifier: identifier) != nil
+    }
+    
+}
+
+
+// MARK: Default Values
+public extension Example {
+    
+    public convenience init(initWithDefaultsBasedOn example: Example) {
+        self.init()
+        
+        self.identifier     = example.identifier
+        self.displayName    = example.displayName
+        self.description    = example.description
+        self.annotations    = example.annotations?.map { $0.applyDefaults() }
+        self.value          = example.value
+        self.strict         = example.strict
+        
+    }
+    
+    public func applyDefaults() -> Example {
+        return Example(initWithDefaultsBasedOn: self)
     }
     
 }

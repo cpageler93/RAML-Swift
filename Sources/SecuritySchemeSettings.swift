@@ -10,6 +10,8 @@ import Yaml
 
 public protocol SecuritySchemeSettings: HasAnnotations {
     
+    func applyDefaults() -> SecuritySchemeSettings
+    
 }
 
 
@@ -21,6 +23,21 @@ public class SecuritySchemeSettingsOAuth1: SecuritySchemeSettings {
     public var signatures: [String]?
     public var annotations: [Annotation]?
     
+    // MARK: Default Values
+    public convenience init(initWithDefaultsBasedOn securitySchemeSettings: SecuritySchemeSettingsOAuth1) {
+        self.init()
+        
+        self.requestTokenUri        = securitySchemeSettings.requestTokenUri
+        self.authorizationUri       = securitySchemeSettings.authorizationUri
+        self.tokenCredentialsUri    = securitySchemeSettings.tokenCredentialsUri
+        self.signatures             = securitySchemeSettings.signatures
+        self.annotations            = securitySchemeSettings.annotations?.map { $0.applyDefaults() }
+    }
+    
+    public func applyDefaults() -> SecuritySchemeSettings {
+        return SecuritySchemeSettingsOAuth1(initWithDefaultsBasedOn: self)
+    }
+
 }
 
 
@@ -31,6 +48,21 @@ public class SecuritySchemeSettingsOAuth2: SecuritySchemeSettings {
     public var authorizationGrants: [String]?
     public var scopes: [String]?
     public var annotations: [Annotation]?
+    
+    // MARK: Default Values
+    public convenience init(initWithDefaultsBasedOn securitySchemeSettings: SecuritySchemeSettingsOAuth2) {
+        self.init()
+        
+        self.authorizationUri       = securitySchemeSettings.authorizationUri
+        self.accessTokenUri         = securitySchemeSettings.accessTokenUri
+        self.authorizationGrants    = securitySchemeSettings.authorizationGrants
+        self.scopes                 = securitySchemeSettings.scopes
+        self.annotations            = securitySchemeSettings.annotations?.map { $0.applyDefaults() }
+    }
+    
+    public func applyDefaults() -> SecuritySchemeSettings {
+        return SecuritySchemeSettingsOAuth2(initWithDefaultsBasedOn: self)
+    }
 }
 
 

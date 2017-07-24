@@ -17,6 +17,10 @@ public class ResourceTypeUsage {
         self.name = name
     }
     
+    internal init() {
+        self.name = ""
+    }
+    
     public func parameterFor(key: String) -> Yaml? {
         return parameters?[key]
     }
@@ -92,6 +96,23 @@ public extension HasResourceTypeUsages {
     
     public func hasResourceTypeUsageWith(name: String) -> Bool {
         return resourceTypeUsageWith(name: name) != nil
+    }
+    
+}
+
+
+// MARK: Default Values
+public extension ResourceTypeUsage {
+    
+    public convenience init(initWithDefaultsBasedOn resourceTypeUsage: ResourceTypeUsage) {
+        self.init()
+        
+        self.name = resourceTypeUsage.name
+        self.parameters = resourceTypeUsage.parameters
+    }
+    
+    public func applyDefaults() -> ResourceTypeUsage {
+        return ResourceTypeUsage(initWithDefaultsBasedOn: self)
     }
     
 }

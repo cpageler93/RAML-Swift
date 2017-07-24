@@ -17,6 +17,10 @@ public class SecuritySchemeUsage {
         self.identifier = identifier
     }
     
+    internal init() {
+        self.identifier = ""
+    }
+    
 }
 
 // MARK: Parsing Security Scheme Usages
@@ -94,3 +98,21 @@ public extension HasSecuritySchemeUsages {
     }
     
 }
+
+
+// MARK: Default Values
+public extension SecuritySchemeUsage {
+    
+    public convenience init(initWithDefaultsBasedOn securitySchemeUsage: SecuritySchemeUsage) {
+        self.init()
+        
+        self.identifier = securitySchemeUsage.identifier
+        self.parameters = securitySchemeUsage.parameters
+    }
+    
+    public func applyDefaults() -> SecuritySchemeUsage {
+        return SecuritySchemeUsage(initWithDefaultsBasedOn: self)
+    }
+    
+}
+

@@ -30,6 +30,17 @@ public class URIParameter {
         public var type: ParameterItemType?
         public var minLength: Int?
         
+        // MARK: Default Values
+        public convenience init(initWithDefaultsBasedOn items: URIParameterItems) {
+            self.init()
+            
+            self.type = items.type
+            self.minLength = items.minLength
+        }
+        
+        public func applyDefaults() -> URIParameterItems {
+            return URIParameterItems(initWithDefaultsBasedOn: self)
+        }
     }
     
     public var identifier: String
@@ -46,6 +57,10 @@ public class URIParameter {
     
     public init(identifier: String) {
         self.identifier = identifier
+    }
+    
+    internal init() {
+        self.identifier = ""
     }
     
 }
@@ -181,6 +196,32 @@ public extension HasQueryParameters {
     
     public func hasQueryURIParameterWith(identifier: String) -> Bool {
         return has__URIParameterWith(array: queryParameters, identifier: identifier)
+    }
+    
+}
+
+
+// MARK: Default Values
+public extension URIParameter {
+    
+    public convenience init(initWithDefaultsBasedOn uriParameter: URIParameter) {
+        self.init()
+        
+        self.identifier     = uriParameter.identifier
+        self.description    = uriParameter.description
+        self.type           = uriParameter.type
+        self.items          = uriParameter.items?.applyDefaults()
+        self.uniqueItems    = uriParameter.uniqueItems
+        self.enum           = uriParameter.enum
+        self.required       = uriParameter.required
+        self.example        = uriParameter.example
+        self.minimum        = uriParameter.minimum
+        self.maximum        = uriParameter.maximum
+        self.default        = uriParameter.default
+    }
+    
+    public func applyDefaults() -> URIParameter {
+        return URIParameter(initWithDefaultsBasedOn: self)
     }
     
 }

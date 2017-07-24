@@ -49,6 +49,10 @@ public class SecurityScheme: HasAnnotations {
         self.type = type
     }
     
+    internal init() {
+        self.identifier = ""
+        self.type = .basicAuth
+    }
 }
 
 
@@ -131,6 +135,28 @@ public extension HasSecuritySchemes {
     
     public func hasSecuritySchemeWith(identifier: String) -> Bool {
         return securitySchemeWith(identifier: identifier) != nil
+    }
+    
+}
+
+
+// MARK: Default Values
+public extension SecurityScheme {
+    
+    public convenience init(initWithDefaultsBasedOn securityScheme: SecurityScheme, raml: RAML) {
+        self.init()
+        
+        self.identifier     = securityScheme.identifier
+        self.type           = securityScheme.type
+        self.displayName    = securityScheme.displayName
+        self.description    = securityScheme.description
+        self.describedBy    = securityScheme.describedBy?.applyDefaults(raml: raml)
+        self.settings       = securityScheme.settings?.applyDefaults()
+        self.annotations    = securityScheme.annotations?.map { $0.applyDefaults() }
+    }
+    
+    public func applyDefaults(raml: RAML) -> SecurityScheme {
+        return SecurityScheme(initWithDefaultsBasedOn: self, raml: raml)
     }
     
 }

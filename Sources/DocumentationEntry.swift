@@ -20,6 +20,10 @@ public class DocumentationEntry: HasAnnotations {
         self.content = content
     }
     
+    internal init() {
+        self.title = ""
+        self.content = ""
+    }
 }
 
 
@@ -84,6 +88,24 @@ public extension HasDocumentationEntries {
     
     func hasDocumentationEntryWith(title: String) -> Bool {
         return documentationEntryWith(title: title) != nil
+    }
+    
+}
+
+
+// MARK: Default Values
+public extension DocumentationEntry {
+    
+    public convenience init(initWithDefaultsBasedOn documentationEntry: DocumentationEntry) {
+        self.init()
+        
+        self.title          = documentationEntry.title
+        self.content        = documentationEntry.content
+        self.annotations    = documentationEntry.annotations?.map { $0.applyDefaults() }
+    }
+    
+    public func applyDefaults() -> DocumentationEntry {
+        return DocumentationEntry(initWithDefaultsBasedOn: self)
     }
     
 }

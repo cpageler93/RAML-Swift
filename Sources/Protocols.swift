@@ -18,6 +18,10 @@ public struct Protocols: OptionSet {
     static let http  = Protocols(rawValue: 1 << 0)
     static let https = Protocols(rawValue: 1 << 1)
     
+    static func defaultProtocols() -> Protocols {
+        return [Protocols.http, Protocols.https]
+    }
+    
 }
 
 

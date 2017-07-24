@@ -16,14 +16,12 @@ public class RAML : HasBaseURIParameters, HasProtocols, HasMediaTypes, HasDocume
     internal var initialFilePath: Path?
     
     
-    
     // MARK: RAML related
     
     public var title: String = ""
     public var description: String?
     public var version: String?
     public var baseURI: BaseURI?
-    
     public var baseURIParameters: [URIParameter]?
     public var protocols: Protocols?
     public var mediaTypes: [MediaType]?
@@ -102,16 +100,36 @@ extension RAML {
 // MARK: Default Values
 public extension RAML {
     
+    public func mediaTypesOrDefault() -> [MediaType] {
+        if let mediaTypes = mediaTypes { return mediaTypes.map { $0.applyDefaults() } }
+        return MediaType.defaultMediaTypes()
+    }
+    
     public convenience init(initWithDefaultsBasedOn raml: RAML) {
         self.init()
         
-        self.ramlVersion = raml.ramlVersion
-        self.includesAvailable = raml.includesAvailable
-        self.initialFilePath = raml.initialFilePath
+        self.ramlVersion        = raml.ramlVersion
+        self.includesAvailable  = raml.includesAvailable
+        self.initialFilePath    = raml.initialFilePath
         
-        self.title = raml.title
-        self.description = raml.description ?? nil // no default value
-        self.version = raml.version ?? nil // no default value
+        self.title              = raml.title
+        self.description        = raml.description ?? nil // no default value
+        self.version            = raml.version ?? nil // no default value
+        
+        self.baseURI            = raml.baseURI?.applyDefaults()
+        self.baseURIParameters  = raml.baseURIParameters?.map { $0.applyDefaults() }
+        self.protocols          = raml.protocols ?? Protocols.defaultProtocols()
+        self.mediaTypes         = raml.mediaTypesOrDefault()
+        self.documentation      = raml.documentation?.map { $0.applyDefaults() }
+        self.types              = raml.types?.map { $0.applyDefaults() }
+        self.traitDefinitions   = raml.traitDefinitions?.map { $0.applyDefaults() }
+        self.resourceTypes      = raml.resourceTypes?.map { $0.applyDefaults(raml: raml) }
+        self.annotationTypes    = raml.annotationTypes?.map { $0.applyDefaults() }
+        self.securitySchemes    = raml.securitySchemes?.map { $0.applyDefaults(raml: raml) }
+        self.securedBy          = raml.securedBy?.map { $0.applyDefaults() }
+        self.uses               = raml.uses?.map { $0.applyDefaults(raml: raml) }
+        self.resources          = raml.resources?.map { $0.applyDefaults(raml: raml) }
+        self.annotations        = raml.annotations?.map { $0.applyDefaults() }
     }
     
     public func applyDefaults() -> RAML {

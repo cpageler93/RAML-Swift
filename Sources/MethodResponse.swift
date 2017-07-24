@@ -20,6 +20,10 @@ public class MethodResponse: HasAnnotations, HasHeaders {
     public init(code: Int) {
         self.code = code
     }
+    
+    internal init() {
+        self.code = 0
+    }
 }
 
 
@@ -88,3 +92,24 @@ public extension HasMethodResponses {
     }
     
 }
+
+
+// MARK: Default Values
+public extension MethodResponse {
+    
+    public convenience init(initWithDefaultsBasedOn methodResponse: MethodResponse, raml: RAML) {
+        self.init()
+        
+        self.code           = methodResponse.code
+        self.description    = methodResponse.description
+        self.annotations    = methodResponse.annotations?.map { $0.applyDefaults() }
+        self.headers        = methodResponse.headers?.map { $0.applyDefaults() }
+        self.body           = methodResponse.body?.applyDefaults(raml: raml)
+    }
+    
+    public func applyDefaults(raml: RAML) -> MethodResponse {
+        return MethodResponse(initWithDefaultsBasedOn: self, raml: raml)
+    }
+    
+}
+

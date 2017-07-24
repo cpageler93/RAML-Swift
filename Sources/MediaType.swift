@@ -16,6 +16,10 @@ public class MediaType {
         self.identifier = identifier
     }
     
+    internal init() {
+        self.identifier = ""
+    }
+    
     public static func isMediaType(string: String) -> Bool {
         guard let regex = try? NSRegularExpression(pattern: ".*/.*") else { return false }
         let matches = regex.matches(in: string, options: [], range: NSMakeRange(0, string.characters.count))
@@ -114,6 +118,24 @@ public extension HasFileTypes {
     
     public func hasFileTypeWith(identifier: String) -> Bool {
         return has__TypeWith(array: fileTypes, identifier: identifier)
+    }
+    
+}
+
+// MARK: Default Values
+public extension MediaType {
+    
+    public convenience init(initWithDefaultsBasedOn mediaType: MediaType) {
+        self.init()
+        self.identifier = mediaType.identifier
+    }
+    
+    public func applyDefaults() -> MediaType {
+        return MediaType(initWithDefaultsBasedOn: self)
+    }
+    
+    public static func defaultMediaTypes() -> [MediaType] {
+        return [MediaType(identifier: "application/json")]
     }
     
 }

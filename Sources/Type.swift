@@ -42,6 +42,10 @@ public class Type: HasProperties, HasAnnotations, HasExamples {
     public init(name: String) {
         self.name = name
     }
+    
+    internal init() {
+        self.name = ""
+    }
 }
 
 
@@ -96,57 +100,9 @@ extension RAML {
         type.maxItems               = yaml["maxItems"].int
         
         // Scalar Type
-        type.restrictions   = try parseRestrictions(forType: type, yaml: yaml)
+        type.restrictions   = try parseRestrictions(forType: type.type, yaml: yaml)
         
         return type
-    }
-    
-    private func parseRestrictions(forType type: Type, yaml: Yaml) throws -> PropertyRestrictions? {
-        guard let dataType = type.type else { return nil }
-        switch dataType {
-        case .scalar(type: let scalarType):
-            switch scalarType {
-            case .string: return try parseStringRestrictions(yaml)
-            case .number: return try parseNumberRestrictions(yaml)
-            case .file: return try parseFileRestrictions(yaml)
-            default: return nil
-            }
-        default:
-            return nil
-        }
-    }
-    
-    private func parseStringRestrictions(_ yaml: Yaml) throws -> StringRestrictions? {
-        let restrictions = StringRestrictions()
-        
-        restrictions.pattern    = yaml["pattern"].string
-        restrictions.minLength  = yaml["minLength"].int
-        restrictions.maxLength  = yaml["maxLength"].int
-        
-        return restrictions
-    }
-    
-    private func parseNumberRestrictions(_ yaml: Yaml) throws -> NumberRestrictions? {
-        let restrictions = NumberRestrictions()
-        
-        restrictions.minimum    = yaml["minimum"].int
-        restrictions.maximum    = yaml["maximum"].int
-        if let formatString     = yaml["format"].string {
-            restrictions.format = NumberRestrictions.NumberRestrictionFormat(rawValue: formatString)
-        }
-        restrictions.multipleOf = yaml["multipleOf"].int
-        
-        return restrictions
-    }
-    
-    private func parseFileRestrictions(_ yaml: Yaml) throws -> FileRestrictions? {
-        let restrictions = FileRestrictions()
-        
-        restrictions.fileTypes  = try parseMediaTypes(ParseInput(yaml["fileTypes"]))
-        restrictions.minLength  = yaml["minLength"].int
-        restrictions.maxLength  = yaml["maxLength"].int
-        
-        return restrictions
     }
     
 }
@@ -172,6 +128,66 @@ public extension HasTypes {
     
     public func hasTypeWith(name: String) -> Bool {
         return typeWith(name: name) != nil
+    }
+    
+}
+
+
+// MARK: Default Values
+public extension Type {
+    
+    public func typeOrDefaultType() -> DataType? {
+        if let type = type { return type }
+        
+        if properties != nil {
+            return DataType.object
+        }
+        
+        return nil
+    }
+    
+    public func discriminatorValueOrDefault() -> String? {
+        if let discriminatorValue = discriminatorValue { return discriminatorValue }
+        if discriminator == nil {
+            return self.name.lowercased()
+        }
+        return nil
+    }
+    
+    public convenience init(initWithDefaultsBasedOn type: Type) {
+        self.init()
+        
+        self.name                   = type.name
+        // default?
+        self.type                   = type.typeOrDefaultType()
+        self.examples               = type.examples?.map { $0.applyDefaults() }
+        self.displayName            = type.displayName
+        self.description            = type.description
+        self.annotations            = type.annotations?.map { $0.applyDefaults() }
+        // facets?
+        // xml?
+        // enum?
+        
+        // Object Type
+        self.properties             = type.properties?.map { $0.applyDefaults() }
+        self.minProperties          = type.minProperties
+        self.maxProperties          = type.maxProperties
+        self.additionalProperties   = type.additionalProperties ?? true
+        self.discriminator          = type.discriminator
+        self.discriminatorValue     = type.discriminatorValueOrDefault()
+        
+        // Array Type
+        self.uniqueItems            = type.uniqueItems
+        self.items                  = type.items
+        self.minItems               = type.minItems ?? 0
+        self.maxItems               = type.maxItems ?? 2147483647
+        
+        // Scalar Type
+        self.restrictions           = type.restrictions?.applyDefaults()
+    }
+    
+    public func applyDefaults() -> Type {
+        return Type(initWithDefaultsBasedOn: self)
     }
     
 }

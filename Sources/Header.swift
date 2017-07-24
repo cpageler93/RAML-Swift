@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Header.swift
 //  RAML
 //
 //  Created by Christoph Pageler on 30.06.17.
@@ -43,6 +43,10 @@ public class Header {
         self.key = key
     }
     
+    internal init() {
+        self.key = ""
+    }
+    
 }
 
 
@@ -75,17 +79,17 @@ internal extension RAML {
     private func parseHeader(key: String, yaml: Yaml) throws -> Header {
         let header = Header(key: key)
         
-        header.description = yaml["description"].string
-        header.pattern = yaml["pattern"].string
-        header.example = yaml["example"].string
-        header.required = yaml["required"].bool
-        header.type = try HeaderType.fromOptional(yaml["type"].string)
-        header.items = try parseResourceHeaderItems(yaml: yaml["items"])
+        header.description  = yaml["description"].string
+        header.pattern      = yaml["pattern"].string
+        header.example      = yaml["example"].string
+        header.required     = yaml["required"].bool
+        header.type         = try HeaderType.fromOptional(yaml["type"].string)
+        header.items        = try parseHeaderItems(yaml: yaml["items"])
         
         return header
     }
     
-    private func parseResourceHeaderItems(yaml: Yaml?) throws -> Header.Items? {
+    private func parseHeaderItems(yaml: Yaml?) throws -> Header.Items? {
         guard let yaml = yaml else { return nil }
         
         switch yaml {
@@ -125,6 +129,29 @@ public extension HasHeaders {
     
     public func hasHeaderWith(key: String) -> Bool {
         return headerWith(key: key) != nil
+    }
+    
+}
+
+
+
+// MARK: Default Values
+public extension Header {
+    
+    public convenience init(initWithDefaultsBasedOn header: Header) {
+        self.init()
+        
+        self.key            = header.key
+        self.description    = header.description
+        self.type           = header.type
+        self.pattern        = header.pattern
+        self.example        = header.example
+        self.items          = header.items
+        self.required       = header.required
+    }
+    
+    public func applyDefaults() -> Header {
+        return Header(initWithDefaultsBasedOn: self)
     }
     
 }

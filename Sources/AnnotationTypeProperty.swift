@@ -19,6 +19,10 @@ public class AnnotationTypeProperty {
         self.name = name
     }
     
+    internal init() {
+        self.name = ""
+    }
+    
 }
 
 
@@ -79,6 +83,25 @@ public extension HasAnnotationTypeProperties {
             }
         }
         return nil
+    }
+    
+}
+
+
+// MARK: Default Values
+public extension AnnotationTypeProperty {
+    
+    public convenience init(initWithDefaultsBasedOn annotationTypeProperty: AnnotationTypeProperty) {
+        self.init()
+        
+        self.name       = annotationTypeProperty.name
+        self.enum       = annotationTypeProperty.enum
+        self.required   = annotationTypeProperty.required
+        self.pattern    = annotationTypeProperty.pattern
+    }
+    
+    public func applyDefaults() -> AnnotationTypeProperty {
+        return AnnotationTypeProperty(initWithDefaultsBasedOn: self)
     }
     
 }

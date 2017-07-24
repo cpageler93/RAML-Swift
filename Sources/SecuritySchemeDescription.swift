@@ -45,3 +45,23 @@ internal extension RAML {
     }
     
 }
+
+
+// MARK: Default Values
+public extension SecuritySchemeDescription {
+    
+    public convenience init(initWithDefaultsBasedOn securitySchemeDescription: SecuritySchemeDescription, raml: RAML) {
+        self.init()
+        
+        self.headers        = securitySchemeDescription.headers?.map { $0.applyDefaults() }
+        // queryParameters
+        // queryString
+        self.responses      = securitySchemeDescription.responses?.map { $0.applyDefaults(raml: raml) }
+        self.annotations    = securitySchemeDescription.annotations?.map { $0.applyDefaults() }
+    }
+    
+    public func applyDefaults(raml: RAML) -> SecuritySchemeDescription {
+        return SecuritySchemeDescription(initWithDefaultsBasedOn: self, raml: raml)
+    }
+    
+}
