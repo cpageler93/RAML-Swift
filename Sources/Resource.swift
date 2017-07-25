@@ -100,6 +100,20 @@ extension HasResources {
 // MARK: Default Values
 public extension Resource {
     
+    internal func methodsOrDefault(raml: RAML) -> [ResourceMethod]? {
+        if let methods = methods { return methods.map { $0.applyDefaults(raml: raml) } }
+        
+        let defaultMethod = ResourceMethod(type: .get)
+        
+        defaultMethod.displayName = displayName
+        defaultMethod.description = description
+        defaultMethod.annotations = annotations
+        defaultMethod.traitUsages = traitUsages
+        defaultMethod.securedBy = securedBy
+        
+        return [defaultMethod.applyDefaults(raml: raml)]
+    }
+    
     public convenience init(initWithDefaultsBasedOn resource: Resource, raml: RAML) {
         self.init()
         
@@ -107,7 +121,7 @@ public extension Resource {
         self.displayName    = resource.displayName
         self.description    = resource.description
         self.annotations    = resource.annotations?.map { $0.applyDefaults() }
-        self.methods        = resource.methods?.map { $0.applyDefaults(raml: raml) }
+        self.methods        = resource.methodsOrDefault(raml: raml)
         self.traitUsages    = resource.traitUsages?.map { $0.applyDefaults() }
         self.types          = resource.types?.map { $0.applyDefaults() }
         self.securedBy      = resource.securedBy?.map { $0.applyDefaults() }

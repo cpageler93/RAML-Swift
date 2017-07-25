@@ -97,6 +97,13 @@ public extension HasMethodResponses {
 // MARK: Default Values
 public extension MethodResponse {
     
+    internal func bodyOrDefaults(raml: RAML) -> Body {
+        if let body = body { return body.applyDefaults(raml: raml) }
+        
+        let defaultBody = Body()
+        return defaultBody.applyDefaults(raml: raml)
+    }
+    
     public convenience init(initWithDefaultsBasedOn methodResponse: MethodResponse, raml: RAML) {
         self.init()
         
@@ -104,7 +111,7 @@ public extension MethodResponse {
         self.description    = methodResponse.description
         self.annotations    = methodResponse.annotations?.map { $0.applyDefaults() }
         self.headers        = methodResponse.headers?.map { $0.applyDefaults() }
-        self.body           = methodResponse.body?.applyDefaults(raml: raml)
+        self.body           = methodResponse.bodyOrDefaults(raml: raml)
     }
     
     public func applyDefaults(raml: RAML) -> MethodResponse {

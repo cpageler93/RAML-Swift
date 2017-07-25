@@ -32,6 +32,7 @@ public func ==(lhs: AnnotationTypeEnum, rhs: AnnotationTypeEnum) -> Bool {
 public class AnnotationType: HasAnnotationTypeProperties, HasAnnotations {
     
     public var name: String
+    public var displayName: String?
     public var type: AnnotationTypeEnum?
     public var properties: [AnnotationTypeProperty]?
     public var annotations: [Annotation]?
@@ -83,6 +84,7 @@ internal extension RAML {
         case .string(let yamlString):
             annotationType.type         = try typeFromString(yamlString)
         case .dictionary(let yamlDict):
+            annotationType.displayName  = yamlDict["displayName"]?.string
             annotationType.type         = try typeFromString(yamlDict["type"]?.string)
             annotationType.properties   = try parseAnnotationTypeProperties(ParseInput(yamlDict["properties"], parentFilePath))
             annotationType.annotations  = try parseAnnotations(ParseInput(yaml, parentFilePath))
@@ -152,7 +154,8 @@ public extension AnnotationType {
         self.init()
         
         self.name           = annotationType.name
-        self.type           = annotationType.type
+        self.displayName    = annotationType.displayName ?? annotationType.name
+        self.type           = annotationType.type ?? AnnotationTypeEnum.string
         self.properties     = annotationType.properties?.map { $0.applyDefaults() }
         self.annotations    = annotationType.annotations?.map { $0.applyDefaults() }
     }

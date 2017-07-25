@@ -259,8 +259,79 @@ class DefaultsTests: XCTestCase {
         XCTAssertEqual(fooPostBody.mediaTypeWith(identifier: "application/json")?.type, DataType.any)
     }
     
+    func testDefaultAnnotationTypes() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: Testing annotations
+        mediaType: application/json
+        annotationTypes:
+          testHarness:
+        /users:
+          (testHarness): usersTest
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let testHarness = raml.annotationTypeWith(name: "testHarness") else {
+            XCTFail("No annotation Type testHarness")
+            return
+        }
+        
+        XCTAssertNil(testHarness.type)
+        XCTAssertNil(testHarness.displayName)
+        
+        let ramlWithDefaults = raml.applyDefaults()
+        guard let testHarnessFromDefaults = ramlWithDefaults.annotationTypeWith(name: "testHarness") else {
+            XCTFail("No annotation Type testHarness")
+            return
+        }
+        XCTAssertEqual(testHarnessFromDefaults.type, AnnotationTypeEnum.string)
+        XCTAssertEqual(testHarnessFromDefaults.displayName, "testHarness")
+    }
     
-    // default annotation types: string
-    // display name = name of annotation
+    // TODO: default annotation types: string
+    // TODO: display name = name of annotation
+    
+    func testResourceMethods() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: GitHub API
+        version: v3
+        baseUri: https://api.github.com
+        mediaType: [ application/json ]
+        /gists:
+          displayName: Gists
+          /public:
+            displayName: Public Gists
+        /foo:
+          displayName: Foo
+          /bar:
+            displayName: Bar
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        XCTAssertNil(raml.resourceWith(path: "/gists")?.methods)
+        XCTAssertNil(raml.resourceWith(path: "/gists")?.resourceWith(path: "/public")?.methods)
+        
+        let ramlWithDefaults = raml.applyDefaults()
+        XCTAssertEqual(ramlWithDefaults.resourceWith(path: "/gists")?.methods?.count ?? 0, 1)
+        XCTAssertEqual(ramlWithDefaults.resourceWith(path: "/gists")?.resourceWith(path: "/public")?.methods?.count ?? 0, 1)
+        
+        guard let gistsGet = ramlWithDefaults.resourceWith(path: "/gists")?.methodWith(type: .get) else {
+            XCTFail("No GET /gists")
+            return
+        }
+        
+        XCTAssertTrue(gistsGet.responseWith(code: 200)?.body?.hasMediaTypeWith(identifier: "application/json") ?? false)
+    }
     
 }

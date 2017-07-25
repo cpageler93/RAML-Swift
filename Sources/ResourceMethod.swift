@@ -131,6 +131,19 @@ public extension HasResourceMethods {
 // MARK: Default Values
 public extension ResourceMethod {
     
+    internal func responsesOrDefault(raml: RAML) -> [MethodResponse]? {
+        if let responses = responses { return responses.map { $0.applyDefaults(raml: raml) } }
+        
+        let defaultMethodResponse = MethodResponse(code: 200)
+        
+        defaultMethodResponse.description = description
+        defaultMethodResponse.annotations = annotations
+        defaultMethodResponse.headers = headers
+        defaultMethodResponse.body = body
+        
+        return [defaultMethodResponse.applyDefaults(raml: raml)]
+    }
+    
     public convenience init(initWithDefaultsBasedOn resourceMethod: ResourceMethod, raml: RAML) {
         self.init()
         
@@ -141,7 +154,7 @@ public extension ResourceMethod {
         self.queryParameters    = resourceMethod.queryParameters?.map { $0.applyDefaults() }
         self.headers            = resourceMethod.headers?.map { $0.applyDefaults() }
         self.queryString        = resourceMethod.queryString?.applyDefaults()
-        self.responses          = resourceMethod.responses?.map { $0.applyDefaults(raml: raml) }
+        self.responses          = resourceMethod.responsesOrDefault(raml: raml)
         self.body               = resourceMethod.body?.applyDefaults(raml: raml)
         self.protocols          = resourceMethod.protocols ?? Protocols.defaultProtocols()
         self.traitUsages        = resourceMethod.traitUsages?.map { $0.applyDefaults() }
