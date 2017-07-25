@@ -84,6 +84,21 @@ public indirect enum DataType: Equatable {
         }
         return .custom(type: string)
     }
+    
+    public func string() -> String {
+        switch self {
+        case .any:   return "any"
+        case .object: return "object"
+        case .array(let type):
+            return "[\(type.string())]"
+        case .union(let types):
+            return "(\(types.map{$0.string()}.joined(separator:"|")))"
+        case .scalar(let scalarType):
+            return scalarType.rawValue
+        case .custom(let type):
+            return type
+        }
+    }
 
 }
 

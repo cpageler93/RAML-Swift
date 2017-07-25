@@ -21,4 +21,9 @@ class DataTypeTests: XCTestCase {
         XCTAssertNotEqual(DataType.any, DataType.object)
         XCTAssertNotEqual(DataType.custom(type: "FooBar"), DataType.custom(type: "NotFooBar"))
     }
+    
+    func testDataTypeStrings() {
+        XCTAssertEqual(DataType.union(types: [DataType.custom(type: "Foobar"), DataType.scalar(type: .string)]).string(), "(Foobar|string)")
+        XCTAssertEqual(DataType.array(ofType: DataType.custom(type: "Foo")).string(), "[Foo]")
+    }
 }
