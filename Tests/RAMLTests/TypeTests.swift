@@ -483,4 +483,32 @@ class TypeTests: XCTestCase {
         XCTAssertTrue(resource.hasPropertyWith(name: "lastname"))
         XCTAssertTrue(resource.hasPropertyWith(name: "age"))
     }
+    
+    func testPropertyAnnotations() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: ToDo List
+        types:
+          TodoItem:
+            properties:
+              id:
+                (primaryKey):
+                (autoUUID):
+                required: true
+                type: string
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let todoItemIdProperty = raml.typeWith(name: "TodoItem")?.propertyWith(name: "id") else {
+            XCTFail("No id Property in TodoItem Type")
+            return
+        }
+        XCTAssertTrue(todoItemIdProperty.hasAnnotationWith(name: "primaryKey"))
+        XCTAssertTrue(todoItemIdProperty.hasAnnotationWith(name: "autoUUID"))
+    }
 }

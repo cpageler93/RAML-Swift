@@ -8,13 +8,14 @@
 import Foundation
 import Yaml
 
-public class Property {
+public class Property: HasAnnotations {
     
     public var name: String
     public var required: Bool?
     public var type: DataType?
     public var restrictions: PropertyRestrictions?
     public var `enum`: StringEnum?
+    public var annotations: [Annotation]?
     
     public init(name: String) {
         self.name = name
@@ -72,6 +73,7 @@ internal extension RAML {
             property.restrictions = try parseRestrictions(forType: type, yaml: yaml)
         }
         property.enum           = try parseStringEnum(ParseInput(yaml["enum"]))
+        property.annotations    = try parseAnnotations(ParseInput(yaml))
         
         return property
     }
