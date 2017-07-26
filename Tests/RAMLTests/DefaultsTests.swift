@@ -334,4 +334,43 @@ class DefaultsTests: XCTestCase {
         XCTAssertTrue(gistsGet.responseWith(code: 200)?.body?.hasMediaTypeWith(identifier: "application/json") ?? false)
     }
     
+    func testTestImplicitOptionalProperties() {
+        let ramlString =
+        """
+        #%RAML 1.0
+        title: ToDo List
+        types:
+          TodoItem:
+            properties:
+              id:
+                (primaryKey):
+                (autoUUID):
+                required: true
+                type: string
+              title: string
+              createdAt: datetime
+              updatedAt: datetime
+              doneAt?: datetime
+        """
+        
+        guard let raml = try? RAML(string: ramlString) else {
+            XCTFail("Parsing should not throw an error")
+            return
+        }
+        
+        guard let optionalDoneAtProperty = raml.typeWith(name: "TodoItem")?.propertyWith(name: "doneAt?") else {
+            XCTFail("No doneAt? Property")
+            return
+        }
+        XCTAssertNil(optionalDoneAtProperty.required)
+        
+        let ramlWithDefaults = raml.applyDefaults()
+        
+        guard let optionalDoneAtPropertyWithDefaults = ramlWithDefaults.typeWith(name: "TodoItem")?.propertyWith(name: "doneAt") else {
+            XCTFail("No doneAt Property")
+            return
+        }
+        XCTAssertEqual(optionalDoneAtPropertyWithDefaults.required, false)
+    }
+    
 }

@@ -124,11 +124,23 @@ public extension Property {
         return newRestrictions?.applyDefaults()
     }
     
+    public func nameOrDefault() -> String {
+        if name.hasSuffix("?") {
+            return String(name.dropLast())
+        }
+        return name
+    }
+    
+    public func requiredOrDefault() -> Bool {
+        if let required = required { return required }
+        return !name.hasSuffix("?")
+    }
+    
     public convenience init(initWithDefaultsBasedOn property: Property) {
         self.init()
         
-        self.name           = property.name
-        self.required       = property.required ?? true
+        self.name           = property.nameOrDefault()
+        self.required       = property.requiredOrDefault()
         self.type           = property.typeOrDefault()
         self.restrictions   = property.restrictionsOrDefault()
         self.enum           = property.enum
