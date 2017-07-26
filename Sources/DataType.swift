@@ -21,6 +21,21 @@ public indirect enum DataType: Equatable {
         case file
         case integer
         case `nil`
+        
+        public static func scalarTypeFrom(string: String) -> ScalarType? {
+            switch string {
+            case "date-only":        return .dateOnly
+            case "time-only":        return .timeOnly
+            case "date-time-only":   return .dateTimeOnly
+            case "datetime":         return .dateTime
+            default:
+                if let otherScalarType = ScalarType(rawValue: string) {
+                    return otherScalarType
+                } else {
+                    return nil
+                }
+            }
+        }
     }
     
     case any
@@ -68,7 +83,7 @@ public indirect enum DataType: Equatable {
         } else if string.hasSuffix("[]") {
             let arrayType = String(string.dropLast(2))
             return .array(ofType: dataTypeEnumFrom(string: arrayType))
-        } else if let scalar = ScalarType(rawValue: string) {
+        } else if let scalar = ScalarType.scalarTypeFrom(string: string) {
             return .scalar(type: scalar)
         } else if string.contains("|") {
             let stringTypes = string
