@@ -13,6 +13,7 @@ public class URIParameter {
     public enum ParameterType: String {
         case array
         case integer
+        case string
         
         static func fromOptional(_ string: String?) -> ParameterType? {
             guard let string = string else { return nil }
