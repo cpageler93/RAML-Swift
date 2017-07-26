@@ -144,6 +144,7 @@ public extension Property {
         self.type           = property.typeOrDefault()
         self.restrictions   = property.restrictionsOrDefault()
         self.enum           = property.enum
+        self.annotations    = property.annotations?.map { $0.applyDefaults() }
     }
     
     public func applyDefaults() -> Property {
