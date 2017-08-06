@@ -16,6 +16,8 @@ public class Body: HasBodyMediaTypes, HasAnnotations {
     public var mediaTypes: [BodyMediaType]?
     public var annotations: [Annotation]?
     
+    public init() { }
+
 }
 
 

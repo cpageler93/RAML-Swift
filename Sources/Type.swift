@@ -111,12 +111,19 @@ extension RAML {
             
             return type
         case .string(let yamlString):
-            let (yaml, path) = try parseTypesFromIncludeString(yamlString, parentFilePath: parentFilePath)
-            guard let _ = yaml.dictionary else {
-                throw RAMLError.ramlParsingError(.invalidInclude)
+            if isInclude(yamlString) {
+                let (yaml, path) = try parseTypesFromIncludeString(yamlString, parentFilePath: parentFilePath)
+                guard let _ = yaml.dictionary else {
+                    throw RAMLError.ramlParsingError(.invalidInclude)
+                }
+                return try parseType(name: name, yaml: yaml, parentFilePath: path)
+            } else {
+                let type = Type(name: name)
+                type.type = try DataType.dataTypeEnumFrom(yaml: yaml, dictKey: "type")
+                return type
             }
-            return try parseType(name: name, yaml: yaml, parentFilePath: path)
-            
+        case .null:
+            return Type(name: name)
         default:
             throw RAMLError.ramlParsingError(.failedParsingType)
         }
