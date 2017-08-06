@@ -18,6 +18,7 @@
 		59558E7F1F069E1400EEF042 /* ResourceMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59558E7E1F069E1400EEF042 /* ResourceMethod.swift */; };
 		5963622D1F26267F00ACF26D /* RAML+Resources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5963622C1F26267F00ACF26D /* RAML+Resources.swift */; };
 		5963622F1F2627B400ACF26D /* RAMLResourcesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5963622E1F2627B400ACF26D /* RAMLResourcesTests.swift */; };
+		5968039B1F373D8400C380CC /* DuckStackStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5968039A1F373D8400C380CC /* DuckStackStyleTests.swift */; };
 		597E55361F15FEAE0046A608 /* ResourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597E55351F15FEAE0046A608 /* ResourceType.swift */; };
 		597E55381F1600470046A608 /* ResourceTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597E55371F1600470046A608 /* ResourceTypeTests.swift */; };
 		5990964A1F16A687009B918E /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 599096491F16A687009B918E /* Library.swift */; };
@@ -161,6 +162,7 @@
 		59558E7E1F069E1400EEF042 /* ResourceMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceMethod.swift; sourceTree = "<group>"; };
 		5963622C1F26267F00ACF26D /* RAML+Resources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RAML+Resources.swift"; sourceTree = "<group>"; };
 		5963622E1F2627B400ACF26D /* RAMLResourcesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAMLResourcesTests.swift; sourceTree = "<group>"; };
+		5968039A1F373D8400C380CC /* DuckStackStyleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuckStackStyleTests.swift; sourceTree = "<group>"; };
 		597E55351F15FEAE0046A608 /* ResourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceType.swift; sourceTree = "<group>"; };
 		597E55371F1600470046A608 /* ResourceTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceTypeTests.swift; sourceTree = "<group>"; };
 		599096491F16A687009B918E /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
@@ -310,6 +312,7 @@
 				597E55371F1600470046A608 /* ResourceTypeTests.swift */,
 				5990964B1F16A9BF009B918E /* LibraryTests.swift */,
 				59D1A0891F20940400B5BF80 /* ExampleTests.swift */,
+				5968039A1F373D8400C380CC /* DuckStackStyleTests.swift */,
 			);
 			name = RAMLTests;
 			path = Tests/RAMLTests;
@@ -584,6 +587,7 @@
 				59D415E41F06D8C100247940 /* ResourceTests.swift in Sources */,
 				OBJ_123 /* AnnotationTests.swift in Sources */,
 				OBJ_124 /* RAMLTests.swift in Sources */,
+				5968039B1F373D8400C380CC /* DuckStackStyleTests.swift in Sources */,
 				59D357AE1F1411AB003B6CE7 /* ProtocolTests.swift in Sources */,
 				59D357B01F14121D003B6CE7 /* BaseURITests.swift in Sources */,
 				59DF5C231F15225100C81ADF /* DefaultsTests.swift in Sources */,

@@ -36,9 +36,14 @@ internal extension RAML {
         switch yaml {
         case .array(let yamlArray):
             return try parseDocumentation(array: yamlArray, parentFilePath: input.parentFilePath)
+        case .string(let yamlString):
+            let (yaml, path) = try parseDocumentationEntriesFromIncludeString(yamlString, parentFilePath: input.parentFilePath)
+            guard let documentationEntriesArray = yaml.array else {
+                throw RAMLError.ramlParsingError(.invalidInclude)
+            }
+            return try parseDocumentation(array: documentationEntriesArray, parentFilePath: path)
         default: return nil
         }
-        // TODO: Consider Includes
     }
     
     private func parseDocumentation(array: [Yaml], parentFilePath: Path?) throws -> [DocumentationEntry] {
@@ -65,6 +70,10 @@ internal extension RAML {
             documentation.append(documentationEntry)
         }
         return documentation
+    }
+    
+    private func parseDocumentationEntriesFromIncludeString(_ includeString: String, parentFilePath: Path?) throws -> (Yaml, Path) {
+        return try parseYamlFromIncludeString(includeString, parentFilePath: parentFilePath, permittedFragmentIdentifier: "DocumentationItem")
     }
     
 }

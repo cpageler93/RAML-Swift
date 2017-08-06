@@ -58,11 +58,15 @@ extension RAML {
         switch yaml {
         case .dictionary(let yamlDict):
             return try parseTypes(dict: yamlDict, parentFilePath: input.parentFilePath)
+        case .string(let yamlString):
+            let (yaml, path) = try parseTypesFromIncludeString(yamlString, parentFilePath: input.parentFilePath)
+            guard let typesDict = yaml.dictionary else {
+                throw RAMLError.ramlParsingError(.invalidInclude)
+            }
+            return try parseTypes(dict: typesDict, parentFilePath: path)
         default:
             return nil
         }
-        
-        // TODO: Consider Includes
     }
     
     private func parseTypes(dict: [Yaml: Yaml], parentFilePath: Path?) throws -> [Type] {
@@ -79,30 +83,47 @@ extension RAML {
     }
     
     private func parseType(name: String, yaml: Yaml, parentFilePath: Path?) throws -> Type {
-        let type = Type(name: name)
         
-        type.type                   = try DataType.dataTypeEnumFrom(yaml: yaml, dictKey: "type")
-        type.annotations            = try parseAnnotations(ParseInput(yaml, parentFilePath))
-        type.examples               = try parseExampleOrExamples(yamlDict: yaml.dictionary)
-        
-        // Object Type
-        type.properties             = try parseProperties(yaml: yaml, propertiesKey: "properties")
-        type.minProperties          = yaml["minProperties"].int
-        type.maxProperties          = yaml["maxProperties"].int
-        type.additionalProperties   = yaml["additionalProperties"].bool
-        type.discriminator          = yaml["discriminator"].string
-        type.discriminatorValue     = yaml["discriminatorValue"].string
-        
-        // Array Type
-        type.uniqueItems            = yaml["uniqueItems"].bool
-        type.items                  = try DataType.dataTypeEnumFrom(yaml: yaml, dictKey: "items")
-        type.minItems               = yaml["minItems"].int
-        type.maxItems               = yaml["maxItems"].int
-        
-        // Scalar Type
-        type.restrictions   = try parseRestrictions(forType: type.type, yaml: yaml)
-        
-        return type
+        switch yaml {
+        case .dictionary(let yamlDict):
+            let type = Type(name: name)
+            
+            type.type                   = try DataType.dataTypeEnumFrom(yaml: yaml, dictKey: "type")
+            type.annotations            = try parseAnnotations(ParseInput(yaml, parentFilePath))
+            type.examples               = try parseExampleOrExamples(yamlDict: yamlDict)
+            
+            // Object Type
+            type.properties             = try parseProperties(yaml: yaml, propertiesKey: "properties")
+            type.minProperties          = yamlDict["minProperties"]?.int
+            type.maxProperties          = yamlDict["maxProperties"]?.int
+            type.additionalProperties   = yamlDict["additionalProperties"]?.bool
+            type.discriminator          = yamlDict["discriminator"]?.string
+            type.discriminatorValue     = yamlDict["discriminatorValue"]?.string
+            
+            // Array Type
+            type.uniqueItems            = yamlDict["uniqueItems"]?.bool
+            type.items                  = try DataType.dataTypeEnumFrom(yaml: yaml, dictKey: "items")
+            type.minItems               = yamlDict["minItems"]?.int
+            type.maxItems               = yamlDict["maxItems"]?.int
+            
+            // Scalar Type
+            type.restrictions   = try parseRestrictions(forType: type.type, yaml: yaml)
+            
+            return type
+        case .string(let yamlString):
+            let (yaml, path) = try parseTypesFromIncludeString(yamlString, parentFilePath: parentFilePath)
+            guard let _ = yaml.dictionary else {
+                throw RAMLError.ramlParsingError(.invalidInclude)
+            }
+            return try parseType(name: name, yaml: yaml, parentFilePath: path)
+            
+        default:
+            throw RAMLError.ramlParsingError(.failedParsingType)
+        }
+    }
+    
+    private func parseTypesFromIncludeString(_ includeString: String, parentFilePath: Path?) throws -> (Yaml, Path) {
+        return try parseYamlFromIncludeString(includeString, parentFilePath: parentFilePath, permittedFragmentIdentifier: "DataType")
     }
     
 }

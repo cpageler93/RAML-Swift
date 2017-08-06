@@ -1,0 +1,17 @@
+#%RAML 1.0
+
+title: ToDo List
+version: v1
+baseUri: https://{servicename}.api.todolist.com/{version}
+baseUriParameters:
+  servicename:
+    type: string
+    description: The name of the service
+documentation: !include documentation/documentation.raml
+mediaType: application/json
+
+types:
+  TodoItem: !include types/todoItem.raml
+
+/todoItems:
+  (resourceOfType): TodoItem
